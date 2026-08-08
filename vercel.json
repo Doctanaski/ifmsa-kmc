@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {},
+  "rewrites": null,
+  "cleanUrls": true
+}
