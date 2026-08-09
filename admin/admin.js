@@ -17,10 +17,16 @@
     return;
   }
   if (!window.supabase) {
-    app.innerHTML = '<div class="warn">supabase-js failed to load. Check your internet connection.</div>';
+    app.innerHTML = '<div class="warn">supabase-js failed to load. Check your internet connection or the CDN link.</div>';
     return;
   }
-  sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+  try {
+    sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+  } catch (err) {
+    var em = (err && err.message) ? String(err.message).replace(/</g, '&lt;') : 'Invalid config';
+    app.innerHTML = '<div class="warn">Could not initialise Supabase. Check the URL in <code>supabase-config.js</code>.<br /><code>' + em + '</code></div>';
+    return;
+  }
 
   var state = {
     user: null,

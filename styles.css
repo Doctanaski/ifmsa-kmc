@@ -383,6 +383,14 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 .btn-outline:hover { border-color: var(--fg-muted); color: var(--fg); }
 
+.admin-link {
+  opacity: 0.55;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.admin-link:hover { opacity: 1; }
+
 /* ---------- rail (right bars, no labels) ---------- */
 .rail {
   position: fixed;

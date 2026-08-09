@@ -7,13 +7,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="/admin/admin.css" />
 </head>
 <body>
   <div id="app" class="wrap"></div>
 
-  <script src="../supabase-config.js"></script>
+  <script>
+    /* never show a silent white page — surface load/runtime errors */
+    (function () {
+      var shown = false;
+      function show(msg) {
+        if (shown) return;
+        shown = true;
+        var a = document.getElementById('app');
+        if (!a) return;
+        a.innerHTML = '<div class="warn" style="margin-top:4vh">Something went wrong loading the admin panel.<br /><code style="word-break:break-all">' +
+          String(msg).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code></div>';
+      }
+      window.addEventListener('error', function (e) {
+        if (e.target && e.target.tagName === 'SCRIPT') show('Failed to load script: ' + (e.target.src || 'inline script'));
+        else show(e.message || 'Unknown script error');
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        show((e.reason && e.reason.message) || 'Unhandled error');
+      });
+    })();
+  </script>
+  <script src="/supabase-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="admin.js"></script>
+  <script src="/admin/admin.js"></script>
 </body>
 </html>
