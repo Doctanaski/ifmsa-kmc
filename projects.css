@@ -135,10 +135,9 @@
 
 .car-top {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 0.7rem;
 }
 
 .car-title {
@@ -155,8 +154,6 @@
 }
 
 .car-tag {
-  flex-shrink: 0;
-  margin-top: 0.35rem;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -233,22 +230,10 @@
 .car-link:active { transform: translateY(1px); }
 
 .car-ctrl {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
-}
-.car-ctrl::before {
-  content: "";
-  position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: 50%;
-  width: 1px;
-  transform: translateX(-50%);
-  background: linear-gradient(var(--panel-card-border), rgba(255, 255, 255, 0.04));
-  z-index: 0;
 }
 
 .car-btn {
@@ -256,35 +241,25 @@
   z-index: 1;
   width: 50px;
   height: 50px;
-  border-radius: 2px;
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
   line-height: 1;
   color: var(--panel-fg);
-  background: var(--panel-card-bg);
-  border: 1px solid var(--panel-card-border);
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
-              box-shadow 0.2s var(--ease), transform 0.15s var(--ease);
-}
-.car-btn::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border: 1px solid color-mix(in srgb, var(--panel-fg) 10%, transparent);
-  border-radius: 1px;
-  pointer-events: none;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--panel-fg) 40%, transparent);
+  transition: color 0.2s var(--ease), text-shadow 0.2s var(--ease),
+              transform 0.15s var(--ease);
 }
 .car-btn:hover {
   color: var(--car-accent, var(--accent));
-  border-color: var(--car-accent, var(--accent));
-  box-shadow:
-    0 0 0 1px var(--car-accent, var(--accent)),
-    0 0 22px color-mix(in srgb, var(--car-accent, var(--accent)) 35%, transparent);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--car-accent, var(--accent)) 75%, transparent);
 }
-.car-btn:active { transform: translateY(1px) scale(0.97); }
+.car-btn:active { transform: translateY(1px) scale(0.95); }
 .car-btn:focus-visible {
   outline: 2px solid var(--car-accent, var(--accent));
   outline-offset: 2px;
@@ -296,27 +271,26 @@
   display: inline-flex;
   align-items: baseline;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.55rem;
+  gap: 0.4rem;
   font-family: var(--mono);
-  background: var(--panel-card-bg);
-  border: 1px solid var(--panel-card-border);
-  border-radius: 2px;
   text-align: center;
   white-space: nowrap;
 }
 .car-count-now {
-  font-size: 1.35rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--car-accent, var(--accent));
+  text-shadow: 0 0 20px color-mix(in srgb, var(--car-accent, var(--accent)) 60%, transparent);
 }
 .car-count-slash {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--panel-fg-faint);
 }
 .car-count-total {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--panel-fg-faint);
 }
 
@@ -346,8 +320,7 @@
     flex-direction: row;
     justify-content: center;
   }
-  .car-ctrl::before { display: none; }
-  .car-btn { width: 42px; height: 42px; }
+  .car-btn { width: 42px; height: 42px; font-size: 1.2rem; }
 }
 
 /* ---------- project detail page (/projects.html) ---------- */
