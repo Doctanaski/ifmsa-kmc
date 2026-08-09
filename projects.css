@@ -3,7 +3,7 @@
    Committee project carousels (fill each slide) + detail page.
    ============================================================ */
 
-/* ---------- committee project carousel ---------- */
+/* ---------- committee project carousel (embla parallax) ---------- */
 
 .panel-carousel {
   height: 100vh;
@@ -12,56 +12,184 @@
   position: relative;
 }
 
-.car {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2.2rem);
+.embla {
   width: 100%;
-  padding: 0;
+  --slide-height: clamp(400px, 56vh, 520px);
+  --slide-spacing: 1rem;
+  --slide-size: 80%;
 }
 
-.car-viewport {
-  position: relative;
-  height: clamp(400px, 64vh, 540px);
+.embla__viewport {
   overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+  margin-left: calc(var(--slide-spacing) * -1);
+}
+
+.embla__slide {
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  padding-left: var(--slide-spacing);
+}
+
+.embla__parallax {
   border-radius: 20px;
-  box-shadow: 0 30px 70px rgba(4, 8, 15, 0.45);
-}
-
-.car-track {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.55s var(--ease);
-}
-
-.car-card {
-  flex: 0 0 100%;
-  height: 100%;
+  height: var(--slide-height);
+  overflow: hidden;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.1rem;
-  padding: clamp(1.8rem, 5vw, 3.5rem);
   background: var(--bg-overlay);
-  color: #f0f6fc;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 30px 70px rgba(4, 8, 15, 0.45);
 }
 
-.car-card::before {
+.embla__parallax::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 4px;
   background: var(--car-accent, var(--accent));
   box-shadow: 0 0 18px var(--car-accent, var(--accent));
+  z-index: 2;
 }
 
+.embla__parallax::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 100% at 0% 0%,
+    color-mix(in srgb, var(--car-accent, var(--accent)) 18%, transparent),
+    transparent 60%);
+  pointer-events: none;
+}
+
+.embla__parallax__layer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  will-change: transform;
+}
+
+.embla__parallax__img {
+  max-width: none;
+  flex: 0 0 calc(115% + (var(--slide-spacing) * 2));
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(2rem, 4vw, 3.2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+/* entrance animation */
+.panel-carousel .embla {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.panel-carousel.is-active .embla {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+
+/* controls */
+.embla__controls {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+}
+
+.embla__buttons {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.embla__button {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--panel-card-bg);
+  border: 1px solid var(--panel-card-border);
+  border-radius: 50%;
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--panel-fg);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease),
+              border-color 0.2s var(--ease);
+}
+.embla__button:hover:not(:disabled) {
+  background: var(--panel-fg);
+  color: var(--bg-overlay);
+  border-color: transparent;
+  transform: scale(1.06);
+}
+.embla__button:active:not(:disabled) { transform: scale(0.96); }
+.embla__button:disabled { opacity: 0.35; cursor: default; }
+.embla__button:focus-visible {
+  outline: 2px solid var(--panel-fg);
+  outline-offset: 2px;
+}
+
+.embla__button__svg {
+  width: 35%;
+  height: 35%;
+}
+
+.embla__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.embla__dot {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+.embla__dot::before {
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--panel-card-border);
+  box-sizing: border-box;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.embla__dot--selected::before {
+  border-color: var(--panel-fg);
+  background: var(--panel-fg);
+}
+
+/* content inside each slide */
 .car-kicker {
   font-family: var(--mono);
   font-size: 0.7rem;
@@ -138,75 +266,17 @@
 }
 .car-link:hover { text-decoration: underline; }
 
-.car-ctrl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.car-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 1.15rem;
-  line-height: 1;
-  color: var(--panel-fg);
-  background: var(--panel-card-bg);
-  border: 1px solid var(--panel-card-border);
-  cursor: pointer;
-  transition: transform 0.2s var(--ease), background 0.2s var(--ease),
-              border-color 0.2s var(--ease);
-}
-.car-btn:hover {
-  background: var(--panel-fg);
-  color: var(--bg-overlay);
-  border-color: transparent;
-  transform: scale(1.06);
-}
-.car-btn:active { transform: scale(0.96); }
-.car-btn:focus-visible {
-  outline: 2px solid var(--panel-fg);
-  outline-offset: 2px;
-}
-
-.car-count {
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.12em;
-  color: var(--panel-fg-faint);
-  text-align: center;
-}
-
-/* entrance animation */
-.panel-carousel .car {
-  opacity: 0;
-  transform: translateY(16px);
-}
-.panel-carousel.is-active .car {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
-}
-
 @media (max-width: 820px) {
-  .car {
+  .embla {
+    --slide-height: clamp(420px, 58vh, 500px);
+    --slide-size: 86%;
+  }
+  .embla__controls {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 1.1rem;
-    width: 100%;
-    margin-top: 0.5rem;
-    padding: 0 0 2rem;
-    align-items: stretch;
+    justify-items: center;
+    gap: 0.8rem;
   }
-  .car-viewport { height: clamp(440px, 60vh, 520px); }
-  .car-ctrl {
-    flex-direction: row;
-    justify-content: center;
-  }
-  .car-btn { width: 42px; height: 42px; }
+  .embla__dots { justify-content: center; }
 }
 
 /* ---------- project detail page (/projects.html) ---------- */
