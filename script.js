@@ -20,7 +20,6 @@
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.setAttribute('aria-label', 'Go to ' + panel.dataset.title);
-    dot.innerHTML = '<span class="label">' + panel.dataset.index + ' · ' + panel.dataset.title + '</span>';
     dot.addEventListener('click', () => goTo(i));
     rail.appendChild(dot);
   });
