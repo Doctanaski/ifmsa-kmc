@@ -10,33 +10,15 @@
   min-height: 0;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
 }
-
-.car-tag {
-  position: absolute;
-  top: clamp(5rem, 9vh, 7rem);
-  left: clamp(1.5rem, 6vw, 6rem);
-  z-index: 5;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--panel-fg-faint);
-}
-.car-tag b { color: var(--panel-fg); font-weight: 500; }
 
 .car {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.2rem);
-  width: min(860px, 100%);
-  margin-top: clamp(3rem, 10vh, 5rem);
-  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  width: 100%;
+  padding: 0;
 }
 
 .car-viewport {
@@ -199,27 +181,24 @@
 }
 
 /* entrance animation */
-.panel-carousel .car,
-.panel-carousel .car-tag {
+.panel-carousel .car {
   opacity: 0;
   transform: translateY(16px);
 }
-.panel-carousel.is-active .car,
-.panel-carousel.is-active .car-tag {
+.panel-carousel.is-active .car {
   opacity: 1;
   transform: none;
   transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
 }
 
 @media (max-width: 820px) {
-  .panel-carousel { justify-content: flex-start; }
   .car {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     gap: 1.1rem;
     width: 100%;
-    margin-top: 6rem;
-    padding: 0 1.5rem 2rem;
+    margin-top: 0.5rem;
+    padding: 0 0 2rem;
     align-items: stretch;
   }
   .car-viewport { height: clamp(440px, 60vh, 520px); }
