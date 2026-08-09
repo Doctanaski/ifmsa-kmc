@@ -1,7 +1,8 @@
 /* ============================================================
    IFMSA · Khyber Medical College
    Project detail page. Reads ?id= from the URL, looks it up in
-   IFMSA_DATA and renders the full project page.
+   the loaded site data (Supabase, falling back to IFMSA_DATA)
+   and renders the full project page.
    ============================================================ */
 
 (function () {
@@ -9,19 +10,16 @@
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  const data = window.IFMSA_DATA;
   const page = document.getElementById('proj-page');
   const back = document.getElementById('proj-back');
 
-  if (!page || !data) return;
-
-  const project = (data.projects || []).find((p) => p.id === id);
+  if (!page) return;
 
   const esc = (s) => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-  const renderProject = (p) => {
+  const renderProject = (data, p) => {
     const com = data.committees[p.committee] || {};
     const color = com.accent || com.color || 'var(--accent)';
     const goals = (p.goals || []).map((g) => '<li>' + esc(g) + '</li>').join('');
@@ -30,7 +28,7 @@
     document.title = p.title + ' · KMC × IFMSA';
     if (back) {
       back.href = 'index.html#' + (com.slug || 'scope');
-      back.textContent = '← Back to ' + com.name;
+      back.textContent = '← Back to ' + (com.name || 'chapter');
     }
 
     page.style.setProperty('--proj-accent', color);
@@ -83,5 +81,9 @@
       '</div>';
   };
 
-  if (project) renderProject(project); else renderMissing();
+  window.loadSiteData().then((data) => {
+    window.applySiteSettings(data);
+    const project = (data.projects || []).find((p) => p.id === id);
+    if (project) renderProject(data, project); else renderMissing();
+  });
 })();

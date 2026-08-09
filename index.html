@@ -39,17 +39,17 @@
     <!-- ============ 01 · HERO ============ -->
     <section class="panel hero" data-slide="blue" data-index="01" data-title="Home" id="home">
       <div class="panel-inner">
-        <p class="eyebrow"><span class="pill">IFMSA Pakistan</span> &nbsp;·&nbsp; Local Chapter 2026</p>
-        <h1 class="hero-title">Medical students.<br />Moving medicine forward.</h1>
-        <p class="hero-sub">
+        <p class="eyebrow"><span class="pill" id="hero-eyebrow-pill">IFMSA Pakistan</span> <span id="hero-eyebrow-rest">· Local Chapter 2026</span></p>
+        <h1 class="hero-title" id="hero-title">Medical students.<br />Moving medicine forward.</h1>
+        <p class="hero-sub" id="hero-sub">
           The <strong>Khyber Medical College</strong> local chapter of the International Federation of
           Medical Students' Associations — six standing committees, one scroll each.
         </p>
         <div class="hero-actions">
-          <a href="#scope" class="btn btn-primary">Explore committees ↓</a>
-          <a href="#join" class="btn">Join the chapter</a>
+          <a href="#scope" class="btn btn-primary" id="hero-btn1-link"><span id="hero-btn1">Explore committees ↓</span></a>
+          <a href="#join" class="btn" id="hero-btn2-link"><span id="hero-btn2">Join the chapter</span></a>
         </div>
-        <ul class="hero-mini">
+        <ul class="hero-mini" id="hero-mini">
           <li><span class="mini-num">6</span> Standing committees</li>
           <li><span class="mini-num">1.5M+</span> Med students worldwide</li>
           <li><span class="mini-num">123</span> Countries &amp; territories</li>
@@ -196,23 +196,26 @@
     <!-- ============ 08 · JOIN ============ -->
     <section class="panel join" data-slide="green" data-index="08" data-title="Join" id="join">
       <div class="join-inner">
-        <p class="eyebrow">Ready when you are</p>
-        <h2 class="join-title">One scroll can change a student's path.</h2>
-        <p class="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
+        <p class="eyebrow" id="join-eyebrow">Ready when you are</p>
+        <h2 class="join-title" id="join-title">One scroll can change a student's path.</h2>
+        <p class="join-sub" id="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
         <div class="join-actions">
-          <a class="btn btn-primary" href="https://ifmsa.org" target="_blank" rel="noopener">Visit IFMSA</a>
-          <a class="btn" href="mailto:ifmsa@kmc.edu.pk">Contact the local chapter</a>
+          <a class="btn btn-primary" id="join-btn1-link" href="https://ifmsa.org" target="_blank" rel="noopener"><span id="join-btn1">Visit IFMSA</span></a>
+          <a class="btn" id="join-btn2-link" href="mailto:ifmsa@kmc.edu.pk"><span id="join-btn2">Contact the local chapter</span></a>
         </div>
         <footer class="foot">
-          <span>IFMSA — Khyber Medical College, Peshawar</span>
-          <span>Built by students, for the future of medicine.</span>
+          <span id="site-foot-1">IFMSA — Khyber Medical College, Peshawar</span>
+          <span id="site-foot-2">Built by students, for the future of medicine.</span>
         </footer>
       </div>
     </section>
 
   </main>
 
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="projects-data.js"></script>
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

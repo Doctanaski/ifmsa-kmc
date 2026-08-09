@@ -70,9 +70,9 @@
   const TAG_LABEL = { upcoming: 'Upcoming', executed: 'Executed', planned: 'Planned' };
   const tagOf = (raw) => STATUS_TAG[raw] || 'planned';
 
+  const buildCarousels = (data) => {
   document.querySelectorAll('.panel-carousel').forEach((panel) => {
     const slug = panel.dataset.committee;
-    const data = window.IFMSA_DATA || {};
     const com = (data.committees && data.committees[slug]) || {};
     const items = (data.projects || []).filter((p) => p.committee === slug);
 
@@ -132,6 +132,7 @@
     render();
     carousels.set(panel, { items, available, step });
   });
+  };
 
   /* ---------- wheel: carousel first, then one gesture per section ---------- */
   let wheelBusy = false;
@@ -224,4 +225,10 @@
 
   /* ---------- init ---------- */
   activate(0);
+
+  /* ---------- load live data (falls back to IFMSA_DATA) ---------- */
+  window.loadSiteData().then((siteData) => {
+    window.applySiteSettings(siteData);
+    buildCarousels(siteData);
+  });
 })();
