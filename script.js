@@ -60,7 +60,28 @@
 
   /* ---------- wheel: one notch = one section ---------- */
   let wheelBusy = false;
+
+  const inScrollableList = (el) => {
+    while (el && el !== stage) {
+      if (el.classList && el.classList.contains('proj-list')) return true;
+      el = el.parentElement;
+    }
+    return false;
+  };
+
   stage.addEventListener('wheel', (e) => {
+    if (inScrollableList(e.target)) {
+      const list = e.target.closest('.proj-list');
+      const atStart = list.scrollTop <= 0;
+      const atEnd = list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      const scrollingDown = e.deltaY > 0;
+      if (!(scrollingDown && atEnd) && !(!scrollingDown && atStart)) {
+        e.preventDefault();
+        list.scrollTop += e.deltaY;
+        return;
+      }
+    }
+
     e.preventDefault();
     if (isAnimating) return;
 

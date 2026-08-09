@@ -5,7 +5,33 @@
 
 /* ---------- project list inside committee panels ---------- */
 
-.proj-block { margin-top: 2rem; }
+.panel-projects {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.panel-projects .col-meta {
+  align-self: center;
+}
+
+.panel-projects .col-body {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+}
+
+.proj-block {
+  margin-top: 1.6rem;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
 
 .proj-head {
   display: flex;
@@ -65,11 +91,20 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
-  max-height: var(--proj-list-max, 46vh);
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
-  padding-right: 0.4rem;
+  padding-right: 0.5rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.proj-list::-webkit-scrollbar { width: 6px; }
+.proj-list::-webkit-scrollbar-track { background: transparent; }
+.proj-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
 }
 
 .proj-item { display: block; }
