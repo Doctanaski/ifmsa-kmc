@@ -1,7 +1,8 @@
 /* ============================================================
    IFMSA · Khyber Medical College
-   Scroll-based section movement + Embla parallax project
-   carousels inside each committee slide.
+   Scroll-based section movement.
+   One scroll gesture = one section, except inside a committee
+   carousel, where scrolling cycles its projects first.
    ============================================================ */
 
 (function () {
@@ -54,170 +55,76 @@
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
 
-  /* ---------- Embla parallax carousel per committee ---------- */
-  const emblas = new Map();
+  /* ---------- committee carousels (up/down arrows) ---------- */
+  const carousels = new Map();
 
-  const ARROW_PREV =
-    '<svg class="embla__button__svg" viewBox="0 0 532 532"><path fill="currentColor" ' +
-    'd="M355.66 11.354c13.793-13.805 36.208-13.805 50.001 0 13.785 13.804 13.785 36.238 0 50.034L201.22 266l204.442 204.61c13.785 13.805 13.785 36.239 0 50.044-13.793 13.796-36.208 13.796-50.002 0a5994246.277 5994246.277 0 0 0-229.332-229.454 35.065 35.065 0 0 1-10.326-25.126c0-9.2 3.393-18.26 10.326-25.2C172.192 194.973 332.731 34.31 355.66 11.354Z"/></svg>';
-  const ARROW_NEXT =
-    '<svg class="embla__button__svg" viewBox="0 0 532 532"><path fill="currentColor" ' +
-    'd="M176.34 520.646c-13.793 13.805-36.208 13.805-50.001 0-13.785-13.804-13.785-36.238 0-50.034L330.78 266 126.34 61.391c-13.785-13.805-13.785-36.239 0-50.044 13.793-13.796 36.208-13.796 50.002 0 22.928 22.947 206.395 206.507 229.332 229.454a35.065 35.065 0 0 1 10.326 25.126c0 9.2-3.393 18.26-10.326 25.2-45.865 45.901-206.404 206.564-229.332 229.52Z"/></svg>';
-
-  function setupEmbla(panel) {
-    if (typeof window.EmblaCarousel === 'undefined') return null;
-
-    const el = panel.querySelector('.embla');
-    if (!el) return null;
-
-    const data = window.IFMSA_DATA || {};
+  document.querySelectorAll('.panel-carousel').forEach((panel) => {
     const slug = panel.dataset.committee;
+    const data = window.IFMSA_DATA || {};
     const com = (data.committees && data.committees[slug]) || {};
     const items = (data.projects || []).filter((p) => p.committee === slug);
-    if (!items.length) return null;
 
-    const viewport = document.createElement('div');
-    viewport.className = 'embla__viewport';
-    const container = document.createElement('div');
-    container.className = 'embla__container';
-    viewport.appendChild(container);
+    const track = panel.querySelector('.car-track');
+    const count = panel.querySelector('.car-count');
 
-    container.innerHTML = items.map((p, i) => {
+    track.innerHTML = items.map((p, i) => {
       const type = p.type ? '<span class="car-type">' + p.type + '</span>' : '';
       const status = p.status ? '<span class="car-status">' + p.status + '</span>' : '';
       return (
-        '<div class="embla__slide">' +
-          '<div class="embla__parallax" style="--car-accent:' + (com.accent || 'var(--accent)') + '">' +
-            '<div class="embla__parallax__layer">' +
-              '<div class="embla__parallax__img">' +
-                '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
-                '<h3 class="car-title">' + p.title + '</h3>' +
-                '<p class="car-summary">' + (p.summary || '') + '</p>' +
-                '<span class="car-pills">' + type + status + '</span>' +
-                '<div class="car-foot">' +
-                  '<span class="car-theme">' + (p.theme || '') + '</span>' +
-                  '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
+        '<article class="car-card" style="--car-accent:' + (com.accent || 'var(--accent)') + '">' +
+          '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<h3 class="car-title">' + p.title + '</h3>' +
+          '<p class="car-summary">' + (p.summary || '') + '</p>' +
+          '<span class="car-pills">' + type + status + '</span>' +
+          '<div class="car-foot">' +
+            '<span class="car-theme">' + (p.theme || '') + '</span>' +
+            '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
           '</div>' +
-        '</div>'
+        '</article>'
       );
     }).join('');
 
-    const controls = document.createElement('div');
-    controls.className = 'embla__controls';
+    if (!items.length) {
+      count.textContent = '—';
+      return;
+    }
 
-    const buttons = document.createElement('div');
-    buttons.className = 'embla__buttons';
-    buttons.innerHTML =
-      '<button class="embla__button embla__button--prev" type="button" aria-label="Previous project">' + ARROW_PREV + '</button>' +
-      '<button class="embla__button embla__button--next" type="button" aria-label="Next project">' + ARROW_NEXT + '</button>';
-
-    const dotsEl = document.createElement('div');
-    dotsEl.className = 'embla__dots';
-
-    controls.appendChild(buttons);
-    controls.appendChild(dotsEl);
-    el.appendChild(viewport);
-    el.appendChild(controls);
-
-    const embla = window.EmblaCarousel.create(viewport, { dragFree: true, loop: true });
-    const prevBtn = buttons.querySelector('.embla__button--prev');
-    const nextBtn = buttons.querySelector('.embla__button--next');
-
-    /* ----- parallax tween (ported from the Embla parallax example) ----- */
-    const TWEEN_FACTOR_BASE = 0.2;
-    let tweenFactor = 0;
-    let tweenNodes = [];
-
-    const setTweenNodes = (api) => {
-      tweenNodes = api.slideNodes().map((node) => node.querySelector('.embla__parallax__layer'));
+    let index = 0;
+    const render = () => {
+      track.style.transform = 'translateY(' + (-index * 100) + '%)';
+      count.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
     };
-
-    const setTweenFactor = (api) => {
-      tweenFactor = TWEEN_FACTOR_BASE * api.scrollSnapList().length;
+    const step = (dir) => {
+      index = (((index + dir) % items.length) + items.length) % items.length;
+      render();
     };
+    const available = (dir) => (dir > 0 ? index + 1 < items.length : index - 1 >= 0);
 
-    const tweenParallax = (api, eventName) => {
-      const engine = api.internalEngine();
-      const scrollProgress = api.scrollProgress();
-      const slidesInView = api.slidesInView();
-      const isScrollEvent = eventName === 'scroll';
+    panel.querySelector('.car-btn[data-dir="-1"]').addEventListener('click', () => step(-1));
+    panel.querySelector('.car-btn[data-dir="1"]').addEventListener('click', () => step(1));
 
-      api.scrollSnapList().forEach((scrollSnap, snapIndex) => {
-        let diffToTarget = scrollSnap - scrollProgress;
-        const slidesInSnap = engine.slideRegistry[snapIndex];
-        if (!slidesInSnap) return;
-
-        slidesInSnap.forEach((slideIndex) => {
-          if (isScrollEvent && slidesInView.indexOf(slideIndex) === -1) return;
-
-          if (engine.options.loop) {
-            engine.slideLooper.loopPoints.forEach((loopItem) => {
-              const target = loopItem.target();
-              if (slideIndex === loopItem.index && target !== 0) {
-                const sign = Math.sign(target);
-                if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress);
-                if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress);
-              }
-            });
-          }
-
-          const translate = diffToTarget * (-1 * tweenFactor) * 100;
-          const node = tweenNodes[slideIndex];
-          if (node) node.style.transform = 'translateX(' + translate + '%)';
-        });
-      });
-    };
-
-    /* ----- dots + buttons ----- */
-    const onSelect = () => {
-      const selected = embla.selectedScrollSnap();
-      Array.from(dotsEl.children).forEach((dot, i) => {
-        dot.classList.toggle('embla__dot--selected', i === selected);
-      });
-      prevBtn.disabled = !embla.canScrollPrev();
-      nextBtn.disabled = !embla.canScrollNext();
-    };
-
-    embla.scrollSnapList().forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'embla__dot';
-      dot.setAttribute('aria-label', 'Go to project ' + (i + 1));
-      dot.addEventListener('click', () => embla.scrollTo(i));
-      dotsEl.appendChild(dot);
-    });
-
-    prevBtn.addEventListener('click', () => embla.scrollPrev());
-    nextBtn.addEventListener('click', () => embla.scrollNext());
-
-    setTweenNodes(embla);
-    setTweenFactor(embla);
-    tweenParallax(embla, 'init');
-
-    embla.on('reInit', setTweenNodes)
-      .on('reInit', setTweenFactor)
-      .on('reInit', tweenParallax)
-      .on('reInit', onSelect)
-      .on('scroll', tweenParallax)
-      .on('select', onSelect)
-      .on('slideFocus', tweenParallax);
-
-    onSelect();
-    return embla;
-  }
-
-  document.querySelectorAll('.panel-carousel').forEach((panel) => {
-    const embla = setupEmbla(panel);
-    if (embla) emblas.set(panel, embla);
+    render();
+    carousels.set(panel, { items, available, step });
   });
 
-  /* ---------- wheel: one gesture per section ---------- */
+  /* ---------- wheel: carousel first, then one gesture per section ---------- */
   let wheelBusy = false;
 
   stage.addEventListener('wheel', (e) => {
+    const targetPanel = e.target.closest('.panel');
+    if (targetPanel && targetPanel.classList.contains('panel-carousel')) {
+      const car = carousels.get(targetPanel);
+      if (car && car.items.length) {
+        const dir = e.deltaY > 0 ? 1 : -1;
+        if (car.available(dir)) {
+          e.preventDefault();
+          if (isAnimating) return;
+          car.step(dir);
+          return;
+        }
+      }
+    }
+
     e.preventDefault();
     if (isAnimating) return;
 
@@ -237,30 +144,20 @@
   window.addEventListener('keydown', (e) => {
     if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
 
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      const activeCarousel = emblas.get(panels[activeIndex]);
-      if (activeCarousel) {
-        e.preventDefault();
-        if (e.key === 'ArrowLeft') activeCarousel.scrollPrev();
-        else activeCarousel.scrollNext();
+    const activeCar = carousels.get(panels[activeIndex]);
+    const keyDir = { ' ': 1, PageDown: 1, ArrowDown: 1, PageUp: -1, ArrowUp: -1 }[e.key];
+
+    if (keyDir) {
+      e.preventDefault();
+      if (activeCar && activeCar.items.length && activeCar.available(keyDir)) {
+        activeCar.step(keyDir);
         return;
       }
+      if (keyDir > 0) next(); else prev();
+      return;
     }
-
-    const map = {
-      ' ': next,
-      PageDown: next,
-      ArrowDown: next,
-      PageUp: prev,
-      ArrowUp: prev,
-      Home: () => goTo(0),
-      End: () => goTo(panels.length - 1),
-    };
-    const fn = map[e.key];
-    if (fn) {
-      e.preventDefault();
-      fn();
-    }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); return; }
+    if (e.key === 'End') { e.preventDefault(); goTo(panels.length - 1); }
   });
 
   /* ---------- swipe ---------- */
