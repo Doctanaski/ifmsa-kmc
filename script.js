@@ -33,7 +33,13 @@
     activeIndex = i;
 
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
-    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+
+    const accent = getComputedStyle(panels[i]).getPropertyValue('--panel-accent').trim()
+      || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    dots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === i);
+      if (idx === i) d.style.setProperty('--dot-col', accent);
+    });
 
     const pct = ((i + 1) / panels.length) * 100;
     progress.style.width = pct + '%';
