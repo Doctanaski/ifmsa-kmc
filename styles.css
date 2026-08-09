@@ -101,22 +101,46 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .lead { color: var(--fg-muted); font-size: clamp(1rem, 1.5vw, 1.2rem); }
 
-/* per-slide accent + full-colour tint */
-.panel[data-slide="scope"]  { --panel-accent: var(--scope-col); }
-.panel[data-slide="scom"]   { --panel-accent: var(--scom-col); }
-.panel[data-slide="scora"]  { --panel-accent: var(--scora-col); }
-.panel[data-slide="scoph"]  { --panel-accent: var(--scoph-col); }
-.panel[data-slide="scorp"]  { --panel-accent: var(--scorp-col); }
-.panel[data-slide="score"]  { --panel-accent: var(--score-col); }
-.panel[data-slide="blue"]   { --panel-accent: var(--accent); }
-.panel[data-slide="green"]  { --panel-accent: var(--green); }
+/* per-slide colours */
+.panel[data-slide="scope"]  { --panel-accent: var(--scope-col); --panel-fill: var(--scope-col); }
+.panel[data-slide="scom"]   { --panel-accent: var(--scom-col);  --panel-fill: var(--scom-col); }
+.panel[data-slide="scora"]  { --panel-accent: var(--scora-col); --panel-fill: var(--scora-col); }
+.panel[data-slide="scoph"]  { --panel-accent: var(--scoph-col); --panel-fill: var(--scoph-col); }
+.panel[data-slide="scorp"]  { --panel-accent: var(--scorp-col); --panel-fill: var(--scorp-col); }
+.panel[data-slide="score"]  { --panel-accent: var(--score-col); --panel-fill: var(--score-col); }
+.panel[data-slide="blue"]   { --panel-accent: var(--accent);    --panel-fill: var(--accent); }
+.panel[data-slide="green"]  { --panel-accent: var(--green);     --panel-fill: var(--green); }
 
-/* committee-tinted backdrop: a soft, dark wash in the committee colour */
+/* hero + join stay on the dark base — only committees get solid colour */
+.panel.hero,
+.panel.join { --panel-fill: var(--bg); }
+
+/* foreground per slide: white on colours, dark on the white SCOME */
 .panel {
-  background:
-    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--panel-accent) 16%, transparent), transparent 55%),
-    radial-gradient(80% 60% at 0% 100%, color-mix(in srgb, var(--panel-accent) 8%, transparent), transparent 60%),
-    var(--bg);
+  --panel-fg: #ffffff;
+  --panel-fg-muted: rgba(255, 255, 255, 0.86);
+  --panel-fg-faint: rgba(255, 255, 255, 0.62);
+  --panel-card-bg: rgba(13, 17, 23, 0.72);
+  --panel-card-border: rgba(255, 255, 255, 0.28);
+}
+.panel[data-slide="scom"] {
+  --panel-fg: #0d1117;
+  --panel-fg-muted: rgba(13, 17, 23, 0.78);
+  --panel-fg-faint: rgba(13, 17, 23, 0.6);
+  --panel-card-bg: rgba(255, 255, 255, 0.6);
+  --panel-card-border: rgba(13, 17, 23, 0.35);
+}
+
+/* wire the slide foreground into the tokens used below */
+.panel {
+  --fg: var(--panel-fg);
+  --fg-muted: var(--panel-fg-muted);
+  --fg-faint: var(--panel-fg-faint);
+}
+
+.panel {
+  background: var(--panel-fill);
+  color: var(--panel-fg);
 }
 
 .panel::before {
@@ -124,19 +148,39 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--panel-accent);
-  opacity: 0.9;
+  background: color-mix(in srgb, var(--fg) 42%, transparent);
 }
 
-.acronym { color: var(--panel-accent); }
+.acronym { color: var(--panel-fg); }
+
+.facts,
+.fact,
+.facts .fact { color: var(--panel-fg); }
+
+.col-body h2,
+.lead,
+.slide-no,
+.brand-text,
+.hero-title,
+.hero-sub,
+.hero-sub strong,
+.eyebrow,
+.hero-mini,
+.mini-num,
+.join-title,
+.join-sub { color: var(--panel-fg); }
+
+.lead, .hero-sub, .join-sub { color: var(--fg-muted); }
+.slide-no, .hero-mini, .eyebrow, .foot { color: var(--fg-faint); }
 
 /* ---------- facts ---------- */
 .facts {
   margin-top: 2.2rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--panel-card-border);
   border-radius: 8px;
   overflow: hidden;
-  background: var(--bg-raised);
+  background: var(--panel-card-bg);
+  backdrop-filter: blur(6px);
 }
 
 .fact {
@@ -144,7 +188,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   grid-template-columns: 10rem 1fr;
   gap: 1rem;
   padding: 0.85rem 1.2rem;
-  border-bottom: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--panel-card-border);
   font-size: 0.95rem;
 }
 
