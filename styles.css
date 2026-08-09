@@ -164,14 +164,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   color: var(--panel-fg);
 }
 
-.panel::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: color-mix(in srgb, var(--fg) 42%, transparent);
-}
-
 .acronym { color: var(--panel-fg); }
 
 .facts,

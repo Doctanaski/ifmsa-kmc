@@ -123,16 +123,6 @@
   padding: clamp(1.8rem, 5vw, 3.5rem);
 }
 
-.car-card::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-  z-index: 1;
-  background: var(--car-accent, var(--accent));
-  box-shadow: 0 0 18px var(--car-accent, var(--accent));
-}
-
 .car-top {
   display: flex;
   flex-direction: column;
@@ -239,29 +229,29 @@
 .car-btn {
   position: relative;
   z-index: 1;
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
   line-height: 1;
-  color: var(--panel-fg);
+  color: #0d1117;
   background: transparent;
   border: none;
   cursor: pointer;
-  text-shadow: 0 0 20px color-mix(in srgb, var(--panel-fg) 40%, transparent);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.55), 0 1px 1px rgba(255, 255, 255, 0.35);
   transition: color 0.2s var(--ease), text-shadow 0.2s var(--ease),
               transform 0.15s var(--ease);
 }
 .car-btn:hover {
-  color: var(--car-accent, var(--accent));
-  text-shadow: 0 0 24px color-mix(in srgb, var(--car-accent, var(--accent)) 75%, transparent);
+  color: #000;
+  text-shadow: 0 0 22px rgba(255, 255, 255, 0.9);
 }
 .car-btn:active { transform: translateY(1px) scale(0.95); }
 .car-btn:focus-visible {
-  outline: 2px solid var(--car-accent, var(--accent));
+  outline: 2px solid #0d1117;
   outline-offset: 2px;
 }
 
@@ -277,21 +267,21 @@
   white-space: nowrap;
 }
 .car-count-now {
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.85rem;
+  font-weight: 800;
   letter-spacing: 0.02em;
-  color: var(--car-accent, var(--accent));
-  text-shadow: 0 0 20px color-mix(in srgb, var(--car-accent, var(--accent)) 60%, transparent);
+  color: #0d1117;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.55), 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 .car-count-slash {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--panel-fg-faint);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(13, 17, 23, 0.72);
 }
 .car-count-total {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--panel-fg-faint);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(13, 17, 23, 0.72);
 }
 
 /* entrance animation */
@@ -320,7 +310,7 @@
     flex-direction: row;
     justify-content: center;
   }
-  .car-btn { width: 42px; height: 42px; font-size: 1.2rem; }
+  .car-btn { width: 46px; height: 46px; font-size: 1.4rem; }
 }
 
 /* ---------- project detail page (/projects.html) ---------- */
