@@ -132,4 +132,26 @@
 
   /* ---------- init ---------- */
   activate(0);
+
+  /* ---------- project lists ---------- */
+  try {
+    const data = window.IFMSA_DATA;
+    document.querySelectorAll('.proj-list').forEach((list) => {
+      const slug = list.dataset.committee;
+      const items = (data && data.projects || []).filter((p) => p.committee === slug);
+      list.innerHTML = items.map((p) => {
+        const com = data.committees[p.committee] || {};
+        const status = p.status ? '<span class="proj-status">' + p.status + '</span>' : '';
+        const type = p.type ? '<span class="proj-type">' + p.type + '</span>' : '';
+        return (
+          '<li class="proj-item">' +
+            '<a class="proj-link" style="--proj-accent:' + (com.accent || com.color || '') + '" href="projects.html?id=' + encodeURIComponent(p.id) + '">' +
+              '<span class="proj-title">' + p.title + '</span>' +
+              '<span class="proj-tags">' + type + status + '</span>' +
+            '</a>' +
+          '</li>'
+        );
+      }).join('');
+    });
+  } catch (err) { /* list stays empty if data missing */ }
 })();

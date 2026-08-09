@@ -1,0 +1,575 @@
+/* ============================================================
+   IFMSA · Khyber Medical College
+   Standing committee data + planned projects for the year.
+   Consumed by index.html (committee project lists) and
+   projects.html (single-project detail view).
+   ============================================================ */
+
+window.IFMSA_DATA = {
+  year: "2026",
+
+  committees: {
+    scope: { slug: "scope",  acronym: "SCOPE", name: "Professional Exchange",          color: "#0180C8", accent: "#0180C8", logo: "assets/sc-SCOPE.png" },
+    scom:  { slug: "scom",   acronym: "SCOME", name: "Medical Education",               color: "#e6edf3", accent: "#0969da", logo: "assets/sc-SCOME.png" },
+    scora: { slug: "scora",  acronym: "SCORA", name: "Sexual & Reproductive Health",   color: "#B2222A", accent: "#B2222A", logo: "assets/sc-SCORA.png" },
+    scoph: { slug: "scoph",  acronym: "SCOPH", name: "Public Health",                  color: "#F47D3C", accent: "#F47D3C", logo: "assets/sc-SCOPH.png" },
+    scorp: { slug: "scorp",  acronym: "SCORP", name: "Human Rights & Peace",          color: "#5F913F", accent: "#5F913F", logo: "assets/sc-SCORP.png" },
+    score: { slug: "score",  acronym: "SCORE", name: "Research Exchange",            color: "#2F4A9B", accent: "#2F4A9B", logo: "assets/sc-SCORE.png" },
+  },
+
+  projects: [
+    /* ---------------- SCOPE · Professional Exchange ---------------- */
+    {
+      id: "scope-2026-summer-exchange",
+      committee: "scope",
+      title: "Summer Exchange 2026",
+      type: "Exchange",
+      status: "Applications open",
+      timeframe: "May – Aug 2026",
+      theme: "Outbound · IFMSA Exchanges",
+      summary: "Four-week clinical rotations in teaching hospitals across twelve exchange partner countries.",
+      about: [
+        "Every summer SCOPE wakes the chapter up and sends it abroad. Selected students match to a host committee, then live, learn and clerk beside peers in hospitals they would otherwise never step into — from operating theatres in Türkiye to rural clinics in Colombia.",
+        "Outbound preparation runs through the spring: visa clinics, insurance and immunisation checks, safety briefings and a buddy-pairing system so no one crosses a border alone. Every returning student debriefs with the exchange committee, so the next cohort starts a step ahead.",
+      ],
+      goals: [
+        "Place 25 KMC students in host hospitals across full rounds.",
+        "Run four pre-departure preparation sessions in the spring term.",
+        "Reach 100% returning-student debrief completion.",
+      ],
+    },
+    {
+      id: "scope-2026-winter-exchange",
+      committee: "scope",
+      title: "Winter Exchange 2026/27",
+      type: "Exchange",
+      status: "Planned",
+      timeframe: "Jan – Mar 2027",
+      theme: "Outbound · Internal medicine",
+      summary: "A shorter winter-round rotation focused on internal medicine and emergency blocks.",
+      about: [
+        "A winter round for students who could not travel in summer, or who want a second rotation before licensure. Placements are denser and shorter, engineered around the winter academic break — quieter hospitals mean more hands-on time at the bedside.",
+        "Selection mirrors the summer round: academic standing, language readiness and a personal statement. The call for applications opens in September and the hospital list locks by December.",
+      ],
+      goals: [
+        "Offer at least 12 winter placements.",
+        "Publish the call for applications in September 2026.",
+        "Lock all host choices by December 2026.",
+      ],
+    },
+    {
+      id: "scope-2026-pre-departure-bootcamp",
+      committee: "scope",
+      title: "Pre-Departure Bootcamp",
+      type: "Workshop",
+      status: "Planned",
+      timeframe: "Mar 2026",
+      theme: "Preparation · Safety",
+      summary: "A half-day clinic on paperwork, travel safety, insurance and clinical etiquette before flights.",
+      about: [
+        "The nine deadliest words in exchange prep are 'I will handle it at the hospital'. This bootcamp exists so nobody ever says them. We walk the entire checklist — insurance, visas, vaccination records, housing, bedside behaviour and the exact documents a host SCOPE will ask for.",
+        "Alumni who already completed a round run mock scenarios and answer the questions only returning students know to ask: what if a flight is cancelled, what if the duty shift runs late, who do you call at 3 a.m.? A 24/7 national duty officer is on call for every exchange student.",
+      ],
+      goals: [
+        "Complete all 100% of selected summer students through the bootcamp.",
+        "Issue the exchange safety handbook to every attendee.",
+      ],
+    },
+    {
+      id: "scope-2026-inbound-hosting",
+      committee: "scope",
+      title: "Inbound Hosting Programme",
+      type: "Hosting",
+      status: "Open",
+      timeframe: "All year",
+      theme: "Inbound · Friendship",
+      summary: "Hosting international students on exchange in Peshawar — from airport pickup to ward rotation.",
+      about: [
+        "Not all exchange energy flows outward. The chapter opens KMC's doors to inbound students from SCOPE committees worldwide. They rotate through the clinical departments while experiencing the city, our wards and our teaching.",
+        "Hosting needs a changing cast of volunteers: airport pickups, weekend cultural tours, guided hospital navigation and a genuine welcome. It is the cheapest international medical conference that ever mistakes you for a colleague, and you get to host.",
+      ],
+      goals: [
+        "Host inbound students from at least eight countries.",
+        "Keep a verified 100% host satisfaction rate on the exchange platform.",
+      ],
+    },
+    {
+      id: "scope-2026-exchanged-alumni-panel",
+      committee: "scope",
+      title: "Exchanged & Still Alive: Alumni Panel",
+      type: "Event",
+      status: "Planned",
+      timeframe: "Oct 2026",
+      theme: "Community · Retrospective",
+      summary: "Returning students share real case stories, budgets and lessons with the whole chapter.",
+      about: [
+        "The report-back ritual. Students who just returned from summer exchange take the stage for a public debrief — what surprised them, what teaching-culture collisions happened, and what they wish they had packed.",
+        "The panel is the chapter's living memory: full of warm diagnoses, bad laundry stories and one very specific cautionary tale about a health insurance card that expired mid-flight. Every future applicant must listen once.",
+      ],
+      goals: [
+        "Fill the auditorium with the next season of would-be applicants.",
+        "Record and archive the session for the local committee.",
+      ],
+    },
+
+    /* ---------------- SCOME · Medical Education ---------------- */
+    {
+      id: "scom-2026-peer-teaching-series",
+      committee: "scom",
+      title: "Peer Teaching Series",
+      type: "Educational",
+      status: "Accepting tutors",
+      timeframe: "Apr – Nov 2026",
+      theme: "Peer teaching · Classroom",
+      summary: "Senior students lead small-group revision classes for junior classes every week.",
+      about: [
+        "The spine of SCOME's work: students teaching students. Every week, trained senior students take a small group through a block of anatomy, pharmacology or clinical reasoning — using the fastest teaching format there is: one peer who has already survived that exam.",
+        "Tutors sign up in spring, receive a short pedagogy workshop, and are matched to groups by subject compatibility. The series is graded by the students themselves, and the best tutor is crowned at the end-of-year ceremony.",
+      ],
+      goals: [
+        "Run 20 weekly sessions across 10 subject streams.",
+        "Train 40 student tutors through the pedagogy workshop.",
+      ],
+    },
+    {
+      id: "scom-2026-skill-bootcamps",
+      committee: "scom",
+      title: "Clinical & Soft-Skill Bootcamps",
+      type: "Workshop",
+      status: "Planned",
+      timeframe: "Apr & Nov 2026",
+      theme: "Skills · Confidence",
+      summary: "Weekend bootcamps on suturing, IV access, communication and OSCE nerves.",
+      about: [
+        "School taught you the seventh cranial nerve; the wards taught you that nobody cares unless you can thread a vein with a steady hand. These bootcamps go both directions — one weekend on hands-on clinical skills in the skills lab, one weekend on bedside communication and surviving an OSCE without disintegrating.",
+        "We deliberately mix years, because a third-year calms a second-year better than any lecturer. Spots are capped to keep the instructor-to-student ratio honest, and the signup sheet always fills within an afternoon.",
+      ],
+      goals: [
+        "Cap at 120 students per bootcamp to protect the hands-on ratio.",
+        "Cover history-taking, venepuncture, suturing and bad-news stations.",
+      ],
+    },
+    {
+      id: "scom-2026-nmed",
+      committee: "scom",
+      title: "National Medical Education Day",
+      type: "Campaign",
+      status: "Upcoming",
+      timeframe: "21 Oct 2026",
+      theme: "Advocacy · Visibility",
+      summary: "A chapter-wide day celebrating students who teach, with a marathon of open classes.",
+      about: [
+        "On 21 October the chapter runs dozens of short, open teaching sessions simultaneously — the campus becomes a labyrinth of classes-meets-concert, summed into one loud message: students are teachers too.",
+        "The day doubles as a political pitch: a written ask, delivered to the curriculum committee, that peer teaching be recognised with formal credit in the degree. The quiet lecture becomes the official one.",
+      ],
+      goals: [
+        "Hold 30 open micro-sessions in a single day.",
+        "Deliver a 500-signature petition to the curriculum committee.",
+      ],
+    },
+    {
+      id: "scom-2026-curriculum-forum",
+      committee: "scom",
+      title: "Student Voice: Curriculum Feedback Forum",
+      type: "Policy",
+      status: "Planned",
+      timeframe: "Sep 2026",
+      theme: "Policy · Representation",
+      summary: "A structured, chaired forum where students review the syllabus face-to-face with faculty.",
+      about: [
+        "Students know where teaching hurts before faculty ever does. In a chaired, safe forum, year-delegates present what to keep, what to cut and what to add — and each proposal is ranked by a student vote.",
+        "The top ten proposals are written into a published action list and tracked publicly, so students can watch their feedback become a real lecture, a real lighter layer, a real change in how the course is designed.",
+      ],
+      goals: [
+        "Deliver 10 prioritised proposals into the faculty action list.",
+        "Bring year-delegates from every class to the forum.",
+      ],
+    },
+    {
+      id: "scom-2026-tutor-academy",
+      committee: "scom",
+      title: "Tutor Academy",
+      type: "Programme",
+      status: "Beta",
+      timeframe: "Ongoing",
+      theme: "Capacity building",
+      summary: "A mini-fellowship teaching KMC students to design and lead their own sessions.",
+      about: [
+        "You do not have to be born a teacher to become one. The Academy is a structured cycle of four sessions — design, delivery, feedback and repair — that graduates students able to build a full teaching session from a blank slide.",
+        "Fellows first pilot their sessions inside the Peer Teaching Series, then out in the community. The Academy is the quiet incubator for every SCOM-quality lecture that later shows up on campus.",
+      ],
+      goals: [
+        "Graduate 15 fellows per eight-week cycle.",
+        "Pilot one original teaching session per graduate.",
+      ],
+    },
+
+    /* ---------------- SCORA · Sexual & Reproductive Health ---------------- */
+    {
+      id: "scora-2026-srh-awareness-week",
+      committee: "scora",
+      title: "Sexual & Reproductive Health Week",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "May 2026",
+      theme: "Awareness · Destigmatisation",
+      summary: "A stigma-cracking week of booths, quiet sessions and myth-busting on campus.",
+      about: [
+        "For one week the taboos open like a clinic door. SCORA takes the campus and turns it into a loud, warm, myth-busting marketplace with a locked box of anonymous questions, a wall of \"answers I was too embarrassed to ask\" and short nurse-led talks — the ones students actually stayed for.",
+        "The week ends with a night screening and a livestream for those who cannot be on campus. Everything is confidential, and the health-promotion packs go out free.",
+      ],
+      goals: [
+        "Give away all 600 planned SRH information kits.",
+        "Reach more than 1,000 students across the week.",
+      ],
+    },
+    {
+      id: "scora-2026-aids-day",
+      committee: "scora",
+      title: "World AIDS Day — 1 December",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "1 Dec 2026",
+      theme: "Awareness · Stigma",
+      summary: "A red-ribbon day of myth-busting, and a quiet evening vigil on campus.",
+      about: [
+        "One day, one red ribbon: a dated against one of the most stigmatised infections in medicine. SCORA marks it with a corridor of ribbons, a knowledge test that quietly separates myths from facts, and a lamp vigil in the evening for the millions who did not live to see the cure.",
+        "Most of the work happens before the day — a thirty-day social series about the vocabulary of stigma, so that by the first of December the campus already knows not just the medicine, but the words.",
+      ],
+      goals: [
+        "Test 300+ students against the myth-busting quiz.",
+        "Publish the filmed three-minute student awareness piece.",
+      ],
+    },
+    {
+      id: "scora-2026-consent-culture",
+      committee: "scora",
+      title: "Consent Culture Training",
+      type: "Workshop",
+      status: "Upcoming",
+      timeframe: "Ongoing",
+      theme: "Training · Respect",
+      summary: "Interactive sessions on affirmative consent, boundaries and bystander roles.",
+      about: [
+        "Consent is not a lecture — it is peer language. In safe, separate groups, SCORA trains the vocabulary of yes, of boundaries, and of the silence that is always not-ok. The sessions are built around real scenarios, not PowerPoints.",
+        "They end with the bystander piece, the closest thing to a fire drill for relationships. Presented with a simply-said scene, a group decides where the line is and what a friend does when one crosses it.",
+      ],
+      goals: [
+        "Train 200+ students across eight sessions.",
+        "Leave a facilitator card and a written quick-guide with every session.",
+      ],
+    },
+    {
+      id: "scora-2026-breast-awareness",
+      committee: "scora",
+      title: "Breast Health & Awareness Session",
+      type: "Event",
+      status: "Planned",
+      timeframe: "Oct 2026",
+      theme: "Prevention · Women's health",
+      summary: "A non-scary conversation about self-examination, risks and when to screen.",
+      about: [
+        "Two thirds of our students are women, yet almost none were ever told in school how to look after their own breast health. In an October session — calm, informed, gender-appropriate — a clinician leads the demonstration that matters, and the facts about screening.",
+        "The day is built to outlast itself: every participant walks out with a plain-language card to keep at home, turning one lecture into a monthly habit.",
+      ],
+      goals: [
+        "Reach 400+ female students with the demonstration.",
+        "Distribute the reminder card to every attendee.",
+      ],
+    },
+    {
+      id: "scora-2026-peer-support-line",
+      committee: "scora",
+      title: "Peer Support & Referral Line",
+      type: "Support",
+      status: "Live",
+      timeframe: "All year",
+      theme: "Health · Help always on",
+      summary: "A confidential student-run line that listens and routes to professionals, without judgement.",
+      about: [
+        "Not every question wants a poster. Some come only at 1 a.m. The line is student-run among trained volunteers, and every conversation ends in a calm, warm referral — clinic, counsellor or hotline, whichever the caller wants.",
+        "No names, no transcripts, no judgement. The SHARE promise holds all year: the answer is silent, the door is open.",
+      ],
+      goals: [
+        "Keep median answer time under 24 hours.",
+        "Refer 100% of clinical questions to a relevant professional.",
+      ],
+    },
+
+    /* ---------------- SCOPH · Public Health ---------------- */
+    {
+      id: "scoph-2026-community-screenings",
+      committee: "scoph",
+      title: "Community Health Screening Saturdays",
+      type: "Screening",
+      status: "Open",
+      timeframe: "All year",
+      theme: "Community · Access",
+      summary: "Monthly weekend camps in Peshawar for blood pressure, sugar and friendly triage.",
+      about: [
+        "One Saturday a month the chapter packs up and stands outside a school, mosque or community centre to screen a whole block down Racecourse Road and beyond. Blood pressures, random blood sugars and a calm talk with a student trained to refer.",
+        "The impact is durable: each person walks out with a simple card showing what normal is for their age and where to go if the number is red. Nobody is graded; everyone is counted.",
+      ],
+      goals: [
+        "Screen 2,000 community members over the year.",
+        "Complete the follow-up form for every referral made.",
+      ],
+    },
+    {
+      id: "scoph-2026-vaccination-drive",
+      committee: "scoph",
+      title: "Campus Vaccination Drive",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "Nov 2026",
+      theme: "Prevention · Immunity",
+      summary: "A pop-up vaccination exercise on campus with a myth-busting parallel wall.",
+      about: [
+        "Vaccines work best before you need them, so we vaccinate the healthy. SCOPH partners with a local health official to run a pop-up flu camp on campus, appointments and all — both for staff and students.",
+        "Beside every queue a myth-busting wall does battle with the annual folklore: side-effect timing, who can wait and who can't, and why the needle hurts less than the disease.",
+      ],
+      goals: [
+        "Vaccinate 1,000 students and staff in one week.",
+        "Battle ten common vaccine myths on the wall.",
+      ],
+    },
+    {
+      id: "scoph-2026-community-week",
+      committee: "scoph",
+      title: "Public Health Week",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "Mar 2026",
+      theme: "Awareness · Five disciplines",
+      summary: "Five days, five daily disciplines — dengue to hypertension to mental illness.",
+      about: [
+        "One theme per day, five disciplines in six: dengue (with a standing-water audit), hypertension (a measuring booth), nutrition (a plate that makes sense), tobacco, and the mind being public. The visitors take everything seriously.",
+        "The week signs off with the chapter's own declaration of the public-health minute for the year: students committing to the habit of the campus.",
+      ],
+      goals: [
+        "Host five discipline-days with at least 150 visits each.",
+        "Publish one student-written public-health charter for the campus.",
+      ],
+    },
+    {
+      id: "scoph-2026-school-outreach",
+      committee: "scoph",
+      title: "School Health Literacy Outreach",
+      type: "Outreach",
+      status: "Open",
+      timeframe: "All year",
+      theme: "Education · Tomorrow",
+      summary: "Hands-on, plain-language health lessons in the city's schools every term.",
+      about: [
+        "The best time to teach a habit is before the class learns the fear. Volunteers run short interactive lessons in Peshawar's schools — how to wash a hand properly, why two sugary drinks is one too many, how to deny a mosquito a puddle.",
+        "Every lesson leaves a \"habit card\" for the child to take home, and sometimes a parent at the gate reads it and asks a question. The reach is the point: prevention done where prevention is free.",
+      ],
+      goals: [
+        "Reach 1,500 students across 20 schools.",
+        "Give every child a take-home health card.",
+      ],
+    },
+    {
+      id: "scoph-2026-environmental-audit",
+      committee: "scoph",
+      title: "Environmental Health & Climate Audit",
+      type: "Project",
+      status: "Planned",
+      timeframe: "Jun 2026",
+      theme: "Planet · One Health",
+      summary: "A gentle audit of campus waste, water and air, plus a short list of fixes.",
+      about: [
+        "A public-health team should also care for the building it trains in. Volunteers walk the campus, count bins, test a doorway's water, and ask the facilities to measure the air — a genuinely mini-EPA for one college block.",
+        "The audit is the report; the action is the follow-up. We hang the extra bins, fix the leak the guard has complained about for years, and the best finds go on to the sustainability committee.",
+      ],
+      goals: [
+        "Complete a full environmental audit of the KMC campus.",
+        "Land at least five visible fixes from the audit by term four.",
+      ],
+    },
+
+    /* ---------------- SCORP · Human Rights & Peace ---------------- */
+    {
+      id: "scorp-2026-refugee-outreach",
+      committee: "scorp",
+      title: "Refugee & Migrant Health Outreach",
+      type: "Outreach",
+      status: "Open",
+      timeframe: "All year",
+      theme: "Rights · Access",
+      summary: "Health checks and referrals at the city's registered displaced-people centres.",
+      about: [
+        "Behind the city's main street some families have crossed a border carrying little more than documents of their trauma. Our volunteers go to the registered settlements to run the same careful checks they would in a campus clinic — plus the referral that their papers keep them from.",
+        "Health is a human right is the sentence the project actually lives. The outreach is where our students learn a citizenship that is not only of a hospital, but of a humanity that speaks the sentence.",
+      ],
+      goals: [
+        "Hold 12 outreach mornings in the registered settlements.",
+        "Connect every diagnosed need to a follow-up person or service.",
+      ],
+    },
+    {
+      id: "scorp-2026-peace-week",
+      committee: "scorp",
+      title: "Peace Week",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "Sep 2026",
+      theme: "Dialogue · Peace",
+      summary: "Talks, art and a quiet evening remembering that lasting peace is the best of medicine.",
+      about: [
+        "Every war is a long and avoidable public-health emergency. Peace Week borrows the campus to talk about medical neutrality, host a panel, screen one intelligent story and end in a lit candle evening where students hang a note of a wish on the tree.",
+        "The week is not naive — a doctor's oath is the same over and under. The lectures of the week translate to a simple promise the chapter adopts aloud.",
+      ],
+      goals: [
+        "Reach 60% of students through the week's events.",
+        "Adopt one \"Humanity First\" chapter statement.",
+      ],
+    },
+    {
+      id: "scorp-2026-uhc-day",
+      committee: "scorp",
+      title: "Universal Health Coverage Day",
+      type: "Campaign",
+      status: "Planned",
+      timeframe: "12 Dec 2026",
+      theme: "Fairness · Access",
+      summary: "A corridor of practical diagrams — who pays, and who falls out of the system.",
+      about: [
+        "On 12 December the campus corridor becomes an infographic about coverage: a map of who gets the diabetes medicine and who waits one breath too long. We draw the insurance system as it is — the grid, the gap and the route of a patient from far in the pocket to far from the door.",
+        "The day ends with a card for every student: two lines on a human right, and the local phone number where it can be asked.",
+      ],
+      goals: [
+        "Reach one in two students with the coverage chart.",
+        "Publish a one-page chapter call for wider district coverage.",
+      ],
+    },
+    {
+      id: "scorp-2026-humanity-trucks",
+      committee: "scorp",
+      title: "Humanity Trucks: Winter Collection",
+      type: "Relief",
+      status: "Planned",
+      timeframe: "Dec 2026",
+      theme: "Solidarity · Cold",
+      summary: "A student-run collection drives blankets and medicines to the displaced, in winter.",
+      about: [
+        "In midwinter, blankets are the difference between a room and a crime of indifference. Students run a coordinated collection — blankets, warm clothes, simple medicines — and move the convoy to registered sites and northern checkpoints.",
+        "The collection never leaves a single verified receipt behind; the convoy is the beginning, the arrival is the report, and the trust of the community is the point.",
+      ],
+      goals: [
+        "Deliver 5,000 kg of relief goods to two priority areas.",
+        "Publish an audited list of everything carried and delivered.",
+      ],
+    },
+    {
+      id: "scorp-2026-film-night",
+      committee: "scorp",
+      title: "Rights on Reel — Human Rights Film Night",
+      type: "Event",
+      status: "Planned",
+      timeframe: "Aug 2026",
+      theme: "Story · Lens",
+      summary: "Two short documentaries plus a Q&A on medicine beside the quiet line.",
+      about: [
+        "Stories do in hidden what legal arguments do in the bright. We screen two short documentaries about health in wars — a hospital at night, a midwife who stayed — and then warm up a Q&A with medics who have watched a war through their own notes.",
+        "The night is cinema and curriculum in one: every viewer leaves with the same sentence — health is a human right, and the best medicine a country can deliver is peace.",
+      ],
+      goals: [
+        "Screen two films plus a moderated Q&A.",
+        "Reach 200+ students across the evening.",
+      ],
+    },
+
+    /* ---------------- SCORE · Research Exchange ---------------- */
+    {
+      id: "score-2026-summer-research",
+      committee: "score",
+      title: "Summer Research Exchange 2026",
+      type: "Exchange",
+      status: "Applications open",
+      timeframe: "May – Aug 2026",
+      theme: "Outbound · Research",
+      summary: "Bench and genuinely research placements abroad for the curious-minded.",
+      about: [
+        "Some students want to spend their summer in a lab instead of on the lido. SCORE placements put candidates into research teams that need a pair of clean hands — molecular biology, epidemiology, guideline writing, or pure cellular curiosity — and pay them forward in mentors, ink and name.",
+        "We run the matching as a negotiation: the student's question is picked, the host is studied, and the placement is confirmed before fights. On return, every summer resident gives a ten-minute \"share the lab\" answer to the chapter.",
+      ],
+      goals: [
+        "Match 8 students — funding considered — to confirmed placements.",
+        "Provide the research-passport handbook to every outbound student.",
+      ],
+    },
+    {
+      id: "score-2026-methodology-bootcamp",
+      committee: "score",
+      title: "Research Methodology Bootcamp",
+      type: "Workshop",
+      status: "Planned",
+      timeframe: "Jul 2026",
+      theme: "Skills · Rigour",
+      summary: "Two days from question to study design — the honest armoury of research.",
+      about: [
+        "Research stamina is not glamour; it is design. The bootcamp goes battle-hard: from an empty question to a hypothesis, a sample size you did not lie to, a walk-through of study designs, and the plain truth of your first paper.",
+        "Anyone who files gets a design worksheet, a reference chart, and the end of the sentence \"I can't do research, I don't have the juice.\"",
+      ],
+      goals: [
+        "Fill 100 participant seats with certificates.",
+        "Deliver easy-to-apply checklists for every design skill covered.",
+      ],
+    },
+    {
+      id: "score-2026-abstract-clinic",
+      committee: "score",
+      title: "Abstract & Publishing Clinic",
+      type: "Clinic",
+      status: "Planned",
+      timeframe: "Nov 2026",
+      theme: "Publication · Clarity",
+      summary: "Small-group walkthroughs turning raw results into a publishable abstract.",
+      about: [
+        "The bridge between \"I've worked\" and \"I've published\" is a short and good abstract. In small groups we take one completed project and redraw it — a better results table, a proper p-marker, a title that does not need a footnote.",
+        "Each group leaves a submission-ready abstract; the best three are championed by the committee — edits, submission, and a dogged hunt for acceptance.",
+      ],
+      goals: [
+        "Produce 15 accepted-grade abstracts.",
+        "Guide at least three to a real journal submission within six months.",
+      ],
+    },
+    {
+      id: "score-2026-research-hour",
+      committee: "score",
+      title: "Research Hour",
+      type: "Series",
+      status: "Planned",
+      timeframe: "Monthly",
+      theme: "Community · Journal club",
+      summary: "A monthly journal club: one compelling paper, one blunt reader.",
+      about: [
+        "Every month, one paper, one sceptic, one room. The journal club is built to the skeptic, not to be preached to; we ask assumptions, open the methods, and say loudly what the suppression of a sweet idea can cost.",
+        "The hour is the most intellectually honest exercise we run. Take the workbook and the following bootcamp feeds quietly on the questions that surface there.",
+      ],
+      goals: [
+        "Run nine sessions in the annual cycle.",
+        "Cover the full arc: question, method, statistics sanity-check.",
+      ],
+    },
+    {
+      id: "score-2026-mentorship-pairing",
+      committee: "score",
+      title: "Research Mentorship Programme",
+      type: "Programme",
+      status: "Open",
+      timeframe: "All year",
+      theme: "Mentorship · Journey",
+      summary: "Student researchers paired with a mentor who steers their first project to a close.",
+      about: [
+        "A research project is a boat and a mentor is its sail. We pair every student who wants in with a senior — or a researcher — for one project-cycle: from the first question to the last slide of a presentation.",
+        "Pairings are matched honestly, almost always twice-blessed; many become collaborations that outlast the project and lead to a poster or a paper.",
+      ],
+      goals: [
+        "Run 30 pairings in the 2026 cohort.",
+        "Convert 60% of pairings from a started study into a result.",
+      ],
+    },
+  ],
+};

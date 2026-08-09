@@ -1,0 +1,271 @@
+/* ============================================================
+   IFMSA · Khyber Medical College
+   Project list (right column of each committee) + detail page.
+   ============================================================ */
+
+/* ---------- project list inside committee panels ---------- */
+
+.proj-block { margin-top: 2rem; }
+
+.proj-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.proj-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-muted);
+}
+
+.proj-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+}
+
+.proj-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: var(--proj-list-max, 46vh);
+  overflow-y: auto;
+  padding-right: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.proj-item { display: block; }
+
+.proj-link {
+  --proj-accent: var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--panel-card-border, var(--border));
+  border-radius: 8px;
+  background: var(--panel-card-bg, var(--bg-overlay));
+  text-decoration: none;
+  color: var(--panel-fg, var(--fg));
+  position: relative;
+  transition: border-color 0.18s var(--ease), transform 0.18s var(--ease),
+              background 0.18s var(--ease);
+}
+
+.proj-link::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 8px 0 0 8px;
+  background: var(--proj-accent);
+  opacity: 0.72;
+}
+
+.proj-link:hover {
+  border-color: var(--proj-accent);
+  background: var(--bg-overlay);
+  transform: translateX(3px);
+}
+
+.proj-title {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.proj-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.proj-type,
+.proj-status {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--panel-card-border, var(--border));
+  color: var(--panel-fg-muted, var(--fg-muted));
+}
+
+.proj-status {
+  border-color: var(--proj-accent);
+  color: var(--proj-accent);
+}
+
+/* SCOME panel is light — keep list text dark */
+.panel[data-slide="scom"] .proj-label { color: var(--fg-faint); }
+
+/* ---------- project detail page (/projects.html) ---------- */
+
+body.projects-body {
+  overflow: auto;
+  min-height: 100vh;
+}
+
+.proj-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 7.5rem clamp(1.5rem, 6vw, 4rem) 4rem;
+}
+
+.proj-back {
+  position: fixed;
+  top: 4.2rem;
+  left: clamp(1.5rem, 6vw, 6rem);
+  z-index: 65;
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.4rem 0.4rem;
+  transition: color 0.15s;
+}
+.proj-back:hover { color: var(--fg); }
+
+.proj-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+  align-items: start;
+  padding-bottom: 3rem;
+}
+
+.proj-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.proj-column .acronym {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+}
+
+.proj-intro { max-width: 56ch; }
+
+.proj-intro h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.proj-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill-live {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(63, 185, 80, 0.1);
+}
+
+.proj-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  border-top: 1px solid var(--border);
+  padding-top: 2.5rem;
+}
+
+.proj-about p {
+  color: var(--fg-muted);
+  font-size: 1.05rem;
+  margin-top: 1rem;
+  max-width: 64ch;
+}
+
+.proj-about p:first-of-type {
+  color: var(--fg);
+  font-size: 1.15rem;
+}
+
+.proj-side { display: flex; flex-direction: column; gap: 1.4rem; }
+
+.proj-snap {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-overlay);
+  overflow: hidden;
+}
+.proj-snap .fact {
+  border-bottom: 1px solid var(--border-soft);
+  padding: 0.85rem 1.2rem;
+}
+.proj-snap .fact:last-child { border-bottom: none; }
+.proj-snap .fact-label { color: var(--fg-faint); }
+
+.proj-goals ul {
+  list-style: none;
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.proj-goals li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+}
+
+.proj-goals li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--proj-accent, var(--accent));
+}
+
+.proj-missing {
+  text-align: center;
+  padding: 4rem 0;
+}
+.proj-missing h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0.8rem 0;
+}
+.proj-missing .lead { margin-bottom: 1.5rem; }
+
+.proj-foot {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem clamp(1.5rem, 6vw, 4rem) 3rem;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: var(--fg-faint);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 760px) {
+  .proj-hero {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+  .proj-body {
+    grid-template-columns: 1fr;
+  }
+  .proj-back { top: 0.6rem; left: 1rem; }
+  .proj-page { padding-top: 8rem; }
+  .proj-foot { text-align: center; justify-content: center; }
+}
