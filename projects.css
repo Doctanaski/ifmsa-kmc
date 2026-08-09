@@ -9,30 +9,62 @@
 
 .proj-head {
   display: flex;
-  align-items: baseline;
-  gap: 0.8rem;
-  margin-bottom: 0.9rem;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--panel-card-border, var(--border));
+  position: relative;
+}
+
+.proj-head::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 44px; height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--panel-accent, var(--accent)), transparent);
 }
 
 .proj-label {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.proj-label::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--panel-accent, var(--accent));
+  box-shadow: 0 0 8px var(--panel-accent, var(--accent));
+  opacity: 0.9;
 }
 
 .proj-count {
+  margin-left: auto;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
   color: var(--fg-faint);
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--panel-card-border, var(--border));
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .proj-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.7rem;
   max-height: var(--proj-list-max, 46vh);
   overflow-y: auto;
   padding-right: 0.4rem;
@@ -44,67 +76,150 @@
 
 .proj-link {
   --proj-accent: var(--accent);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.8rem 1rem;
+  gap: 0.5rem;
+  padding: 0.95rem 1.05rem;
+  border-radius: 14px;
   border: 1px solid var(--panel-card-border, var(--border));
-  border-radius: 8px;
-  background: var(--panel-card-bg, var(--bg-overlay));
-  text-decoration: none;
   color: var(--panel-fg, var(--fg));
-  position: relative;
-  transition: border-color 0.18s var(--ease), transform 0.18s var(--ease),
-              background 0.18s var(--ease);
+  text-decoration: none;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--panel-card-bg, rgba(255, 255, 255, 0.06)) 30%, transparent),
+    var(--panel-card-bg, rgba(255, 255, 255, 0.05))
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 6px 22px rgba(6, 10, 18, 0.28);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.22s var(--ease), border-color 0.22s var(--ease),
+              box-shadow 0.22s var(--ease);
 }
 
 .proj-link::before {
   content: "";
   position: absolute;
-  left: 0; top: 0; bottom: 0;
+  left: 0; top: 16%; bottom: 16%;
   width: 3px;
-  border-radius: 8px 0 0 8px;
-  background: var(--proj-accent);
-  opacity: 0.72;
+  border-radius: 3px;
+  background: linear-gradient(var(--proj-accent), color-mix(in srgb, var(--proj-accent) 30%, transparent));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--proj-accent) 70%, transparent);
+  opacity: 0.85;
+  transition: opacity 0.22s var(--ease), top 0.22s var(--ease), bottom 0.22s var(--ease);
+  z-index: 1;
+}
+
+.proj-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-130%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  pointer-events: none;
+  transition: transform 0.7s var(--ease);
+  z-index: 0;
 }
 
 .proj-link:hover {
-  border-color: var(--proj-accent);
-  background: var(--bg-overlay);
-  transform: translateX(3px);
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--proj-accent) 55%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 14px 34px rgba(6, 10, 18, 0.35),
+    0 0 22px color-mix(in srgb, var(--proj-accent) 28%, transparent);
+}
+
+.proj-link:hover::after { transform: translateX(130%) skewX(-20deg); }
+.proj-link:hover::before { top: 10%; bottom: 10%; }
+
+.proj-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .proj-title {
   font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.3;
+  font-size: 1.02rem;
+  line-height: 1.28;
+}
+
+.proj-arrow {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--fg-faint);
+  transition: color 0.22s var(--ease), transform 0.22s var(--ease);
+}
+
+.proj-link:hover .proj-arrow {
+  color: var(--proj-accent);
+  transform: translateX(4px);
 }
 
 .proj-tags {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .proj-type,
 .proj-status {
   font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.06em;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.15rem 0.5rem;
+  padding: 0.22rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid var(--panel-card-border, var(--border));
-  color: var(--panel-fg-muted, var(--fg-muted));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--fg-faint);
 }
 
 .proj-status {
-  border-color: var(--proj-accent);
+  border-color: color-mix(in srgb, var(--proj-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--proj-accent) 16%, transparent);
   color: var(--proj-accent);
 }
 
-/* SCOME panel is light — keep list text dark */
+/* SCOME panel is light glass — adjust the tinted pills */
 .panel[data-slide="scom"] .proj-label { color: var(--fg-faint); }
+
+.panel[data-slide="scom"] .proj-label::before {
+  background: #0969da;
+  box-shadow: 0 0 8px rgba(9, 105, 218, 0.55);
+}
+
+.panel[data-slide="scom"] .proj-head::after {
+  background: linear-gradient(90deg, #0969da, transparent);
+}
+
+.panel[data-slide="scom"] .proj-link {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85),
+    color-mix(in srgb, var(--panel-card-bg) 92%, #ffffff)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 24px rgba(13, 17, 23, 0.12);
+}
+
+.panel[data-slide="scom"] .proj-link::after {
+  background: linear-gradient(90deg, transparent, rgba(13, 17, 23, 0.06), transparent);
+}
+
+.panel[data-slide="scom"] .proj-type { color: var(--fg-faint); }
 
 /* ---------- project detail page (/projects.html) ---------- */
 
@@ -146,6 +261,26 @@ body.projects-body {
   flex-direction: column;
   gap: 0.6rem;
   min-width: 0;
+  padding: 1.6rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--bg-overlay) 60%, transparent),
+    rgba(22, 27, 34, 0.55)
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 18px 44px rgba(6, 10, 18, 0.4);
+  position: relative;
+}
+
+.proj-column .sc-logo {
+  border-radius: 14px;
+  background: rgba(13, 17, 23, 0.5);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .proj-column .acronym {
@@ -174,6 +309,16 @@ body.projects-body {
   background: rgba(63, 185, 80, 0.1);
 }
 
+.proj-goals li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--proj-accent, var(--accent));
+  box-shadow: 0 0 10px var(--proj-accent, var(--accent));
+}
+
 .proj-body {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -198,9 +343,18 @@ body.projects-body {
 
 .proj-snap {
   margin: 0;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-overlay);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--bg-overlay) 55%, transparent),
+    var(--bg-overlay)
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 32px rgba(6, 10, 18, 0.32);
   overflow: hidden;
 }
 .proj-snap .fact {
@@ -223,15 +377,6 @@ body.projects-body {
   padding-left: 1.4rem;
   color: var(--fg-muted);
   font-size: 0.95rem;
-}
-
-.proj-goals li::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0.55em;
-  width: 8px; height: 8px;
-  border-radius: 2px;
-  background: var(--proj-accent, var(--accent));
 }
 
 .proj-missing {

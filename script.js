@@ -146,7 +146,10 @@
         return (
           '<li class="proj-item">' +
             '<a class="proj-link" style="--proj-accent:' + (com.accent || com.color || '') + '" href="projects.html?id=' + encodeURIComponent(p.id) + '">' +
-              '<span class="proj-title">' + p.title + '</span>' +
+              '<span class="proj-top">' +
+                '<span class="proj-title">' + p.title + '</span>' +
+                '<span class="proj-arrow" aria-hidden="true">→</span>' +
+              '</span>' +
               '<span class="proj-tags">' + type + status + '</span>' +
             '</a>' +
           '</li>'

@@ -26,7 +26,7 @@
   --scorp-col:   #5F913F;   /* SCORP  — green      */
   --scom-col:    #e6edf3;   /* SCOME  — white      */
   --mono:  "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sans:  "Helvetica Neue", Helvetica, Arial, -apple-system, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
