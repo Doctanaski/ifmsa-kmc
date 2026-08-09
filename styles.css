@@ -391,17 +391,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 .btn-outline:hover { border-color: var(--fg-muted); color: var(--fg); }
 
-/* ---------- progress ---------- */
-.progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  z-index: 70;
-  background: var(--accent);
-  transition: width 0.2s var(--ease);
-  width: 0;
-}
-
 /* ---------- rail (right bars, no labels) ---------- */
 .rail {
   position: fixed;

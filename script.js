@@ -1,7 +1,8 @@
 /* ============================================================
    IFMSA · Khyber Medical College
    Scroll-based section movement.
-   One scroll gesture = one section (committee).
+   One scroll gesture = one section, except inside a committee
+   carousel, where scrolling cycles its projects first.
    ============================================================ */
 
 (function () {
@@ -10,7 +11,6 @@
   const stage = document.getElementById('top');
   const panels = Array.from(document.querySelectorAll('.panel'));
   const rail = document.getElementById('rail');
-  const progress = document.getElementById('progress');
 
   let isAnimating = false;
   let activeIndex = 0;
@@ -39,9 +39,6 @@
       d.classList.toggle('active', idx === i);
       if (idx === i) d.style.setProperty('--dot-col', accent);
     });
-
-    const pct = ((i + 1) / panels.length) * 100;
-    progress.style.width = pct + '%';
   };
 
   /* ---------- navigation ---------- */
@@ -58,27 +55,73 @@
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
 
-  /* ---------- wheel: one notch = one section ---------- */
+  /* ---------- committee carousels (up/down arrows) ---------- */
+  const carousels = new Map();
+
+  document.querySelectorAll('.panel-carousel').forEach((panel) => {
+    const slug = panel.dataset.committee;
+    const data = window.IFMSA_DATA || {};
+    const com = (data.committees && data.committees[slug]) || {};
+    const items = (data.projects || []).filter((p) => p.committee === slug);
+
+    const track = panel.querySelector('.car-track');
+    const count = panel.querySelector('.car-count');
+
+    track.innerHTML = items.map((p, i) => {
+      const type = p.type ? '<span class="car-type">' + p.type + '</span>' : '';
+      const status = p.status ? '<span class="car-status">' + p.status + '</span>' : '';
+      return (
+        '<article class="car-card" style="--car-accent:' + (com.accent || 'var(--accent)') + '">' +
+          '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<h3 class="car-title">' + p.title + '</h3>' +
+          '<p class="car-summary">' + (p.summary || '') + '</p>' +
+          '<span class="car-pills">' + type + status + '</span>' +
+          '<div class="car-foot">' +
+            '<span class="car-theme">' + (p.theme || '') + '</span>' +
+            '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+
+    if (!items.length) {
+      count.textContent = '—';
+      return;
+    }
+
+    let index = 0;
+    const render = () => {
+      track.style.transform = 'translateY(' + (-index * 100) + '%)';
+      count.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+    };
+    const step = (dir) => {
+      index = (((index + dir) % items.length) + items.length) % items.length;
+      render();
+    };
+    const available = (dir) => (dir > 0 ? index + 1 < items.length : index - 1 >= 0);
+
+    panel.querySelector('.car-btn[data-dir="-1"]').addEventListener('click', () => step(-1));
+    panel.querySelector('.car-btn[data-dir="1"]').addEventListener('click', () => step(1));
+
+    render();
+    carousels.set(panel, { items, available, step });
+  });
+
+  /* ---------- wheel: carousel first, then one gesture per section ---------- */
   let wheelBusy = false;
 
-  const inScrollableList = (el) => {
-    while (el && el !== stage) {
-      if (el.classList && el.classList.contains('proj-list')) return true;
-      el = el.parentElement;
-    }
-    return false;
-  };
-
   stage.addEventListener('wheel', (e) => {
-    if (inScrollableList(e.target)) {
-      const list = e.target.closest('.proj-list');
-      const atStart = list.scrollTop <= 0;
-      const atEnd = list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
-      const scrollingDown = e.deltaY > 0;
-      if (!(scrollingDown && atEnd) && !(!scrollingDown && atStart)) {
-        e.preventDefault();
-        list.scrollTop += e.deltaY;
-        return;
+    const targetPanel = e.target.closest('.panel');
+    if (targetPanel && targetPanel.classList.contains('panel-carousel')) {
+      const car = carousels.get(targetPanel);
+      if (car && car.items.length) {
+        const dir = e.deltaY > 0 ? 1 : -1;
+        if (car.available(dir)) {
+          e.preventDefault();
+          if (isAnimating) return;
+          car.step(dir);
+          return;
+        }
       }
     }
 
@@ -99,20 +142,22 @@
 
   /* ---------- keyboard ---------- */
   window.addEventListener('keydown', (e) => {
-    const map = {
-      ArrowDown: next,
-      ArrowUp: prev,
-      PageUp: prev,
-      PageDown: next,
-      Home: () => goTo(0),
-      End: () => goTo(panels.length - 1),
-    };
     if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
-    const fn = e.key === ' ' ? next : map[e.key];
-    if (fn) {
+
+    const activeCar = carousels.get(panels[activeIndex]);
+    const keyDir = { ' ': 1, PageDown: 1, ArrowDown: 1, PageUp: -1, ArrowUp: -1 }[e.key];
+
+    if (keyDir) {
       e.preventDefault();
-      fn();
+      if (activeCar && activeCar.items.length && activeCar.available(keyDir)) {
+        activeCar.step(keyDir);
+        return;
+      }
+      if (keyDir > 0) next(); else prev();
+      return;
     }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); return; }
+    if (e.key === 'End') { e.preventDefault(); goTo(panels.length - 1); }
   });
 
   /* ---------- swipe ---------- */
@@ -129,7 +174,7 @@
   }, { passive: true });
   stage.addEventListener('touchend', () => { touchY = null; });
 
-  /* ---------- keep rail/progress in sync ---------- */
+  /* ---------- keep rail in sync ---------- */
   const syncActiveFromScroll = () => {
     let best = 0;
     let bestDist = Infinity;
@@ -153,29 +198,4 @@
 
   /* ---------- init ---------- */
   activate(0);
-
-  /* ---------- project lists ---------- */
-  try {
-    const data = window.IFMSA_DATA;
-    document.querySelectorAll('.proj-list').forEach((list) => {
-      const slug = list.dataset.committee;
-      const items = (data && data.projects || []).filter((p) => p.committee === slug);
-      list.innerHTML = items.map((p) => {
-        const com = data.committees[p.committee] || {};
-        const status = p.status ? '<span class="proj-status">' + p.status + '</span>' : '';
-        const type = p.type ? '<span class="proj-type">' + p.type + '</span>' : '';
-        return (
-          '<li class="proj-item">' +
-            '<a class="proj-link" style="--proj-accent:' + (com.accent || com.color || '') + '" href="projects.html?id=' + encodeURIComponent(p.id) + '">' +
-              '<span class="proj-top">' +
-                '<span class="proj-title">' + p.title + '</span>' +
-                '<span class="proj-arrow" aria-hidden="true">→</span>' +
-              '</span>' +
-              '<span class="proj-tags">' + type + status + '</span>' +
-            '</a>' +
-          '</li>'
-        );
-      }).join('');
-    });
-  } catch (err) { /* list stays empty if data missing */ }
 })();
