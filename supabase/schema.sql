@@ -51,6 +51,17 @@ alter table public.projects      enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.admin_users   enable row level security;
 
+-- security definer helper so admin checks don't trigger RLS recursion
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (select 1 from public.admin_users a where a.id = auth.uid());
+$$;
+
 -- public can read content (the public site needs it)
 create policy "public read committees"    on public.committees    for select using (true);
 create policy "public read projects"      on public.projects      for select using (true);
@@ -58,17 +69,17 @@ create policy "public read site_settings" on public.site_settings for select usi
 
 -- only listed admins can write content
 create policy "admin write committees"    on public.committees    for all to authenticated
-  using    (exists (select 1 from public.admin_users a where a.id = auth.uid()))
-  with check (exists (select 1 from public.admin_users a where a.id = auth.uid()));
+  using    (public.is_admin())
+  with check (public.is_admin());
 
 create policy "admin write projects"      on public.projects      for all to authenticated
-  using    (exists (select 1 from public.admin_users a where a.id = auth.uid()))
-  with check (exists (select 1 from public.admin_users a where a.id = auth.uid()));
+  using    (public.is_admin())
+  with check (public.is_admin());
 
 create policy "admin write site_settings" on public.site_settings for all to authenticated
-  using    (exists (select 1 from public.admin_users a where a.id = auth.uid()))
-  with check (exists (select 1 from public.admin_users a where a.id = auth.uid()));
+  using    (public.is_admin())
+  with check (public.is_admin());
 
 -- admins can read the admin list
 create policy "admin read admin_users"    on public.admin_users   for select to authenticated
-  using (exists (select 1 from public.admin_users a where a.id = auth.uid()));
+  using (public.is_admin());
