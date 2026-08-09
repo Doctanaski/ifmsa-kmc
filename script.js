@@ -72,13 +72,20 @@
       const status = p.status ? '<span class="car-status">' + p.status + '</span>' : '';
       return (
         '<article class="car-card" style="--car-accent:' + (com.accent || 'var(--accent)') + '">' +
-          '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
-          '<h3 class="car-title">' + p.title + '</h3>' +
-          '<p class="car-summary">' + (p.summary || '') + '</p>' +
-          '<span class="car-pills">' + type + status + '</span>' +
-          '<div class="car-foot">' +
-            '<span class="car-theme">' + (p.theme || '') + '</span>' +
-            '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
+          '<div class="car-bg" aria-hidden="true">' +
+            '<span class="car-bg-blob"></span>' +
+            '<span class="car-bg-ring"></span>' +
+            '<span class="car-bg-word">' + (com.acronym || 'IFMSA') + '</span>' +
+          '</div>' +
+          '<div class="car-inner">' +
+            '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
+            '<h3 class="car-title">' + p.title + '</h3>' +
+            '<p class="car-summary">' + (p.summary || '') + '</p>' +
+            '<span class="car-pills">' + type + status + '</span>' +
+            '<div class="car-foot">' +
+              '<span class="car-theme">' + (p.theme || '') + '</span>' +
+              '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
+            '</div>' +
           '</div>' +
         '</article>'
       );
@@ -90,9 +97,11 @@
     }
 
     let index = 0;
+    const cardEls = Array.from(track.children);
     const render = () => {
       track.style.transform = 'translateY(' + (-index * 100) + '%)';
       count.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+      cardEls.forEach((card, i) => card.classList.toggle('is-active', i === index));
     };
     const step = (dir) => {
       index = (((index + dir) % items.length) + items.length) % items.length;
