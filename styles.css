@@ -92,31 +92,32 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .col-body { max-width: 60ch; }
 
-.comm-head {
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-  margin-bottom: 1.1rem;
-}
-
-.sc-logo {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  padding: 12px;
-  flex-shrink: 0;
-  background: rgba(13, 17, 23, 0.66);
-  border: 1px solid color-mix(in srgb, var(--panel-fg) 22%, transparent);
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
-}
-
-.comm-head h2 { margin-bottom: 0; }
-
 .col-body h2 {
   font-size: clamp(1.9rem, 4vw, 3rem);
   font-weight: 600;
   letter-spacing: -0.02em;
+  margin-bottom: 1.1rem;
+}
+
+/* logo beside the big acronym heading */
+.meta-head {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.no-logo { display: none; }
+
+.sc-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  padding: 12px;
+  flex-shrink: 0;
+  background: rgba(13, 17, 23, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
 }
 
 .lead { color: var(--fg-muted); font-size: clamp(1rem, 1.5vw, 1.2rem); }
@@ -417,7 +418,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   width: 4px;
   height: 26px;
   border: none;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.78);
   cursor: pointer;
   padding: 0;
   border-radius: 4px;
@@ -425,7 +426,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
               transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
-.rail button:hover { background: rgba(255, 255, 255, 0.5); transform: scaleX(1.4); }
+.rail button:hover { background: rgba(0, 0, 0, 0.95); transform: scaleX(1.6); }
 
 .rail button.active {
   background: var(--dot-col, var(--accent));
