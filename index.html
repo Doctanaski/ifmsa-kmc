@@ -3,153 +3,187 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="IFMSA Pakistan – Khyber Medical College Local Chapter. One scroll, one committee. Explore our six standing committees and the future of medicine." />
-  <title>IFMSA Pakistan | Khyber Medical College</title>
+  <meta name="description" content="IFMSA Pakistan – Khyber Medical College Local Chapter. Six standing committees. One student body." />
+  <title>KMC × IFMSA | Khyber Medical College Local Chapter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Progress / section indicator -->
-  <div class="progress-bar" id="progressBar"></div>
+  <!-- Top progress bar -->
+  <div class="progress" id="progress"></div>
 
-  <!-- Right side navigation dots -->
-  <nav class="dot-nav" id="dotNav" aria-label="Section navigation"></nav>
-
-  <!-- Header with local chapter branding -->
+  <!-- Header -->
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true">♿</span>
-      <span class="brand-text">IFMSA <em>KMC</em></span>
+      <a class="brand-logo" href="#home">
+        <img src="assets/ifmsa-horizontal.png" alt="IFMSA logo" />
+      </a>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <a class="brand-logo brand-logo-kmc" href="#home">
+        <img src="assets/kmc-logo.png" alt="Khyber Medical College logo" />
+      </a>
     </div>
-    <div class="topbar-right">
-      <span class="chapter-tag">Local Chapter 2026</span>
-      <button class="menu-btn" id="menuBtn" aria-label="Scroll to next section" aria-expanded="false">⬇</button>
-    </div>
+    <nav class="navbar" id="navbar">
+      <a href="#top" class="nav-link">Home</a>
+      <a href="#scope" class="nav-link">Committees</a>
+      <a href="#join" class="nav-link btn-outline">Join</a>
+    </nav>
   </header>
 
-  <main id="sections">
+  <!-- Vertical section rail -->
+  <nav class="rail" id="rail" aria-label="Committees"></nav>
 
-    <!-- ============ HERO / LANDING ============ -->
-    <section class="panel panel-hero" data-slide="teal" data-title="Home" id="home">
-      <div class="panel-bg" aria-hidden="true">
-        <span class="orb orb--1"></span>
-        <span class="orb orb--2"></span>
-        <span class="orb orb--3"></span>
-        <span class="wave wave--a"></span>
-        <span class="wave wave--b"></span>
-      </div>
-      <div class="panel-inner center">
-        <p class="kicker">International Federation of Medical Students' Associations — Pakistan</p>
-        <h1 class="hero-title">Khyber Medical College<br />Local Chapter</h1>
-        <p class="hero-sub">Six committees. One student body. A scroll's length between world health and tomorrow's doctors.</p>
-        <div class="hero-cta">
-          <a class="btn" href="#scoan">Start Scrolling</a>
-          <span class="hint">Scroll ↓ or use arrow keys</span>
+  <main class="stage" id="top">
+
+    <!-- ============ 01 · HERO ============ -->
+    <section class="panel hero" data-slide="blue" data-index="01" data-title="Home" id="home">
+      <div class="panel-inner">
+        <p class="eyebrow"><span class="pill">IFMSA Pakistan</span> &nbsp;·&nbsp; Local Chapter 2026</p>
+        <h1 class="hero-title">Medical students.<br />Moving medicine forward.</h1>
+        <p class="hero-sub">
+          The <strong>Khyber Medical College</strong> local chapter of the International Federation of
+          Medical Students' Associations — six standing committees, one scroll each.
+        </p>
+        <div class="hero-actions">
+          <a href="#scope" class="btn btn-primary">Explore committees ↓</a>
+          <a href="#join" class="btn">Join the chapter</a>
         </div>
-        <div class="scroll-cue" aria-hidden="true"><span class="mouse"><span class="wheel"></span></span></div>
+        <ul class="hero-mini">
+          <li><span class="mini-num">6</span> Standing committees</li>
+          <li><span class="mini-num">1.5M+</span> Med students worldwide</li>
+          <li><span class="mini-num">123</span> Countries &amp; territories</li>
+        </ul>
+      </div>
+      <div class="code-card" aria-hidden="true">
+        <div class="code-head"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="code-file">local/ifmsa-kmc</span></div>
+        <pre>const chapter = {
+  college: "Khyber Medical College",
+  country: "Pakistan",
+  standingCommittees: 6,
+  mission: "global health, local action",
+  status: "open" <span class="cmt">// apply now</span>
+};</pre>
       </div>
     </section>
 
-    <!-- ============ SCOPE ============ -->
-    <section class="panel panel--blue" data-slide="blue" data-title="SCOPE" id="scope">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCOPE</span>
-          <h2>Standing Committee on Professional Exchange</h2>
-        </div>
-        <p class="panel-desc">Clinical exchange at its finest. SCOPE sends our students on the world's bedside rotations — from surgical theatre to rural clinics — igniting empathy, hands-on skill and global perspective.</p>
-        <div class="tag-row">
-          <span class="tag">Clinical Exchange</span><span class="tag">Global Rotations</span><span class="tag">Empathy in Action</span>
-        </div>
+    <!-- ============ 02 · SCOPE ============ -->
+    <section class="panel" data-slide="blue" data-index="02" data-title="SCOPE" id="scope">
+      <div class="col-meta">
+        <span class="slide-no">02</span>
+        <span class="acronym">SCOPE</span>
       </div>
-    </section>
-
-    <!-- ============ SCORE ============ -->
-    <section class="panel panel--indigo" data-slide="indigo" data-title="SCORE" id="score">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCORE</span>
-          <h2>Standing Committee on Research Exchange</h2>
-        </div>
-        <p class="panel-desc">For the curious at heart. SCORE connects our members to international labs and research projects, turning tomorrow's clinicians into scientists who ask better questions.</p>
-        <div class="tag-row">
-          <span class="tag">Research Exchange</span><span class="tag">Lab Placements</span><span class="tag">Critical Inquiry</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ SCORA ============ -->
-    <section class="panel panel--rose" data-slide="rose" data-title="SCORA" id="scoa">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCORA</span>
-          <h2>Standing Committee on Sexual &amp; Reproductive Health</h2>
-        </div>
-        <p class="panel-body">Breaking taboos, one conversation at a time. SCORA drives awareness on SRH and HIV/AIDS rights, consent education, and youth-friendly services across campus and community.</p>
-        <div class="tag-row">
-          <span class="tag">SRH Awareness</span><span class="tag">HIV/AIDS Advocacy</span><span class="tag">Consent Culture</span>
+      <div class="col-body">
+        <h2>Professional Exchange</h2>
+        <p class="lead">Hands-on clinical rotations across the globe. SCOPE places our students at the bedside in hospitals worldwide — operating theatres, emergency rooms and rural clinics.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>Clinical exchange</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Hospital rotations abroad</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Direct patient exposure</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ SCOME ============ -->
-    <section class="panel panel--lime" data-slide="lime" data-title="SCOME" id="scom">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCOME</span>
-          <h2>Standing Committee on Medical Education</h2>
-        </div>
-        <p class="panel-body">Better medics begin with better teaching. SCOME champions peer-to-peer training, soft skills workshops, and a curriculum shaped by the very students who live it.</p>
-        <div class="tag-row">
-          <span class="tag">Peer Teaching</span><span class="tag">Soft Skills</span><span class="tag">Curricular Voice</span>
+    <!-- ============ 03 · SCOME ============ -->
+    <section class="panel" data-slide="green" data-index="03" data-title="SCOME" id="scom">
+      <div class="col-meta">
+        <span class="slide-no">03</span>
+        <span class="acronym">SCOME</span>
+      </div>
+      <div class="col-body">
+        <h2>Medical Education</h2>
+        <p class="lead">Teaching better medicine. SCOME designs peer-teaching sessions, soft-skill bootcamps and gives medical students a real voice in how we are taught.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>Education innovation</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Teaching &amp; curricula</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Train the trainers</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ SCOPH ============ -->
-    <section class="panel panel--gold" data-slide="gold" data-title="SCOPH" id="scoph">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCOPH</span>
-          <h2>Standing Committee on Public Health</h2>
-        </div>
-        <p class="panel-body">Health begins before the hospital gates. SCOPH runs community screenings, hygiene drives, vaccination awareness and disaster-preparedness initiatives across Peshawar and beyond.</p>
-        <div class="tag-row">
-          <span class="tag">Community Uplift</span><span class="tag">Campaigns</span><span class="tag">Health Equity</span>
+    <!-- ============ 04 · SCORA ============ -->
+    <section class="panel" data-slide="purple" data-index="04" data-title="SCORA" id="scora">
+      <div class="col-meta">
+        <span class="slide-no">04</span>
+        <span class="acronym">SCORA</span>
+      </div>
+      <div class="col-body">
+        <h2>Sexual &amp; Reproductive Health</h2>
+        <p class="lead">Evidence, rights and dignity. SCORA runs awareness on SRH, HIV/AIDS prevention, consent culture and youth-friendly health services on campus and beyond.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>SRH &amp; HIV/AIDS</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Advocacy &amp; campaigns</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Break the taboo</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ SCORP ============ -->
-    <section class="panel panel--violet" data-slide="violet" data-title="SCORP" id="scorp">
-      <div class="panel-inner">
-        <div class="panel-head">
-          <span class="panel-acronym">SCORP</span>
-          <h2>Standing Committee on Human Rights &amp; Peace</h2>
-        </div>
-        <p class="panel-body">Health is a human right. SCORP advocates for displaced communities, migrant health, advocacy skills, and the belief that peace itself is a determinant of health.</p>
-        <div class="tag-row">
-          <span class="tag">Health as Right</span><span class="tag">Refugee Health</span><span class="tag">Peacebuilding</span>
+    <!-- ============ 05 · SCOPH ============ -->
+    <section class="panel" data-slide="red" data-index="05" data-title="SCOPH" id="scoph">
+      <div class="col-meta">
+        <span class="slide-no">05</span>
+        <span class="acronym">SCOPH</span>
+      </div>
+      <div class="col-body">
+        <h2>Public Health</h2>
+        <p class="lead">Health starts before the hospital. SCOPH leads community screenings, hygiene and vaccination drives, and health-education outreach across Peshawar.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>Community health</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Campaigns &amp; drives</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Grassroots impact</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CONNECT ============ -->
-    <section class="panel panel--dark" data-slide="dark" data-title="Connect" id="connect">
-      <div class="panel-inner">
-        <p class="kicker light">Become part of the movement</p>
-        <h2 class="final-title">One scroll can change a student's path.</h2>
-        <p class="panel-body">Reach out to your Local Committee Officers, or join a committee's first session this semester.</p>
-        <div class="hero-cta">
-          <a class="btn" href="https://ifmsa.org" target="_blank" rel="noopener">IFMSA International</a>
-          <a class="btn btn-ghost" href="mailto:kmc@ifmsapakistan.org">Contact Local Chapter</a>
+    <!-- ============ 06 · SCORP ============ -->
+    <section class="panel" data-slide="gold" data-index="06" data-title="SCORP" id="scorp">
+      <div class="col-meta">
+        <span class="slide-no">06</span>
+        <span class="acronym">SCORP</span>
+      </div>
+      <div class="col-body">
+        <h2>Human Rights &amp; Peace</h2>
+        <p class="lead">Health is a human right. SCORP advocates for refugee and migrant health, protects students on the move, and turns our members into conscientious advocates.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>Health as a right</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Advocacy &amp; protection</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Stand up, speak up</span></div>
         </div>
-        <footer class="site-foot">
-          <span>IFMSA Pakistan — Khyber Medical College, Peshawar</span>
-          <span>© 2026 Local Chapter. For the future of medicine.</span>
+      </div>
+    </section>
+
+    <!-- ============ 07 · SCORE ============ -->
+    <section class="panel" data-slide="blue" data-index="07" data-title="SCORE" id="score">
+      <div class="col-meta">
+        <span class="slide-no">07</span>
+        <span class="acronym">SCORE</span>
+      </div>
+      <div class="col-body">
+        <h2>Research Exchange</h2>
+        <p class="lead">For the curious-minded. SCORE links our students to international labs and research placements, building the evidence-literate clinicians of tomorrow.</p>
+        <div class="facts">
+          <div class="fact"><span class="fact-label">Focus</span><span>Research placements</span></div>
+          <div class="fact"><span class="fact-label">Profile</span><span>Internships abroad</span></div>
+          <div class="fact"><span class="fact-label">You</span><span>Ask better questions</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 · JOIN ============ -->
+    <section class="panel join" data-slide="green" data-index="08" data-title="Join" id="join">
+      <div class="join-inner">
+        <p class="eyebrow">Ready when you are</p>
+        <h2 class="join-title">One scroll can change a student's path.</h2>
+        <p class="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
+        <div class="join-actions">
+          <a class="btn btn-primary" href="https://ifmsa.org" target="_blank" rel="noopener">Visit IFMSA</a>
+          <a class="btn" href="mailto:ifmsa@kmc.edu.pk">Contact the local chapter</a>
+        </div>
+        <footer class="foot">
+          <span>IFMSA — Khyber Medical College, Peshawar</span>
+          <span>Built by students, for the future of medicine.</span>
         </footer>
       </div>
     </section>

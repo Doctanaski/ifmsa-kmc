@@ -1,48 +1,33 @@
 /* ============================================================
-   IFMSA Pakistan — Khyber Medical College
-   Dynamic scroll-based navigation
-   Each "scroll key" (mouse wheel / arrows / swipes) advances
-   exactly one standing committee section.
+   IFMSA · Khyber Medical College
+   Scroll-based section movement.
+   One scroll gesture = one section (committee).
    ============================================================ */
 
 (function () {
   'use strict';
 
-  const main = document.getElementById('sections');
+  const stage = document.getElementById('top');
   const panels = Array.from(document.querySelectorAll('.panel'));
-  const dotNav = document.getElementById('dotNav');
-  const progressBar = document.getElementById('progressBar');
-  const menuBtn = document.getElementById('menuBtn');
-  const html = document.documentElement;
-
-  // Debounce / lock helper -------------------------------------------------
-  const throttle = (fn, wait) => {
-    let last = 0;
-    return (...args) => {
-      const now = Date.now();
-      if (now - last >= wait) {
-        last = now;
-        fn(...args);
-      }
-    };
-  };
+  const rail = document.getElementById('rail');
+  const progress = document.getElementById('progress');
 
   let isAnimating = false;
   let activeIndex = 0;
 
-  /* ---------- Build dot navigation ---------- */
+  /* ---------- build rail ---------- */
   panels.forEach((panel, i) => {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.setAttribute('aria-label', 'Go to ' + panel.dataset.title);
-    dot.innerHTML = '<span class="dot-label">' + panel.dataset.title + '</span>';
+    dot.innerHTML = '<span class="mor">' + panel.dataset.title + '</span>';
     dot.addEventListener('click', () => goTo(i));
-    dotNav.appendChild(dot);
+    rail.appendChild(dot);
   });
 
-  const dots = Array.from(dotNav.querySelectorAll('button'));
+  const dots = Array.from(rail.querySelectorAll('button'));
 
-  /* ---------- Core: reveal current section ---------- */
+  /* ---------- state ---------- */
   const activate = (i) => {
     i = Math.max(0, Math.min(panels.length - 1, i));
     activeIndex = i;
@@ -50,47 +35,30 @@
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
     dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
 
-    const panel = panels[i];
-    const accent = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--slide-' + panel.dataset.slide)
-                    .trim();
-    if (accent) {
-      document.documentElement.style.setProperty('--accent', accent);
-    }
-
-    // Progress bar width
     const pct = ((i + 1) / panels.length) * 100;
-    progressBar.style.width = pct + '%';
+    progress.style.width = pct + '%';
   };
 
-  /* ---------- Scroll to a section (the single "go" function) ---------- */
+  /* ---------- navigation ---------- */
   const goTo = (index) => {
     if (isAnimating) return;
     index = Math.max(0, Math.min(panels.length - 1, index));
     if (index === activeIndex) return;
 
     isAnimating = true;
-    main.style.scrollBehavior = 'smooth';
     panels[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    // allow native smooth scroll to finish before accepting new input
-    window.setTimeout(() => {
-      isAnimating = false;
-    }, 800);
+    window.setTimeout(() => { isAnimating = false; }, 800);
   };
 
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
 
-  /* ---------- Wheel navigation (one notch = one committee) ---------- */
+  /* ---------- wheel: one notch = one section ---------- */
   let wheelBusy = false;
-  main.addEventListener('wheel', (e) => {
+  stage.addEventListener('wheel', (e) => {
     e.preventDefault();
-
-    // If user is mid-flight ignore
     if (isAnimating) return;
 
-    // Read actual scroll position (in case user dragged scrollbar)
     syncActiveFromScroll();
 
     const delta = e.deltaY;
@@ -98,75 +66,65 @@
 
     if (!wheelBusy) {
       wheelBusy = true;
-      if (delta > 0) {
-        next();
-      } else {
-        prev();
-      }
+      if (delta > 0) next(); else prev();
       window.setTimeout(() => { wheelBusy = false; }, 150);
     }
   }, { passive: false });
 
-  /* ---------- Keyboard navigation ---------- */
+  /* ---------- keyboard ---------- */
   window.addEventListener('keydown', (e) => {
-    const keys = {
-      ArrowDown: () => next(),
-      ArrowUp: () => prev(),
-      PageUp: () => prev(),
-      PageDown: () => next(),
-      ' ': () => next(),
+    const map = {
+      ArrowDown: next,
+      ArrowUp: prev,
+      PageUp: prev,
+      PageDown: next,
       Home: () => goTo(0),
       End: () => goTo(panels.length - 1),
     };
-    const target = e.key === ' ' ? ' ' : e.key;
     if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
-    if (keys[target]) {
+    const fn = e.key === ' ' ? next : map[e.key];
+    if (fn) {
       e.preventDefault();
-      keys[target]();
+      fn();
     }
   });
 
-  /* ---------- Touch / swipe support ---------- */
-  let touchStartY = null;
-  main.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  main.addEventListener('touchmove', (e) => {
-    if (touchStartY === null) return;
-    const dy = touchStartY - e.touches[0].clientY;
+  /* ---------- swipe ---------- */
+  let touchY = null;
+  stage.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+  stage.addEventListener('touchmove', (e) => {
+    if (touchY === null) return;
+    const dy = touchY - e.touches[0].clientY;
     if (Math.abs(dy) > 34) {
-      if (isAnimating) { touchStartY = null; return; }
+      if (isAnimating) { touchY = null; return; }
       if (dy > 0) next(); else prev();
-      touchStartY = null;
+      touchY = null;
     }
   }, { passive: true });
+  stage.addEventListener('touchend', () => { touchY = null; });
 
-  main.addEventListener('touchend', () => { touchStartY = null; });
-
-  /* ---------- Menu button = next ---------- */
-  menuBtn.addEventListener('click', next);
-
-  /* ---------- Sync active section as the browser scrolls ---------- */
+  /* ---------- keep rail/progress in sync ---------- */
   const syncActiveFromScroll = () => {
     let best = 0;
-    let bestScore = Infinity;
-    const half = window.innerHeight / 2;
+    let bestDist = Infinity;
     panels.forEach((p, idx) => {
-      const rect = p.getBoundingClientRect();
-      const dist = Math.abs(rect.top - 0);
-      if (dist < bestScore) { bestScore = dist; best = idx; }
+      const d = Math.abs(p.getBoundingClientRect().top);
+      if (d < bestDist) { bestDist = d; best = idx; }
     });
     if (best !== activeIndex) activate(best);
   };
 
-  const onScroll = throttle(() => {
-    syncActiveFromScroll();
-  }, 100);
-  main.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('scroll', onScroll, { passive: true });
+  const onScroll = (function () {
+    let t;
+    return () => {
+      clearTimeout(t);
+      t = setTimeout(syncActiveFromScroll, 80);
+    };
+  })();
+
+  stage.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 
-  /* ---------- Init ---------- */
+  /* ---------- init ---------- */
   activate(0);
 })();
