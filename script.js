@@ -58,33 +58,47 @@
   /* ---------- committee carousels (up/down arrows) ---------- */
   const carousels = new Map();
 
+  const STATUS_TAG = {
+    'Applications open': 'executed',
+    'Open': 'executed',
+    'Live': 'executed',
+    'Beta': 'executed',
+    'Accepting tutors': 'executed',
+    'Upcoming': 'upcoming',
+    'Planned': 'planned'
+  };
+  const TAG_LABEL = { upcoming: 'Upcoming', executed: 'Executed', planned: 'Planned' };
+  const tagOf = (raw) => STATUS_TAG[raw] || 'planned';
+
   document.querySelectorAll('.panel-carousel').forEach((panel) => {
     const slug = panel.dataset.committee;
     const data = window.IFMSA_DATA || {};
     const com = (data.committees && data.committees[slug]) || {};
     const items = (data.projects || []).filter((p) => p.committee === slug);
 
+    panel.style.setProperty('--car-accent', com.accent || '');
+
     const track = panel.querySelector('.car-track');
     const count = panel.querySelector('.car-count');
 
     track.innerHTML = items.map((p, i) => {
-      const type = p.type ? '<span class="car-type">' + p.type + '</span>' : '';
-      const status = p.status ? '<span class="car-status">' + p.status + '</span>' : '';
+      const no = String(i + 1).padStart(2, '0');
+      const tag = tagOf(p.status);
       return (
-        '<article class="car-card" style="--car-accent:' + (com.accent || 'var(--accent)') + '">' +
+        '<article class="car-card">' +
           '<div class="car-bg" aria-hidden="true">' +
             '<span class="car-bg-blob"></span>' +
             '<span class="car-bg-ring"></span>' +
             '<span class="car-bg-word">' + (com.acronym || 'IFMSA') + '</span>' +
           '</div>' +
           '<div class="car-inner">' +
-            '<span class="car-kicker">Project ' + String(i + 1).padStart(2, '0') + '</span>' +
-            '<h3 class="car-title">' + p.title + '</h3>' +
-            '<p class="car-summary">' + (p.summary || '') + '</p>' +
-            '<span class="car-pills">' + type + status + '</span>' +
-            '<div class="car-foot">' +
-              '<span class="car-theme">' + (p.theme || '') + '</span>' +
-              '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open project &rarr;</a>' +
+            '<div class="car-top">' +
+              '<h3 class="car-title"><span class="car-no">' + no + '</span>' + p.title + '</h3>' +
+              '<span class="car-tag car-tag--' + tag + '">' + TAG_LABEL[tag] + '</span>' +
+            '</div>' +
+            '<div class="car-bottom">' +
+              '<p class="car-summary">' + (p.summary || '') + '</p>' +
+              '<a class="car-link" href="projects.html?id=' + encodeURIComponent(p.id) + '">Open Project</a>' +
             '</div>' +
           '</div>' +
         '</article>'
@@ -100,7 +114,10 @@
     const cardEls = Array.from(track.children);
     const render = () => {
       track.style.transform = 'translateY(' + (-index * 100) + '%)';
-      count.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+      count.innerHTML =
+        '<span class="car-count-now">' + String(index + 1).padStart(2, '0') + '</span>' +
+        '<span class="car-count-slash">/</span>' +
+        '<span class="car-count-total">' + String(items.length).padStart(2, '0') + '</span>';
       cardEls.forEach((card, i) => card.classList.toggle('is-active', i === index));
     };
     const step = (dir) => {
