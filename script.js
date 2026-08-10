@@ -1,8 +1,8 @@
 /* ============================================================
    IFMSA · Khyber Medical College
    Scroll-based section movement.
-   One scroll gesture = one section, except inside a committee
-   carousel, where scrolling cycles its projects first.
+   One scroll gesture = one section. Committee carousels only
+   move via their up/down arrow buttons (or by dragging on touch).
    ============================================================ */
 
 (function () {
@@ -134,24 +134,10 @@
   });
   };
 
-  /* ---------- wheel: carousel first, then one gesture per section ---------- */
+  /* ---------- wheel: one gesture per section ---------- */
   let wheelBusy = false;
 
   stage.addEventListener('wheel', (e) => {
-    const targetPanel = e.target.closest('.panel');
-    if (targetPanel && targetPanel.classList.contains('panel-carousel')) {
-      const car = carousels.get(targetPanel);
-      if (car && car.items.length) {
-        const dir = e.deltaY > 0 ? 1 : -1;
-        if (car.available(dir)) {
-          e.preventDefault();
-          if (isAnimating) return;
-          car.step(dir);
-          return;
-        }
-      }
-    }
-
     e.preventDefault();
     if (isAnimating) return;
 
@@ -171,15 +157,10 @@
   window.addEventListener('keydown', (e) => {
     if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
 
-    const activeCar = carousels.get(panels[activeIndex]);
     const keyDir = { ' ': 1, PageDown: 1, ArrowDown: 1, PageUp: -1, ArrowUp: -1 }[e.key];
 
     if (keyDir) {
       e.preventDefault();
-      if (activeCar && activeCar.items.length && activeCar.available(keyDir)) {
-        activeCar.step(keyDir);
-        return;
-      }
       if (keyDir > 0) next(); else prev();
       return;
     }
@@ -187,14 +168,28 @@
     if (e.key === 'End') { e.preventDefault(); goTo(panels.length - 1); }
   });
 
-  /* ---------- swipe ---------- */
+  /* ---------- touch: drag a carousel's cards, otherwise swipe sections ---------- */
   let touchY = null;
-  stage.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+  let touchCar = null;
+
+  stage.addEventListener('touchstart', (e) => {
+    touchY = e.touches[0].clientY;
+    const targetPanel = e.target.closest('.panel-carousel');
+    touchCar = targetPanel ? (carousels.get(targetPanel) || null) : null;
+  }, { passive: true });
   stage.addEventListener('touchmove', (e) => {
     if (touchY === null) return;
     const dy = touchY - e.touches[0].clientY;
     if (Math.abs(dy) > 34) {
       if (isAnimating) { touchY = null; return; }
+      if (touchCar && touchCar.items.length) {
+        const dir = dy > 0 ? 1 : -1;
+        if (touchCar.available(dir)) {
+          touchCar.step(dir);
+          touchY = null;
+          return;
+        }
+      }
       if (dy > 0) next(); else prev();
       touchY = null;
     }
