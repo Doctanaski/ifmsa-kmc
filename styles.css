@@ -104,6 +104,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   display: flex;
   align-items: center;
   gap: clamp(0.8rem, 1.5vw, 1.3rem);
+  margin-top: -0.55rem;
 }
 
 .no-logo { display: none; }
@@ -121,6 +122,44 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .lead { color: var(--fg-muted); font-size: clamp(1rem, 1.5vw, 1.2rem); }
+
+/* committee group-picture placeholder */
+.group-photo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  max-width: 340px;
+}
+
+.group-photo-ph {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--panel-accent, var(--accent)) 32%, transparent);
+  background:
+    radial-gradient(120% 100% at 75% 0%, color-mix(in srgb, var(--panel-accent, var(--accent)) 20%, transparent), transparent 62%),
+    linear-gradient(160deg, var(--bg-overlay), #0b0f14);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: 0 20px 44px rgba(4, 8, 15, 0.45);
+}
+
+.group-photo-icon {
+  width: 40%;
+  height: auto;
+  color: color-mix(in srgb, var(--panel-accent, var(--accent)) 62%, #e6edf3);
+  opacity: 0.8;
+}
+
+.group-photo-cap {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--panel-fg-faint);
+}
 
 /* per-slide colours */
 .panel[data-slide="scope"]  { --panel-accent: var(--scope-col); --panel-fill: var(--scope-col); }
@@ -562,6 +601,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .president { align-items: stretch; margin-left: 0; max-width: 100%; }
   .pres-photo { width: 100%; height: clamp(220px, 34vh, 300px); aspect-ratio: auto; }
   .col-meta { flex-direction: row; align-items: baseline; gap: 0.85rem; }
+  .group-photo { display: none; }
   .slide-no { margin-right: auto; }
   #navbar { gap: 1rem; }
   .brand-logo-kmc { display: none; }
