@@ -39,16 +39,25 @@
   };
 
   var STATUS_TAG = {
+    'Planned': 'planned',
+    'Upcoming': 'upcoming',
     'Applications open': 'executed',
+    'Applications closed': 'upcoming',
     'Open': 'executed',
+    'Accepting tutors': 'executed',
+    'Recruiting': 'executed',
     'Live': 'executed',
     'Beta': 'executed',
-    'Accepting tutors': 'executed',
-    'Upcoming': 'upcoming',
-    'Planned': 'planned'
+    'On hold': 'planned',
+    'Completed': 'executed',
+    'Cancelled': 'planned'
   };
   var tagOf = function (raw) { return STATUS_TAG[raw] || 'planned'; };
-  var STATUS_OPTIONS = ['Planned', 'Upcoming', 'Open', 'Applications open', 'Accepting tutors', 'Live', 'Beta'];
+  var STATUS_OPTIONS = [
+    'Planned', 'Upcoming', 'Applications open', 'Applications closed',
+    'Open', 'Accepting tutors', 'Recruiting', 'Live', 'Beta',
+    'On hold', 'Completed', 'Cancelled'
+  ];
 
   var esc = function (s) {
     return String(s == null ? '' : s)
@@ -63,6 +72,101 @@
   };
   var splitLines = function (s) {
     return String(s || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+  };
+
+  /* ---------- project live preview (mirrors projects.js rendering) ---------- */
+  var IMG_LINE = /^!\[([^\]]*)\]\(([^)]+)\)$/;
+
+  var isLightColor = function (hex) {
+    var m = String(hex || '').trim().match(/^#?([0-9a-f]{6})$/i);
+    var r, g, b;
+    if (m) {
+      var n = parseInt(m[1], 16);
+      r = (n >> 16) & 255; g = (n >> 8) & 255; b = n & 255;
+    } else {
+      m = String(hex || '').trim().match(/^#?([0-9a-f]{3})$/i);
+      if (m) {
+        r = parseInt(m[1][0] + m[1][0], 16);
+        g = parseInt(m[1][1] + m[1][1], 16);
+        b = parseInt(m[1][2] + m[1][2], 16);
+      } else {
+        m = String(hex || '').trim().match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+        if (m) { r = +m[1]; g = +m[2]; b = +m[3]; }
+        else return false;
+      }
+    }
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.7;
+  };
+
+  var splitBlocks = function (blocks) {
+    var list = Array.isArray(blocks) ? blocks : (blocks ? [blocks] : []);
+    var images = [];
+    var paras = list.map(function (t) {
+      var m = t && t.match ? t.match(IMG_LINE) : null;
+      if (m) { images.push({ src: m[2], alt: m[1] || '' }); return ''; }
+      return '<p>' + esc(t) + '</p>';
+    }).filter(Boolean);
+    return { paras: paras.join(''), images: images };
+  };
+
+  var renderGallery = function (images) {
+    if (!images.length) return '';
+    return '<aside class="proj-gallery" aria-label="Image gallery">' +
+      images.map(function (im) {
+        return '<figure class="proj-g-img">' +
+          '<img src="' + esc(im.src) + '" alt="' + esc(im.alt) + '" loading="lazy" decoding="async" />' +
+          (im.alt ? '<figcaption>' + esc(im.alt) + '</figcaption>' : '') +
+        '</figure>';
+      }).join('') +
+    '</aside>';
+  };
+
+  var statusOptions = function (selected) {
+    var list = STATUS_OPTIONS.slice();
+    if (selected && list.indexOf(selected) === -1) list.unshift(selected);
+    return list.map(function (s) {
+      return '<option value="' + esc(s) + '"' + (s === selected ? ' selected' : '') + '>' + esc(s) + '</option>';
+    }).join('');
+  };
+
+  var renderProjectPreview = function () {
+    var pre = el('proj-preview');
+    if (!pre) return;
+    var com = {};
+    state.committees.forEach(function (c) { if (c.slug === val('f-committee')) com = c; });
+    var row = {
+      title: val('f-title').trim(),
+      type: val('f-type').trim(),
+      status: val('f-status'),
+      timeframe: val('f-timeframe').trim(),
+      theme: val('f-theme').trim(),
+      summary: val('f-summary').trim(),
+      about: splitLines(val('f-about')),
+      goals: splitLines(val('f-goals'))
+    };
+    pre.className = 'proj-preview' + (isLightColor(com.color) ? ' proj-light' : '');
+    pre.style.setProperty('--proj-bg', com.color || '');
+    pre.style.setProperty('--proj-accent', com.accent || com.color || '');
+    var goals = row.goals.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('');
+    var blocks = splitBlocks(row.about);
+    pre.innerHTML =
+      '<main class="proj-page"><article class="proj-post">' +
+        '<header class="proj-head">' +
+          '<h1>' + (row.title ? esc(row.title) : '<span class="proj-empty">Untitled project</span>') + '</h1>' +
+          '<p class="lead">' + esc(row.summary) + '</p>' +
+          '<div class="proj-pills">' +
+            (row.type ? '<span class="pill">' + esc(row.type) + '</span>' : '') +
+            (row.status ? '<span class="pill pill-live">' + esc(row.status) + '</span>' : '') +
+            (row.timeframe ? '<span class="pill">' + esc(row.timeframe) + '</span>' : '') +
+            (row.theme ? '<span class="pill">' + esc(row.theme) + '</span>' : '') +
+          '</div>' +
+          (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
+        '</header>' +
+        '<div class="proj-body' + (blocks.images.length ? '' : ' proj-body--full') + '">' +
+          '<div class="proj-main">' + blocks.paras + '</div>' +
+          renderGallery(blocks.images) +
+        '</div>' +
+      '</article></main>';
   };
 
   /* ============ auth ============ */
@@ -269,25 +373,42 @@
     };
     openModal(
       '<h2>' + (p.id ? 'Edit project' : 'New project') + '</h2>' +
-      '<div class="form-grid">' +
-        '<label class="full">Title<input type="text" id="f-title" value="' + esc(p.title) + '" required /></label>' +
-        '<label>Committee<select id="f-committee">' + committeeOptions(p.committee) + '</select></label>' +
-        '<label>Sort order<input type="number" id="f-sort" value="' + (p.sort_order || 0) + '" /></label>' +
-        '<label>Type<input type="text" id="f-type" value="' + esc(p.type) + '" /></label>' +
-        '<label>Status<input type="text" id="f-status" list="status-list" value="' + esc(p.status || '') + '" />' +
-          '<datalist id="status-list">' + STATUS_OPTIONS.map(function (s) { return '<option value="' + s + '">'; }).join('') + '</datalist></label>' +
-        '<label class="full">Timeframe<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" /></label>' +
-        '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
-        '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
-        '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
-        '<label class="full">Goals — one per line<textarea id="f-goals">' + esc((p.goals || []).join('\n')) + '</textarea></label>' +
-        '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(p.id) + '" placeholder="e.g. scope-2026-summer-exchange" /></label>' +
-      '</div>' +
-      '<div class="form-actions">' +
-        '<button class="btn" id="m-cancel">Cancel</button>' +
-        '<button class="btn btn-primary" id="m-save">Save project</button>' +
-      '</div>'
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Title<input type="text" id="f-title" value="' + esc(p.title) + '" required /></label>' +
+            '<label>Committee<select id="f-committee">' + committeeOptions(p.committee) + '</select></label>' +
+            '<label>Sort order<input type="number" id="f-sort" value="' + (p.sort_order || 0) + '" /></label>' +
+            '<label>Type<input type="text" id="f-type" value="' + esc(p.type) + '" /></label>' +
+            '<label>Status<select id="f-status">' + statusOptions(p.status || '') + '</select></label>' +
+            '<label class="full">Timeframe<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" /></label>' +
+            '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
+            '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
+            '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">Goals — one per line<textarea id="f-goals">' + esc((p.goals || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(p.id) + '" placeholder="e.g. scope-2026-summer-exchange" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save project</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="proj-preview" id="proj-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
     );
+
+    ['f-title', 'f-committee', 'f-type', 'f-status', 'f-timeframe', 'f-theme',
+     'f-summary', 'f-about', 'f-goals'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderProjectPreview);
+      input.addEventListener('change', renderProjectPreview);
+    });
+    renderProjectPreview();
 
     el('m-save').addEventListener('click', function () {
       var row = {
@@ -488,9 +609,9 @@
   }
 
   /* ============ modal ============ */
-  function openModal(html) {
+  function openModal(html, cls) {
     var root = el('modal-root');
-    root.innerHTML = '<div class="modal-back"><div class="modal">' + html + '</div></div>';
+    root.innerHTML = '<div class="modal-back"><div class="modal' + (cls ? ' ' + cls : '') + '">' + html + '</div></div>';
     var cancel = root.querySelector('#m-cancel');
     if (cancel) cancel.addEventListener('click', closeModal);
     root.querySelector('.modal-back').addEventListener('click', function (e) {

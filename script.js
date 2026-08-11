@@ -59,13 +59,18 @@
   const carousels = new Map();
 
   const STATUS_TAG = {
+    'Planned': 'planned',
+    'Upcoming': 'upcoming',
     'Applications open': 'executed',
+    'Applications closed': 'upcoming',
     'Open': 'executed',
+    'Accepting tutors': 'executed',
+    'Recruiting': 'executed',
     'Live': 'executed',
     'Beta': 'executed',
-    'Accepting tutors': 'executed',
-    'Upcoming': 'upcoming',
-    'Planned': 'planned'
+    'On hold': 'planned',
+    'Completed': 'executed',
+    'Cancelled': 'planned'
   };
   const TAG_LABEL = { upcoming: 'Upcoming', executed: 'Executed', planned: 'Planned' };
   const tagOf = (raw) => STATUS_TAG[raw] || 'planned';
