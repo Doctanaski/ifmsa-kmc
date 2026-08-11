@@ -21,23 +21,78 @@
 
   const IMG_LINE = /^!\[([^\]]*)\]\(([^)]+)\)$/;
 
-  const renderBlocks = (blocks) => (blocks || []).map((t) => {
-    const m = t && t.match ? t.match(IMG_LINE) : null;
+  /* ---------- committee theming ---------- */
+  const isLightColor = (hex) => {
+    let m = String(hex || '').trim().match(/^#?([0-9a-f]{6})$/i);
+    let r, g, b;
     if (m) {
-      const alt = m[1] || '';
-      const src = m[2];
-      return '<figure class="proj-figure">' +
-        '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" />' +
-        (alt ? '<figcaption>' + esc(alt) + '</figcaption>' : '') +
-        '</figure>';
+      const n = parseInt(m[1], 16);
+      r = (n >> 16) & 255; g = (n >> 8) & 255; b = n & 255;
+    } else {
+      m = String(hex || '').trim().match(/^#?([0-9a-f]{3})$/i);
+      if (m) {
+        r = parseInt(m[1][0] + m[1][0], 16);
+        g = parseInt(m[1][1] + m[1][1], 16);
+        b = parseInt(m[1][2] + m[1][2], 16);
+      } else {
+        m = String(hex || '').trim().match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+        if (m) { r = +m[1]; g = +m[2]; b = +m[3]; }
+        else return false;
+      }
     }
-    return '<p>' + esc(t) + '</p>';
-  }).join('');
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.7;
+  };
+
+  const clearTheme = () => {
+    const body = document.body;
+    body.classList.remove('proj-light');
+    body.style.removeProperty('--proj-bg');
+    body.style.removeProperty('--proj-accent');
+  };
+
+  const applyTheme = (com) => {
+    const body = document.body;
+    clearTheme();
+    if (com.color) {
+      body.style.setProperty('--proj-bg', com.color);
+      body.classList.toggle('proj-light', isLightColor(com.color));
+    }
+    if (com.accent || com.color) {
+      body.style.setProperty('--proj-accent', com.accent || com.color);
+    }
+  };
+
+  /* ---------- split about blocks into prose + gallery images ---------- */
+  const splitBlocks = (blocks) => {
+    const list = Array.isArray(blocks) ? blocks : (blocks ? [blocks] : []);
+    const images = [];
+    const paras = list.map((t) => {
+      const m = t && t.match ? t.match(IMG_LINE) : null;
+      if (m) {
+        images.push({ src: m[2], alt: m[1] || '' });
+        return '';
+      }
+      return '<p>' + esc(t) + '</p>';
+    }).filter(Boolean);
+    return { paras: paras.join(''), images: images };
+  };
+
+  const renderGallery = (images) => {
+    if (!images.length) return '';
+    return '<aside class="proj-gallery" aria-label="Image gallery">' +
+      images.map((im) =>
+        '<figure class="proj-g-img">' +
+          '<img src="' + esc(im.src) + '" alt="' + esc(im.alt) + '" loading="lazy" decoding="async" />' +
+          (im.alt ? '<figcaption>' + esc(im.alt) + '</figcaption>' : '') +
+        '</figure>'
+      ).join('') +
+    '</aside>';
+  };
 
   const renderProject = (data, p) => {
     const com = data.committees[p.committee] || {};
-    const color = com.accent || com.color || 'var(--accent)';
     const goals = (p.goals || []).map((g) => '<li>' + esc(g) + '</li>').join('');
+    const { paras, images } = splitBlocks(p.about);
 
     document.title = p.title + ' · KMC × IFMSA';
     if (back) {
@@ -45,7 +100,7 @@
       back.textContent = '← Back to chapter';
     }
 
-    page.style.setProperty('--proj-accent', color);
+    applyTheme(com);
 
     page.innerHTML =
       '<article class="proj-post">' +
@@ -58,14 +113,18 @@
             (p.timeframe ? '<span class="pill">' + esc(p.timeframe) + '</span>' : '') +
             (p.theme ? '<span class="pill">' + esc(p.theme) + '</span>' : '') +
           '</div>' +
+          (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
         '</header>' +
-        '<div class="proj-content">' + renderBlocks(p.about) + '</div>' +
-        (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
+        '<div class="proj-body' + (images.length ? '' : ' proj-body--full') + '">' +
+          '<div class="proj-main">' + paras + '</div>' +
+          renderGallery(images) +
+        '</div>' +
         '<p class="proj-join"><a class="btn btn-primary" href="index.html#join">Join this committee</a></p>' +
       '</article>';
   };
 
   const renderMissing = () => {
+    clearTheme();
     page.innerHTML =
       '<div class="proj-missing">' +
         '<span class="slide-no">404</span>' +

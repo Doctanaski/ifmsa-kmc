@@ -31,6 +31,8 @@ window.IFMSA_DATA = {
       about: [
         "Every summer SCOPE wakes the chapter up and sends it abroad. Selected students match to a host committee, then live, learn and clerk beside peers in hospitals they would otherwise never step into — from operating theatres in Türkiye to rural clinics in Colombia.",
         "Outbound preparation runs through the spring: visa clinics, insurance and immunisation checks, safety briefings and a buddy-pairing system so no one crosses a border alone. Every returning student debriefs with the exchange committee, so the next cohort starts a step ahead.",
+        "![Rotations at partner hospitals](https://picsum.photos/seed/scope-hospital-1/1200/900)",
+        "![Wards and ward rounds](https://picsum.photos/seed/scope-hospital-2/1200/900)",
       ],
       goals: [
         "Place 25 KMC students in host hospitals across full rounds.",
@@ -125,6 +127,8 @@ window.IFMSA_DATA = {
       about: [
         "The spine of SCOME's work: students teaching students. Every week, trained senior students take a small group through a block of anatomy, pharmacology or clinical reasoning — using the fastest teaching format there is: one peer who has already survived that exam.",
         "Tutors sign up in spring, receive a short pedagogy workshop, and are matched to groups by subject compatibility. The series is graded by the students themselves, and the best tutor is crowned at the end-of-year ceremony.",
+        "![Small-group revision classes](https://picsum.photos/seed/scom-peerteach-1/1200/900)",
+        "![A fellow leading an open lecture](https://picsum.photos/seed/scom-peerteach-2/1200/900)",
       ],
       goals: [
         "Run 20 weekly sessions across 10 subject streams.",
@@ -217,6 +221,8 @@ window.IFMSA_DATA = {
       about: [
         "For one week the taboos open like a clinic door. SCORA takes the campus and turns it into a loud, warm, myth-busting marketplace with a locked box of anonymous questions, a wall of \"answers I was too embarrassed to ask\" and short nurse-led talks — the ones students actually stayed for.",
         "The week ends with a night screening and a livestream for those who cannot be on campus. Everything is confidential, and the health-promotion packs go out free.",
+        "![SRH awareness booth](https://picsum.photos/seed/scora-week-1/1200/900)",
+        "![Students sharing the myth-busting wall](https://picsum.photos/seed/scora-week-2/1200/900)",
       ],
       goals: [
         "Give away all 600 planned SRH information kits.",
@@ -309,6 +315,8 @@ window.IFMSA_DATA = {
       about: [
         "One Saturday a month the chapter packs up and stands outside a school, mosque or community centre to screen a whole block down Racecourse Road and beyond. Blood pressures, random blood sugars and a calm talk with a student trained to refer.",
         "The impact is durable: each person walks out with a simple card showing what normal is for their age and where to go if the number is red. Nobody is graded; everyone is counted.",
+        "![Screening camp at a community centre](https://picsum.photos/seed/scoph-screening-1/1200/900)",
+        "![Blood-pressure checks on site](https://picsum.photos/seed/scoph-screening-2/1200/900)",
       ],
       goals: [
         "Screen 2,000 community members over the year.",
@@ -401,6 +409,8 @@ window.IFMSA_DATA = {
       about: [
         "Behind the city's main street some families have crossed a border carrying little more than documents of their trauma. Our volunteers go to the registered settlements to run the same careful checks they would in a campus clinic — plus the referral that their papers keep them from.",
         "Health is a human right is the sentence the project actually lives. The outreach is where our students learn a citizenship that is not only of a hospital, but of a humanity that speaks the sentence.",
+        "![Careful checks at a settlement centre](https://picsum.photos/seed/scorp-outreach-1/1200/900)",
+        "![A quiet conversation after the exam](https://picsum.photos/seed/scorp-outreach-2/1200/900)",
       ],
       goals: [
         "Hold 12 outreach mornings in the registered settlements.",
@@ -493,6 +503,8 @@ window.IFMSA_DATA = {
       about: [
         "Some students want to spend their summer in a lab instead of on the lido. SCORE placements put candidates into research teams that need a pair of clean hands — molecular biology, epidemiology, guideline writing, or pure cellular curiosity — and pay them forward in mentors, ink and name.",
         "We run the matching as a negotiation: the student's question is picked, the host is studied, and the placement is confirmed before fights. On return, every summer resident gives a ten-minute \"share the lab\" answer to the chapter.",
+        "![Bench time in a host lab](https://picsum.photos/seed/score-lab-1/1200/900)",
+        "![A summer resident after data collection](https://picsum.photos/seed/score-lab-2/1200/900)",
       ],
       goals: [
         "Match 8 students — funding considered — to confirmed placements.",
