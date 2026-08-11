@@ -341,7 +341,7 @@ body.projects-body.proj-light {
 
 .proj-page {
   width: 100%;
-  padding: 7.5rem clamp(1.5rem, 5vw, 4rem) 4rem;
+  padding: 6rem clamp(1.5rem, 5vw, 4rem) 4rem;
 }
 
 .proj-back {
@@ -349,8 +349,8 @@ body.projects-body.proj-light {
   align-items: center;
   gap: 0.5rem;
   position: fixed;
-  top: 4.2rem;
-  left: clamp(1.5rem, 5vw, 4rem);
+  top: 1.25rem;
+  right: clamp(1.5rem, 5vw, 4rem);
   z-index: 65;
   padding: 0.55rem 1.15rem;
   font-family: var(--mono);
@@ -539,22 +539,6 @@ body.projects-body.proj-light {
   letter-spacing: 0.05em;
 }
 
-.proj-join {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.proj-join .btn-primary {
-  background: var(--proj-fg);
-  border-color: var(--proj-fg);
-  color: var(--proj-bg);
-}
-.proj-join .btn-primary:hover {
-  background: color-mix(in srgb, var(--proj-fg) 86%, transparent);
-  border-color: color-mix(in srgb, var(--proj-fg) 86%, transparent);
-  color: var(--proj-bg);
-}
-
 .proj-missing {
   text-align: center;
   padding: 4rem 0;
@@ -566,8 +550,8 @@ body.projects-body.proj-light {
 .proj-missing .lead { margin-bottom: 1.5rem; }
 
 @media (max-width: 820px) {
-  .proj-back { top: 0.6rem; left: 1rem; }
-  .proj-page { padding-top: 8rem; }
+  .proj-back { top: 0.6rem; right: 1rem; }
+  .proj-page { padding-top: 5.5rem; }
 
   .proj-body {
     grid-template-columns: 1fr;

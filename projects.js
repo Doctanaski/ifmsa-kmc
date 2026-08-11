@@ -119,7 +119,6 @@
           '<div class="proj-main">' + paras + '</div>' +
           renderGallery(images) +
         '</div>' +
-        '<p class="proj-join"><a class="btn btn-primary" href="index.html#join">Join this committee</a></p>' +
       '</article>';
   };
 
