@@ -19,28 +19,37 @@
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
+  const IMG_LINE = /^!\[([^\]]*)\]\(([^)]+)\)$/;
+
+  const renderBlocks = (blocks) => (blocks || []).map((t) => {
+    const m = t && t.match ? t.match(IMG_LINE) : null;
+    if (m) {
+      const alt = m[1] || '';
+      const src = m[2];
+      return '<figure class="proj-figure">' +
+        '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" />' +
+        (alt ? '<figcaption>' + esc(alt) + '</figcaption>' : '') +
+        '</figure>';
+    }
+    return '<p>' + esc(t) + '</p>';
+  }).join('');
+
   const renderProject = (data, p) => {
     const com = data.committees[p.committee] || {};
     const color = com.accent || com.color || 'var(--accent)';
     const goals = (p.goals || []).map((g) => '<li>' + esc(g) + '</li>').join('');
-    const paras = (p.about || []).map((t) => '<p>' + esc(t) + '</p>').join('');
 
     document.title = p.title + ' · KMC × IFMSA';
     if (back) {
       back.href = 'index.html#' + (com.slug || 'scope');
-      back.textContent = '← Back to ' + (com.name || 'chapter');
+      back.textContent = '← Back to chapter';
     }
 
     page.style.setProperty('--proj-accent', color);
 
     page.innerHTML =
-      '<div class="proj-hero">' +
-        '<div class="proj-column">' +
-          '<span class="slide-no">' + (com.slug ? com.slug.toUpperCase() : '—') + ' · ' + (data.year || '') + '</span>' +
-          '<img src="' + esc(com.logo) + '" alt="' + esc(com.acronym) + '" class="sc-logo" />' +
-          '<span class="acronym">' + esc(com.acronym) + '</span>' +
-        '</div>' +
-        '<div class="proj-intro">' +
+      '<article class="proj-post">' +
+        '<header class="proj-head">' +
           '<h1>' + esc(p.title) + '</h1>' +
           '<p class="lead">' + esc(p.summary) + '</p>' +
           '<div class="proj-pills">' +
@@ -49,26 +58,11 @@
             (p.timeframe ? '<span class="pill">' + esc(p.timeframe) + '</span>' : '') +
             (p.theme ? '<span class="pill">' + esc(p.theme) + '</span>' : '') +
           '</div>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="proj-body">' +
-        '<div class="proj-about">' +
-          '<span class="proj-label">About</span>' +
-          paras +
-        '</div>' +
-        '<aside class="proj-side">' +
-          '<span class="proj-label">Snapshot</span>' +
-          '<dl class="proj-snap facts">' +
-            (p.type ? '<div class="fact"><span class="fact-label">Type</span><span>' + esc(p.type) + '</span></div>' : '') +
-            (p.status ? '<div class="fact"><span class="fact-label">Status</span><span>' + esc(p.status) + '</span></div>' : '') +
-            (p.timeframe ? '<div class="fact"><span class="fact-label">Timeline</span><span>' + esc(p.timeframe) + '</span></div>' : '') +
-            (p.theme ? '<div class="fact"><span class="fact-label">Theme</span><span>' + esc(p.theme) + '</span></div>' : '') +
-          '</dl>' +
-          (goals ? '<div class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></div>' : '') +
-          '<a class="btn btn-primary" href="index.html#join">Join this committee</a>' +
-        '</aside>' +
-      '</div>';
+        '</header>' +
+        '<div class="proj-content">' + renderBlocks(p.about) + '</div>' +
+        (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
+        '<p class="proj-join"><a class="btn btn-primary" href="index.html#join">Join this committee</a></p>' +
+      '</article>';
   };
 
   const renderMissing = () => {

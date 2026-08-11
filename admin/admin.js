@@ -279,7 +279,7 @@
         '<label class="full">Timeframe<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" /></label>' +
         '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
         '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
-        '<label class="full">About — one paragraph per line<textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
+        '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
         '<label class="full">Goals — one per line<textarea id="f-goals">' + esc((p.goals || []).join('\n')) + '</textarea></label>' +
         '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(p.id) + '" placeholder="e.g. scope-2026-summer-exchange" /></label>' +
       '</div>' +
