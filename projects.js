@@ -96,8 +96,8 @@
 
     document.title = p.title + ' · KMC × IFMSA';
     if (back) {
-      back.href = 'index.html#' + (com.slug || 'scope');
-      back.textContent = '← Back to chapter';
+      back.href = 'index.html';
+      back.textContent = '← Back to homepage';
     }
 
     applyTheme(com);
