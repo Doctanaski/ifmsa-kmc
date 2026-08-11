@@ -11,6 +11,7 @@
   const stage = document.getElementById('top');
   const panels = Array.from(document.querySelectorAll('.panel'));
   const rail = document.getElementById('rail');
+  const topbar = document.querySelector('.topbar');
 
   let isAnimating = false;
   let activeIndex = 0;
@@ -32,6 +33,8 @@
     activeIndex = i;
 
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
+
+    if (topbar) topbar.classList.toggle('is-hidden', i !== 0);
 
     const accent = getComputedStyle(panels[i]).getPropertyValue('--panel-accent').trim()
       || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
