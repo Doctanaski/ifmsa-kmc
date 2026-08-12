@@ -566,3 +566,42 @@ body.projects-body.proj-light {
     gap: 1.1rem;
   }
 }
+
+/* ---------- phone optimization (≤640px only; desktop untouched) ---------- */
+@media (max-width: 640px) {
+  html { -webkit-text-size-adjust: 100%; }
+
+  body.projects-body { min-height: 100svh; }
+
+  .proj-back {
+    top: 0.55rem;
+    left: 0.7rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.64rem;
+  }
+
+  .proj-page { padding: 5rem 1.15rem 2.5rem; }
+
+  .proj-head { padding-bottom: 1.8rem; margin-bottom: 2rem; }
+  .proj-head h1 { font-size: clamp(1.55rem, 7vw, 2rem); }
+  .proj-head .lead { font-size: 1rem; margin-bottom: 1.1rem; }
+
+  .proj-goals { margin-top: 1.4rem; padding: 1.2rem 1.15rem 1.3rem; }
+  .proj-goals li { font-size: 0.9rem; }
+
+  .proj-main p { font-size: 0.98rem; line-height: 1.72; }
+  .proj-main p:first-of-type { font-size: 1.06rem; }
+
+  .proj-gallery { gap: 1rem; }
+  .proj-g-img figcaption { font-size: 0.62rem; padding: 0.55rem 0.8rem 0.7rem; }
+
+  /* committee carousel (homepage) */
+  .car-inner { padding: 1.45rem 1.2rem; gap: 1.05rem; }
+  .car-title { font-size: clamp(1.3rem, 6vw, 1.6rem); }
+  .car-summary { font-size: 0.95rem; line-height: 1.55; }
+  .car-link { padding: 0.7rem 1rem; font-size: 0.7rem; }
+  .car-viewport { height: clamp(420px, 60vh, 480px); }
+  .car-btn { width: 42px; height: 42px; font-size: 1.3rem; }
+  .car-ctrl { gap: 0.55rem; }
+  .car-count-now { font-size: 1.6rem; }
+}

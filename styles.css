@@ -621,6 +621,58 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .panel { padding-right: 5.5rem; }
 }
 
+/* ---------- phone optimization (≤640px only; desktop untouched) ---------- */
+@media (max-width: 640px) {
+  html { -webkit-text-size-adjust: 100%; }
+
+  /* use dynamic/short viewport heights — avoids address-bar crop on phones */
+  .stage { height: 100vh; height: 100dvh; }
+  .panel { min-height: 100svh; scroll-snap-stop: normal; }
+  .hero { height: auto; min-height: 100svh; overflow: visible; }
+
+  .panel {
+    padding: 5rem 1.25rem 2.5rem;
+    gap: 1.25rem;
+  }
+  .panel:first-of-type { padding-top: 3.6rem; }
+
+  .slide-no { font-size: 0.7rem; }
+  .meta-head { gap: 0.6rem; }
+  .acronym { font-size: clamp(2.4rem, 12vw, 3.2rem); }
+  .sc-logo { width: 2.7rem; height: 2.7rem; padding: 0.5rem; border-radius: 12px; }
+  .col-body h2 { font-size: clamp(1.5rem, 6.5vw, 1.85rem); margin-bottom: 0.9rem; }
+
+  .fact { grid-template-columns: 8.5rem 1fr; gap: 0.7rem; padding: 0.75rem 1rem; font-size: 0.9rem; }
+
+  /* header */
+  .topbar { padding: 0.65rem 1rem; gap: 0.75rem; }
+  .brand { gap: 0.6rem; }
+  .brand-logo img { height: 24px; }
+  .brand-divider { height: 22px; }
+  #navbar { gap: 0.9rem; }
+  .nav-link { font-size: 0.82rem; }
+  .btn-outline { padding: 0.36rem 0.8rem; }
+
+  /* hero */
+  .hero-title { font-size: clamp(1.75rem, 9vw, 2.35rem); margin-bottom: 0.9rem; }
+  .hero-sub { font-size: 1rem; margin-bottom: 1.1rem; }
+  .eyebrow { font-size: 0.8rem; margin-bottom: 1rem; gap: 0.4rem; }
+  .hero-actions { gap: 0.6rem; width: 100%; }
+  .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .hero-mini { gap: 1.1rem; margin-top: 1.3rem; font-size: 0.82rem; }
+  .mini-num { font-size: 0.9rem; }
+  .btn { padding: 0.6rem 1.05rem; font-size: 0.92rem; }
+  .pres-photo { height: clamp(230px, 42vh, 300px); }
+  .pres-message { padding: 0.9rem 1rem; }
+  .pres-quote { font-size: 0.92rem; }
+
+  /* join */
+  .join-title { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+  .join-sub { font-size: 1rem; margin-bottom: 1.6rem; }
+  .join-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .foot { margin-top: 3rem; font-size: 0.78rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
   .stage { scroll-behavior: auto; }
