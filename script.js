@@ -179,14 +179,17 @@
   /* ---------- touch: drag a carousel's cards, otherwise swipe sections ---------- */
   let touchY = null;
   let touchCar = null;
+  let touchHero = false;
 
   stage.addEventListener('touchstart', (e) => {
     touchY = e.touches[0].clientY;
     const targetPanel = e.target.closest('.panel-carousel');
     touchCar = targetPanel ? (carousels.get(targetPanel) || null) : null;
+    touchHero = !!e.target.closest('.hero');
   }, { passive: true });
   stage.addEventListener('touchmove', (e) => {
     if (touchY === null) return;
+    if (touchHero) { touchY = null; return; }
     const dy = touchY - e.touches[0].clientY;
     if (Math.abs(dy) > 34) {
       if (isAnimating) { touchY = null; return; }
@@ -202,7 +205,7 @@
       touchY = null;
     }
   }, { passive: true });
-  stage.addEventListener('touchend', () => { touchY = null; });
+  stage.addEventListener('touchend', () => { touchY = null; touchHero = false; });
 
   /* ---------- keep rail in sync ---------- */
   const syncActiveFromScroll = () => {

@@ -625,10 +625,13 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 @media (max-width: 640px) {
   html { -webkit-text-size-adjust: 100%; }
 
-  /* use dynamic/short viewport heights — avoids address-bar crop on phones */
-  .stage { height: 100vh; height: 100dvh; }
+  /* stable full-width snap: scrollport and panels share the same 100svh height
+     so every snapped committee slide fills the viewport exactly (no peeking) */
+  .stage { height: 100vh; height: 100svh; scroll-snap-type: y proximity; }
   .panel { min-height: 100svh; scroll-snap-stop: normal; }
-  .hero { height: auto; min-height: 100svh; overflow: visible; }
+  /* the hero is taller than the viewport on phones — make it scroll freely
+     down to the president's message instead of snap-pulling to the committee */
+  .hero { height: auto; min-height: 100svh; overflow: visible; scroll-snap-align: none; }
 
   .panel {
     padding: 5rem 1.25rem 2.5rem;
@@ -654,17 +657,17 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .btn-outline { padding: 0.36rem 0.8rem; }
 
   /* hero */
-  .hero-title { font-size: clamp(1.75rem, 9vw, 2.35rem); margin-bottom: 0.9rem; }
-  .hero-sub { font-size: 1rem; margin-bottom: 1.1rem; }
+  .hero-title { font-size: clamp(1.7rem, 8.5vw, 2.2rem); margin-bottom: 0.7rem; }
+  .hero-sub { font-size: 1rem; margin-bottom: 0.9rem; }
   .eyebrow { font-size: 0.8rem; margin-bottom: 1rem; gap: 0.4rem; }
   .hero-actions { gap: 0.6rem; width: 100%; }
   .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
-  .hero-mini { gap: 1.1rem; margin-top: 1.3rem; font-size: 0.82rem; }
+  .hero-mini { gap: 1rem; margin-top: 1.1rem; font-size: 0.82rem; }
   .mini-num { font-size: 0.9rem; }
   .btn { padding: 0.6rem 1.05rem; font-size: 0.92rem; }
-  .pres-photo { height: clamp(230px, 42vh, 300px); }
-  .pres-message { padding: 0.9rem 1rem; }
-  .pres-quote { font-size: 0.92rem; }
+  .pres-photo { height: clamp(190px, 30vh, 250px); }
+  .pres-message { padding: 0.85rem 0.95rem; }
+  .pres-quote { font-size: 0.9rem; }
 
   /* join */
   .join-title { font-size: clamp(1.7rem, 8vw, 2.2rem); }
