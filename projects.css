@@ -600,8 +600,48 @@ body.projects-body.proj-light {
   .car-title { font-size: clamp(1.3rem, 6vw, 1.6rem); }
   .car-summary { font-size: 0.95rem; line-height: 1.55; }
   .car-link { padding: 0.7rem 1rem; font-size: 0.7rem; }
-  .car-viewport { height: clamp(420px, 60vh, 480px); }
   .car-btn { width: 42px; height: 42px; font-size: 1.3rem; }
-  .car-ctrl { gap: 0.55rem; }
   .car-count-now { font-size: 1.6rem; }
+
+  /* lock each committee slide to the viewport so every feature fits:
+     buttons at the bottom, committee acronym at the top, all visible */
+  .panel-carousel {
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 4rem 1.25rem 1.25rem;
+  }
+  .panel-carousel .col-meta {
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .panel-carousel .slide-no {
+    margin-right: 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .panel-carousel .car {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+  .panel-carousel .car-viewport {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+  }
+  .panel-carousel .car-ctrl {
+    flex-shrink: 0;
+    gap: 0.55rem;
+  }
 }
