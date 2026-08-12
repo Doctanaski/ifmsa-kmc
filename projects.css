@@ -606,7 +606,8 @@ body.projects-body.proj-light {
   /* lock each committee slide to the viewport so every feature fits:
      buttons at the bottom, committee acronym at the top, all visible */
   .panel-carousel {
-    height: 100svh;
+    height: calc(100svh + 2px);
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -618,13 +619,7 @@ body.projects-body.proj-light {
     align-items: center;
     position: relative;
   }
-  .panel-carousel .slide-no {
-    margin-right: 0;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+  .panel-carousel .slide-no { display: none; }
   .panel-carousel .car {
     flex: 1 1 auto;
     min-height: 0;

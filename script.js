@@ -12,6 +12,7 @@
   const panels = Array.from(document.querySelectorAll('.panel'));
   const rail = document.getElementById('rail');
   const topbar = document.querySelector('.topbar');
+  const isMobile = window.matchMedia('(max-width: 640px)');
 
   let isAnimating = false;
   let activeIndex = 0;
@@ -184,7 +185,7 @@
   stage.addEventListener('touchstart', (e) => {
     touchY = e.touches[0].clientY;
     const targetPanel = e.target.closest('.panel-carousel');
-    touchCar = targetPanel ? (carousels.get(targetPanel) || null) : null;
+    touchCar = (!isMobile.matches && targetPanel) ? (carousels.get(targetPanel) || null) : null;
     touchHero = !!e.target.closest('.hero');
   }, { passive: true });
   stage.addEventListener('touchmove', (e) => {
