@@ -158,6 +158,18 @@
           '<li><span class="mini-num">' + h.mini2Num + '</span> ' + h.mini2Label + '</li>' +
           '<li><span class="mini-num">' + h.mini3Num + '</span> ' + h.mini3Label + '</li>';
       }
+      if (h.mini1Num != null) {
+        setText('stat-committees-num', h.mini1Num);
+        setText('stat-committees-label', h.mini1Label);
+      }
+      if (h.mini2Num != null) {
+        setText('stat-members-num', h.mini2Num);
+        setText('stat-members-label', h.mini2Label);
+      }
+      if (h.mini3Num != null) {
+        setText('stat-nmo-num', h.mini3Num);
+        setText('stat-nmo-label', h.mini3Label);
+      }
     }
 
     if (siteData.about) {

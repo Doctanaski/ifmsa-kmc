@@ -17,7 +17,7 @@
   <header class="topbar">
     <div class="brand">
       <a class="brand-logo brand-logo-pk" href="#home">
-        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
+        <img src="assets/ifmsa-pakistan-logo-new.png" alt="IFMSA-Pakistan logo" />
       </a>
       <span class="brand-divider" aria-hidden="true"></span>
       <a class="brand-logo brand-logo-kmc" href="#home">
@@ -39,6 +39,11 @@
 
     <!-- ============ 01 · HOME (+ hero) ============ -->
     <section class="panel home" data-slide="pak" data-index="01" data-title="Home" id="home">
+      <!-- Faint watermark background of IFMSA Pakistan latest logo -->
+      <div class="hero-watermark" aria-hidden="true">
+        <img src="assets/ifmsa-pakistan-logo-new.png" alt="" />
+      </div>
+
       <div class="home-wrap">
 
         <div class="hero-top">
@@ -53,11 +58,6 @@
               <a href="#scope" class="btn btn-primary" id="hero-btn1-link"><span id="hero-btn1">Explore committees ↓</span></a>
               <a href="#join" class="btn" id="hero-btn2-link"><span id="hero-btn2">Join the chapter</span></a>
             </div>
-            <ul class="hero-mini" id="hero-mini">
-              <li><span class="mini-num">6</span> Standing committees</li>
-              <li><span class="mini-num">1.5M+</span> Med students worldwide</li>
-              <li><span class="mini-num">123</span> Countries &amp; territories</li>
-            </ul>
           </div>
 
           <figure class="president">
@@ -74,6 +74,56 @@
               <span class="pres-name">President — IFMSA KMC Local Chapter</span>
             </figcaption>
           </figure>
+        </div>
+
+        <!-- Key statistics cards (inspired by IFMSA.org) -->
+        <div class="hero-stat-cards" id="hero-stat-cards" role="region" aria-label="Key statistics">
+          <div class="hero-stat-card">
+            <div class="stat-icon-wrap" aria-hidden="true">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="stat-value" id="stat-members-num">1.5 Million+</div>
+            <div class="stat-label" id="stat-members-label">Medical Students Worldwide</div>
+          </div>
+
+          <a href="#scope" class="hero-stat-card stat-card-link" aria-label="Explore the 6 standing committees">
+            <div class="stat-icon-wrap" aria-hidden="true">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <div class="stat-value" id="stat-committees-num">6</div>
+            <div class="stat-label" id="stat-committees-label">Standing Committees</div>
+          </a>
+
+          <div class="hero-stat-card">
+            <div class="stat-icon-wrap" aria-hidden="true">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="stat-value" id="stat-est-num">Est. 1951</div>
+            <div class="stat-label" id="stat-est-label">Shaping Global Health Leaders Since 1951</div>
+          </div>
+
+          <div class="hero-stat-card">
+            <div class="stat-icon-wrap" aria-hidden="true">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" y1="22" x2="4" y2="15"></line>
+              </svg>
+            </div>
+            <div class="stat-value" id="stat-nmo-num">133+</div>
+            <div class="stat-label" id="stat-nmo-label">National Member Organizations</div>
+          </div>
         </div>
 
         <!-- Know more about us — Join us / About us tabs -->
