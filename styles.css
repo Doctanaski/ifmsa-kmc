@@ -193,11 +193,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .panel[data-slide="pak"] .mini-num,
 .panel[data-slide="pak"] .know-title,
 .panel[data-slide="pak"] .tab-title { color: #1e1b52; }
-.panel[data-slide="pak"] .pill {
-  color: var(--pak-green);
-  background: rgba(15, 156, 21, 0.08);
-  border-color: rgba(15, 156, 21, 0.32);
-}
 .panel[data-slide="pak"] .btn-primary {
   background: var(--pak-green);
   border: 2px solid #0d8312;
@@ -284,14 +279,13 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .hero-title,
 .hero-sub,
 .hero-sub strong,
-.eyebrow,
 .hero-mini,
 .mini-num,
 .join-title,
 .join-sub { color: var(--panel-fg); }
 
 .lead, .hero-sub, .join-sub { color: var(--fg-muted); }
-.slide-no, .hero-mini, .eyebrow, .foot { color: var(--fg-faint); }
+.slide-no, .hero-mini, .foot { color: var(--fg-faint); }
 
 /* ---------- facts ---------- */
 .facts {
@@ -378,27 +372,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .hero-top .panel-inner { max-width: 62ch; }
 
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--fg-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1.4rem;
-}
-
-.pill {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  background: rgba(88, 166, 255, 0.12);
-  border: 1px solid rgba(88, 166, 255, 0.35);
-  padding: 0.22rem 0.7rem;
-  border-radius: 999px;
-}
-
 .hero-title {
   font-size: clamp(2.1rem, 5vw, 4rem);
   font-weight: 700;
@@ -415,8 +388,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   margin-bottom: 1.5rem;
 }
 .hero-sub strong { color: #1e1b52; font-weight: 600; }
-
-.hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 
 /* ---------- hero stat cards (inspired by IFMSA.org) ---------- */
 .hero-stat-cards {
@@ -961,9 +932,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .panel.home { padding-top: 4.5rem; padding-bottom: 2rem; }
   .hero-title { font-size: clamp(1.8rem, 4.5vh + 1vw, 3rem); }
   .hero-sub { margin-bottom: 1rem; }
-  .hero-actions { gap: 0.6rem; }
   .hero-stat-cards { margin-top: 1.5rem; }
-  .eyebrow { margin-bottom: 1rem; }
   .pres-photo { height: clamp(200px, 40vh, 320px); }
   .pres-quote { font-size: 0.88rem; }
 }
@@ -1038,9 +1007,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   /* hero */
   .hero-title { font-size: clamp(1.7rem, 8.5vw, 2.2rem); margin-bottom: 0.7rem; }
   .hero-sub { font-size: 1rem; margin-bottom: 0.9rem; }
-  .eyebrow { font-size: 0.8rem; margin-bottom: 1rem; gap: 0.4rem; }
-  .hero-actions { gap: 0.6rem; width: 100%; }
-  .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
   .hero-stat-cards { grid-template-columns: 1fr; gap: 0.9rem; margin-top: 1.8rem; }
   .hero-stat-card { padding: 1.4rem 1rem; border-radius: 16px; }
   .stat-value { font-size: 1.45rem; }
