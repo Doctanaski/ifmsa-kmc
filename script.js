@@ -280,26 +280,22 @@
   /* ---------- init ---------- */
   activate(0);
 
-  /* ---------- About us / Join us tabs ---------- */
-  const tabs = Array.from(document.querySelectorAll('.tab'));
-  const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
-
-  const openTab = (name) => {
-    const target = tabs.find((t) => t.dataset.tab === name);
-    if (!target) return;
-    tabs.forEach((t) => {
-      const on = t === target;
-      t.classList.toggle('is-active', on);
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    tabPanels.forEach((p) => {
-      const on = p.id === 'panel-' + name;
-      p.classList.toggle('is-active', on);
-    });
-  };
-
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => openTab(tab.dataset.tab));
+  /* ---------- Feature Tab Cards Slider ---------- */
+  document.querySelectorAll('.feature-tab-card').forEach((card) => {
+    const track = card.querySelector('.card-slider-track');
+    if (!track) return;
+    const slides = Array.from(track.querySelectorAll('.card-slide'));
+    if (slides.length <= 1) return;
+    let curr = 0;
+    const showSlide = (n) => {
+      curr = (n + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (curr * 100) + '%)';
+      slides.forEach((s, idx) => s.classList.toggle('is-active', idx === curr));
+    };
+    const prevBtn = card.querySelector('.slider-btn.prev');
+    const nextBtn = card.querySelector('.slider-btn.next');
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showSlide(curr - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showSlide(curr + 1); });
   });
 
   /* ---------- "View the committees" jumps to the first committee slide ---------- */

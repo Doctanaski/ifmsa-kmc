@@ -17,7 +17,7 @@
   <header class="topbar">
     <div class="brand">
       <a class="brand-logo brand-logo-pk" href="#home">
-        <img src="assets/ifmsa-pakistan-logo-new.png" alt="IFMSA-Pakistan logo" />
+        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
       </a>
       <span class="brand-divider" aria-hidden="true"></span>
       <a class="brand-logo brand-logo-kmc" href="#home">
@@ -126,44 +126,82 @@
           </div>
         </div>
 
-        <!-- Know more about us — Join us / About us tabs -->
-        <section class="know" id="know">
-          <p class="eyebrow"><span class="pill" id="know-eyebrow">Know more about us</span></p>
-          <h2 class="know-title" id="about-title">One student body, every medical student's opportunity.</h2>
-
-          <div class="tabs" role="tablist" aria-label="About us and Join us">
-            <button class="tab is-active" role="tab" id="tab-btn-about" data-tab="about" aria-controls="panel-about" aria-selected="true">About us</button>
-            <button class="tab" role="tab" id="tab-btn-join" data-tab="join" aria-controls="panel-join" aria-selected="false">Join us</button>
-          </div>
-
-          <div class="tab-panels">
-            <div class="tab-panel is-active" role="tabpanel" id="panel-about" aria-labelledby="tab-btn-about">
-              <p class="tab-lead" id="about-body">
-                The Khyber Medical College Local Chapter is part of <strong>IFMSA-Pakistan</strong>, the sole national
-                member organisation of the International Federation of Medical Students' Associations in Pakistan.
-                Through six standing committees we act on medical education, professional and research exchanges,
-                public health, human rights and peace, and sexual &amp; reproductive health — right here in Peshawar.
-              </p>
-              <ul class="about-list">
-                <li><strong>SCOPE</strong> — professional clinical exchanges</li>
-                <li><strong>SCOME</strong> — medical education</li>
-                <li><strong>SCORA</strong> — sexual &amp; reproductive health</li>
-                <li><strong>SCOPH</strong> — public health</li>
-                <li><strong>SCORP</strong> — human rights &amp; peace</li>
-                <li><strong>SCORE</strong> — research exchanges</li>
-              </ul>
-              <a class="btn" href="#scope">Meet the committees ↓</a>
-            </div>
-
-            <div class="tab-panel" role="tabpanel" id="panel-join" aria-labelledby="tab-btn-join">
-              <p class="eyebrow" id="join-eyebrow">Ready when you are</p>
-              <h3 class="tab-title" id="join-title">One scroll can change a student's path.</h3>
-              <p class="tab-sub" id="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
-              <div class="join-actions">
-                <a class="btn btn-primary" id="join-btn1-link" href="https://ifmsa.org" target="_blank" rel="noopener"><span id="join-btn1">Visit IFMSA</span></a>
-                <a class="btn" id="join-btn2-link" href="mailto:ifmsa@kmc.edu.pk"><span id="join-btn2">Contact the local chapter</span></a>
+        <!-- Two Feature Cards — About Us & Join Us (inspired by IFMSA.org) -->
+        <section class="feature-tabs-section" id="know">
+          <div class="feature-tabs-grid">
+            <!-- Card 1: About Us -->
+            <article class="feature-tab-card" id="card-about">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-about-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-about-2"></div>
+                  </div>
+                </div>
+                <div class="card-slider-ctrls" aria-label="Image gallery controls">
+                  <button class="slider-btn prev" type="button" aria-label="Previous photo">‹</button>
+                  <button class="slider-btn next" type="button" aria-label="Next photo">›</button>
+                </div>
               </div>
-            </div>
+              
+              <div class="card-overlay"></div>
+              
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="about-title">About Us</h2>
+                <p class="card-desc" id="about-body">
+                  The Khyber Medical College Local Chapter is part of IFMSA-Pakistan — the sole national member organisation in Pakistan. Through six standing committees, we champion medical education, clinical &amp; research exchanges, and public health impact.
+                </p>
+                <a href="#scope" class="card-action-btn">
+                  <span>Meet the committees ↓</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 2: Join Us -->
+            <article class="feature-tab-card" id="card-join">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-join-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-join-2"></div>
+                  </div>
+                </div>
+                <div class="card-slider-ctrls" aria-label="Image gallery controls">
+                  <button class="slider-btn prev" type="button" aria-label="Previous photo">‹</button>
+                  <button class="slider-btn next" type="button" aria-label="Next photo">›</button>
+                </div>
+              </div>
+              
+              <div class="card-overlay"></div>
+              
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="join-title">Join Us</h2>
+                <p class="card-desc" id="join-sub">
+                  This section provides a comprehensive guide on how to join the International Federation of Medical Students' Associations (IFMSA) at Khyber Medical College.
+                </p>
+                <a href="https://ifmsa.org" target="_blank" rel="noopener" class="card-action-btn" id="join-btn1-link">
+                  <span id="join-btn1">Join IFMSA</span>
+                </a>
+              </div>
+            </article>
           </div>
         </section>
 
