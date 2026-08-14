@@ -20,7 +20,7 @@
       eyebrowRest: "Local Chapter 2026",
       title1: "Medical students.",
       title2: "Moving medicine forward.",
-      sub: "The Khyber Medical College local chapter of the International Federation of Medical Students' Associations — six standing committees, one scroll each.",
+      sub: "The Khyber Medical College local chapter of the International Federation of Medical Students' Associations — six standing committees, one chapter.",
       btn1Text: "Explore committees ↓",
       btn1Href: "#scope",
       btn2Text: "Join the chapter",
@@ -28,6 +28,11 @@
       mini1Num: "6", mini1Label: "Standing committees",
       mini2Num: "1.5M+", mini2Label: "Med students worldwide",
       mini3Num: "123", mini3Label: "Countries & territories"
+    },
+    about: {
+      eyebrow: "Know more about us",
+      title: "One student body, every medical student's opportunity.",
+      body: "The Khyber Medical College Local Chapter is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar."
     },
     join: {
       eyebrow: "Ready when you are",
@@ -50,6 +55,7 @@
       projects: d.projects || [],
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
+      about: DEFAULTS.about,
       join: DEFAULTS.join
     };
   }
@@ -90,6 +96,7 @@
 
       var site = merge(DEFAULTS.site, settings.site);
       var hero = merge(DEFAULTS.hero, settings.hero);
+      var about = merge(DEFAULTS.about, settings.about);
       var join = merge(DEFAULTS.join, settings.join);
 
       return {
@@ -98,6 +105,7 @@
         projects: projectsRes.data || [],
         site: site,
         hero: hero,
+        about: about,
         join: join
       };
     });
@@ -150,6 +158,13 @@
           '<li><span class="mini-num">' + h.mini2Num + '</span> ' + h.mini2Label + '</li>' +
           '<li><span class="mini-num">' + h.mini3Num + '</span> ' + h.mini3Label + '</li>';
       }
+    }
+
+    if (siteData.about) {
+      var a = siteData.about;
+      setText('know-eyebrow', a.eyebrow);
+      setText('about-title', a.title);
+      setText('about-body', a.body);
     }
 
     if (siteData.join) {

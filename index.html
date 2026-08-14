@@ -7,7 +7,7 @@
   <title>KMC × IFMSA | Khyber Medical College Local Chapter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="projects.css" />
 </head>
@@ -16,8 +16,8 @@
   <!-- Header -->
   <header class="topbar">
     <div class="brand">
-      <a class="brand-logo" href="#home">
-        <img src="assets/ifmsa-horizontal.png" alt="IFMSA logo" />
+      <a class="brand-logo brand-logo-pk" href="#home">
+        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
       </a>
       <span class="brand-divider" aria-hidden="true"></span>
       <a class="brand-logo brand-logo-kmc" href="#home">
@@ -37,39 +37,87 @@
 
   <main class="stage" id="top">
 
-    <!-- ============ 01 · HERO ============ -->
-    <section class="panel hero" data-slide="red" data-index="01" data-title="Home" id="home">
-      <div class="panel-inner">
-        <p class="eyebrow"><span class="pill" id="hero-eyebrow-pill">IFMSA Pakistan</span> <span id="hero-eyebrow-rest">· Local Chapter 2026</span></p>
-        <h1 class="hero-title" id="hero-title">Medical students.<br />Moving medicine forward.</h1>
-        <p class="hero-sub" id="hero-sub">
-          The <strong>Khyber Medical College</strong> local chapter of the International Federation of
-          Medical Students' Associations — six standing committees, one scroll each.
-        </p>
-        <div class="hero-actions">
-          <a href="#scope" class="btn btn-primary" id="hero-btn1-link"><span id="hero-btn1">Explore committees ↓</span></a>
-          <a href="#join" class="btn" id="hero-btn2-link"><span id="hero-btn2">Join the chapter</span></a>
+    <!-- ============ 01 · HOME (+ hero) ============ -->
+    <section class="panel home" data-slide="pak" data-index="01" data-title="Home" id="home">
+      <div class="home-wrap">
+
+        <div class="hero-top">
+          <div class="panel-inner">
+            <p class="eyebrow"><span class="pill" id="hero-eyebrow-pill">IFMSA Pakistan</span> <span id="hero-eyebrow-rest">· Local Chapter 2026</span></p>
+            <h1 class="hero-title" id="hero-title">Medical students.<br />Moving medicine forward.</h1>
+            <p class="hero-sub" id="hero-sub">
+              The <strong>Khyber Medical College</strong> local chapter of the International Federation of
+              Medical Students' Associations — six standing committees, one chapter.
+            </p>
+            <div class="hero-actions">
+              <a href="#scope" class="btn btn-primary" id="hero-btn1-link"><span id="hero-btn1">Explore committees ↓</span></a>
+              <a href="#join" class="btn" id="hero-btn2-link"><span id="hero-btn2">Join the chapter</span></a>
+            </div>
+            <ul class="hero-mini" id="hero-mini">
+              <li><span class="mini-num">6</span> Standing committees</li>
+              <li><span class="mini-num">1.5M+</span> Med students worldwide</li>
+              <li><span class="mini-num">123</span> Countries &amp; territories</li>
+            </ul>
+          </div>
+
+          <figure class="president">
+            <div class="pres-photo" role="img" aria-label="Placeholder portrait of the IFMSA KMC President">
+              <svg class="pres-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 20c0-3.8 3.6-6 8-6s8 2.2 8 6"></path>
+              </svg>
+              <span class="pres-placeholder">President · Placeholder</span>
+            </div>
+            <figcaption class="pres-message">
+              <span class="pres-label">A message from the President</span>
+              <blockquote class="pres-quote">“Welcome to the KMC chapter of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.”</blockquote>
+              <span class="pres-name">President — IFMSA KMC Local Chapter</span>
+            </figcaption>
+          </figure>
         </div>
-        <ul class="hero-mini" id="hero-mini">
-          <li><span class="mini-num">6</span> Standing committees</li>
-          <li><span class="mini-num">1.5M+</span> Med students worldwide</li>
-          <li><span class="mini-num">123</span> Countries &amp; territories</li>
-        </ul>
+
+        <!-- Know more about us — Join us / About us tabs -->
+        <section class="know" id="know">
+          <p class="eyebrow"><span class="pill" id="know-eyebrow">Know more about us</span></p>
+          <h2 class="know-title" id="about-title">One student body, every medical student's opportunity.</h2>
+
+          <div class="tabs" role="tablist" aria-label="About us and Join us">
+            <button class="tab is-active" role="tab" id="tab-btn-about" data-tab="about" aria-controls="panel-about" aria-selected="true">About us</button>
+            <button class="tab" role="tab" id="tab-btn-join" data-tab="join" aria-controls="panel-join" aria-selected="false">Join us</button>
+          </div>
+
+          <div class="tab-panels">
+            <div class="tab-panel is-active" role="tabpanel" id="panel-about" aria-labelledby="tab-btn-about">
+              <p class="tab-lead" id="about-body">
+                The Khyber Medical College Local Chapter is part of <strong>IFMSA-Pakistan</strong>, the sole national
+                member organisation of the International Federation of Medical Students' Associations in Pakistan.
+                Through six standing committees we act on medical education, professional and research exchanges,
+                public health, human rights and peace, and sexual &amp; reproductive health — right here in Peshawar.
+              </p>
+              <ul class="about-list">
+                <li><strong>SCOPE</strong> — professional clinical exchanges</li>
+                <li><strong>SCOME</strong> — medical education</li>
+                <li><strong>SCORA</strong> — sexual &amp; reproductive health</li>
+                <li><strong>SCOPH</strong> — public health</li>
+                <li><strong>SCORP</strong> — human rights &amp; peace</li>
+                <li><strong>SCORE</strong> — research exchanges</li>
+              </ul>
+              <a class="btn" href="#scope">Meet the committees ↓</a>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" id="panel-join" aria-labelledby="tab-btn-join">
+              <p class="eyebrow" id="join-eyebrow">Ready when you are</p>
+              <h3 class="tab-title" id="join-title">One scroll can change a student's path.</h3>
+              <p class="tab-sub" id="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
+              <div class="join-actions">
+                <a class="btn btn-primary" id="join-btn1-link" href="https://ifmsa.org" target="_blank" rel="noopener"><span id="join-btn1">Visit IFMSA</span></a>
+                <a class="btn" id="join-btn2-link" href="mailto:ifmsa@kmc.edu.pk"><span id="join-btn2">Contact the local chapter</span></a>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
-      <figure class="president">
-        <div class="pres-photo" role="img" aria-label="Placeholder portrait of the IFMSA KMC President">
-          <svg class="pres-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 20c0-3.8 3.6-6 8-6s8 2.2 8 6"></path>
-          </svg>
-          <span class="pres-placeholder">President · Placeholder</span>
-        </div>
-        <figcaption class="pres-message">
-          <span class="pres-label">A message from the President</span>
-          <blockquote class="pres-quote">“Welcome to the KMC chapter of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.”</blockquote>
-          <span class="pres-name">President — IFMSA KMC Local Chapter</span>
-        </figcaption>
-      </figure>
     </section>
 
     <!-- ============ 02 · SCOPE ============ -->
@@ -264,22 +312,11 @@
       </div>
     </section>
 
-    <!-- ============ 08 · JOIN ============ -->
-    <section class="panel join" data-slide="green" data-index="08" data-title="Join" id="join">
-      <div class="join-inner">
-        <p class="eyebrow" id="join-eyebrow">Ready when you are</p>
-        <h2 class="join-title" id="join-title">One scroll can change a student's path.</h2>
-        <p class="join-sub" id="join-sub">Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.</p>
-        <div class="join-actions">
-          <a class="btn btn-primary" id="join-btn1-link" href="https://ifmsa.org" target="_blank" rel="noopener"><span id="join-btn1">Visit IFMSA</span></a>
-          <a class="btn" id="join-btn2-link" href="mailto:ifmsa@kmc.edu.pk"><span id="join-btn2">Contact the local chapter</span></a>
-        </div>
-        <footer class="foot">
-          <span id="site-foot-1">IFMSA — Khyber Medical College, Peshawar</span>
-          <span id="site-foot-2">Built by students, for the future of medicine.</span>
-        </footer>
-      </div>
-    </section>
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-foot">
+      <span id="site-foot-1">IFMSA — Khyber Medical College, Peshawar</span>
+      <span id="site-foot-2">Built by students, for the future of medicine.</span>
+    </footer>
 
   </main>
 

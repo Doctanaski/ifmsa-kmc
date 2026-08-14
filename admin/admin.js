@@ -33,7 +33,7 @@
     isAdmin: false,
     committees: [],
     projects: [],
-    settings: { site: {}, hero: {}, join: {} },
+    settings: { site: {}, hero: {}, about: {}, join: {} },
     tab: 'projects',
     search: ''
   };
@@ -291,7 +291,7 @@
       if (rs[2].error) throw rs[2].error;
       state.committees = rs[0].data || [];
       state.projects = rs[1].data || [];
-      state.settings = { site: {}, hero: {}, join: {} };
+      state.settings = { site: {}, hero: {}, about: {}, join: {} };
       (rs[2].data || []).forEach(function (s) { state.settings[s.key] = s.value || {}; });
     });
   }
@@ -527,6 +527,7 @@
     var pane = el('tab-settings');
     var s = state.settings.site || {};
     var h = state.settings.hero || {};
+    var a = state.settings.about || {};
     var j = state.settings.join || {};
 
     pane.innerHTML =
@@ -556,7 +557,14 @@
           '<label>Stat 3 label<input type="text" id="h-m3l" value="' + esc(h.mini3Label || '') + '" /></label>' +
         '</div></div>' +
 
-      '<div class="card settings-section"><h3>Join (homepage)</h3>' +
+      '<div class="card settings-section"><h3>About tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          '<label>Eyebrow pill<input type="text" id="a-eyebrow" value="' + esc(a.eyebrow || '') + '" /></label>' +
+          '<label class="full">Title<input type="text" id="a-title" value="' + esc(a.title || '') + '" /></label>' +
+          '<label class="full">Body text<textarea id="a-body">' + esc(a.body || '') + '</textarea></label>' +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Join tab (homepage)</h3>' +
         '<div class="form-grid">' +
           '<label>Eyebrow<input type="text" id="j-eyebrow" value="' + esc(j.eyebrow || '') + '" /></label>' +
           '<label class="full">Title<input type="text" id="j-title" value="' + esc(j.title || '') + '" /></label>' +
@@ -589,6 +597,13 @@
           mini1Num: val('h-m1n').trim(), mini1Label: val('h-m1l').trim(),
           mini2Num: val('h-m2n').trim(), mini2Label: val('h-m2l').trim(),
           mini3Num: val('h-m3n').trim(), mini3Label: val('h-m3l').trim()
+        }
+      },
+      {
+        key: 'about',
+        value: {
+          eyebrow: val('a-eyebrow').trim(), title: val('a-title').trim(),
+          body: val('a-body').trim()
         }
       },
       {

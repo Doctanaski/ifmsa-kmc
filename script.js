@@ -1,8 +1,8 @@
 /* ============================================================
    IFMSA · Khyber Medical College
-   Scroll-based section movement.
-   One scroll gesture = one section. Committee carousels only
-   move via their up/down arrow buttons (or by dragging on touch).
+   Section movement + carousels + about/join tabs.
+   The home section is a regular scrollable page; committee
+   carousels move via their up/down arrow buttons (or dragging).
    ============================================================ */
 
 (function () {
@@ -11,7 +11,6 @@
   const stage = document.getElementById('top');
   const panels = Array.from(document.querySelectorAll('.panel'));
   const rail = document.getElementById('rail');
-  const topbar = document.querySelector('.topbar');
   const isMobile = window.matchMedia('(max-width: 640px)');
 
   let isAnimating = false;
@@ -34,8 +33,6 @@
     activeIndex = i;
 
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
-
-    if (topbar) topbar.classList.toggle('is-hidden', i !== 0);
 
     const accent = getComputedStyle(panels[i]).getPropertyValue('--panel-accent').trim()
       || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
@@ -143,39 +140,10 @@
   });
   };
 
-  /* ---------- wheel: one gesture per section ---------- */
-  let wheelBusy = false;
-
-  stage.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    if (isAnimating) return;
-
-    syncActiveFromScroll();
-
-    const delta = e.deltaY;
-    if (Math.abs(delta) < 8) return;
-
-    if (!wheelBusy) {
-      wheelBusy = true;
-      if (delta > 0) next(); else prev();
-      window.setTimeout(() => { wheelBusy = false; }, 150);
-    }
-  }, { passive: false });
-
-  /* ---------- keyboard ---------- */
-  window.addEventListener('keydown', (e) => {
-    if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
-
-    const keyDir = { ' ': 1, PageDown: 1, ArrowDown: 1, PageUp: -1, ArrowUp: -1 }[e.key];
-
-    if (keyDir) {
-      e.preventDefault();
-      if (keyDir > 0) next(); else prev();
-      return;
-    }
-    if (e.key === 'Home') { e.preventDefault(); goTo(0); return; }
-    if (e.key === 'End') { e.preventDefault(); goTo(panels.length - 1); }
-  });
+  /* ---------- wheel: natural scrolling (home is a regular scrollable page,
+     committee panels align via scroll-snap instead of manual jumps) ---------- */
+  /* (wheel and keyboard are intentionally left to the browser so the home
+     section can scroll freely down to the About us / Join us tabs) */
 
   /* ---------- touch: drag a carousel's cards, otherwise swipe sections ---------- */
   let touchY = null;
@@ -186,7 +154,7 @@
     touchY = e.touches[0].clientY;
     const targetPanel = e.target.closest('.panel-carousel');
     touchCar = (!isMobile.matches && targetPanel) ? (carousels.get(targetPanel) || null) : null;
-    touchHero = !!e.target.closest('.hero');
+    touchHero = !!e.target.closest('.home');
   }, { passive: true });
   stage.addEventListener('touchmove', (e) => {
     if (touchY === null) return;
@@ -232,6 +200,39 @@
 
   /* ---------- init ---------- */
   activate(0);
+
+  /* ---------- About us / Join us tabs ---------- */
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+
+  const openTab = (name) => {
+    const target = tabs.find((t) => t.dataset.tab === name);
+    if (!target) return;
+    tabs.forEach((t) => {
+      const on = t === target;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    tabPanels.forEach((p) => {
+      const on = p.id === 'panel-' + name;
+      p.classList.toggle('is-active', on);
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => openTab(tab.dataset.tab));
+  });
+
+  const openTabFromHash = () => {
+    const h = (location.hash || '').replace('#', '').split('?')[0];
+    if (h === 'join' || h === 'about') {
+      openTab(h);
+      const sec = document.getElementById('know');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+  window.addEventListener('hashchange', openTabFromHash);
+  openTabFromHash();
 
   /* ---------- load live data (falls back to IFMSA_DATA) ---------- */
   window.loadSiteData().then((siteData) => {

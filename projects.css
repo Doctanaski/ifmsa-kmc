@@ -286,13 +286,8 @@
 
 /* entrance animation */
 .panel-carousel .car {
-  opacity: 0;
-  transform: translateY(16px);
-}
-.panel-carousel.is-active .car {
   opacity: 1;
   transform: none;
-  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
 }
 
 @media (max-width: 820px) {

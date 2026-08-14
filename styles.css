@@ -18,6 +18,14 @@
   --gold:          #d29922;
   --purple:        #bc8cff;
 
+  /* IFMSA-Pakistan palette (sampled from the official logo) */
+  --pak-blue:      #282467;   /* globe / wordmark — deep IFMSA navy   */
+  --pak-blue-2:    #1e1b52;   /* darker navy                          */
+  --pak-blue-soft: #7d79e8;   /* lightened navy for accents/open text */
+  --pak-green:     #0f9c15;   /* Asclepius snake — vivid green        */
+  --pak-green-2:   #217d34;   /* darker green                         */
+  --pak-green-soft:#46c757;   /* light green for highlights           */
+
   /* Official IFMSA standing-committee colours (brand manual) */
   --scope-col:   #0180C8;   /* SCOPE  — blue      */
   --score-col:   #2F4A9B;   /* SCORE  — deep blue */
@@ -26,7 +34,7 @@
   --scorp-col:   #5F913F;   /* SCORP  — green      */
   --scom-col:    #e6edf3;   /* SCOME  — white      */
   --mono:  "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-  --sans:  "Helvetica Neue", Helvetica, Arial, -apple-system, "Segoe UI", sans-serif;
+  --sans:  "Montserrat", "Helvetica Neue", Helvetica, Arial, -apple-system, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -48,7 +56,7 @@ body {
 .stage {
   height: 100vh;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   scroll-behavior: smooth;
   scrollbar-width: none;          /* Firefox */
   -ms-overflow-style: none;       /* old Edge/IE */
@@ -168,31 +176,63 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .panel[data-slide="scoph"]  { --panel-accent: var(--scoph-col); --panel-fill: var(--scoph-col); }
 .panel[data-slide="scorp"]  { --panel-accent: var(--scorp-col); --panel-fill: var(--scorp-col); }
 .panel[data-slide="score"]  { --panel-accent: var(--score-col); --panel-fill: var(--score-col); }
-.panel[data-slide="red"]    { --panel-accent: var(--red);      --panel-fill: var(--red); }
+.panel[data-slide="pak"]    { --panel-accent: var(--pak-green); --panel-fill: var(--pak-blue); }
 .panel[data-slide="green"]  { --panel-accent: var(--green);     --panel-fill: var(--green); }
 
-/* hero + join stay on the dark base — only committees get solid colour */
-.panel.hero,
-.panel.join { --panel-fill: var(--bg); }
-.panel.hero[data-slide="red"] { --panel-fill: #000; }
+/* the home section stays on the IFMSA-Pakistan navy — no solid committee fill */
+.panel.home { --panel-fill: transparent; }
 
-/* red-on-black hero theming */
-.panel[data-slide="red"] .hero-title,
-.panel[data-slide="red"] .mini-num { color: var(--red); }
-.panel[data-slide="red"] .pill {
-  color: var(--red);
-  background: rgba(248, 81, 73, 0.12);
-  border-color: rgba(248, 81, 73, 0.4);
+/* IFMSA-Pakistan navy-and-green home theming */
+.panel[data-slide="pak"] {
+  --panel-fg: #ffffff;
+  --panel-fg-muted: rgba(233, 235, 255, 0.8);
+  --panel-fg-faint: rgba(233, 235, 255, 0.56);
+  --panel-card-bg: rgba(14, 12, 46, 0.5);
+  --panel-card-border: rgba(255, 255, 255, 0.2);
 }
-.panel[data-slide="red"] .btn-primary {
-  background: var(--red);
-  border-color: var(--red);
-  color: #000;
+.panel[data-slide="pak"] .hero-title,
+.panel[data-slide="pak"] .mini-num,
+.panel[data-slide="pak"] .know-title,
+.panel[data-slide="pak"] .tab-title { color: #ffffff; }
+.panel[data-slide="pak"] .pill {
+  color: var(--pak-green-soft);
+  background: rgba(15, 156, 21, 0.14);
+  border-color: rgba(15, 156, 21, 0.5);
 }
-.panel[data-slide="red"] .btn-primary:hover {
-  background: #ff7b72;
-  border-color: #ff7b72;
+.panel[data-slide="pak"] .btn-primary {
+  background: var(--pak-green);
+  border-color: var(--pak-green-2);
+  color: #fff;
 }
+.panel[data-slide="pak"] .btn-primary:hover {
+  background: var(--pak-green-soft);
+  border-color: var(--pak-green-soft);
+  color: #04260a;
+}
+.panel[data-slide="pak"] .btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+.panel[data-slide="pak"] .btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+.panel[data-slide="pak"] .pres-label,
+.panel[data-slide="pak"] .pres-placeholder { color: var(--pak-green-soft); }
+.panel[data-slide="pak"] .pres-quote { color: #e9ebff; }
+.panel[data-slide="pak"] .pres-message {
+  border-color: rgba(125, 121, 232, 0.35);
+  background: rgba(30, 27, 82, 0.55);
+}
+.panel[data-slide="pak"] .about-list strong { color: var(--pak-green-soft); }
+.panel[data-slide="pak"] .tab.is-active {
+  color: #fff;
+  border-color: var(--pak-green);
+  background: rgba(15, 156, 21, 0.16);
+}
+.panel[data-slide="pak"] .tab { color: #b9b6f2; }
+.panel[data-slide="pak"] .tab:not(.is-active):hover { color: #fff; }
 
 /* foreground per slide: white on colours, dark on the white SCOME */
 .panel {
@@ -274,16 +314,32 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   align-self: center;
 }
 
-/* ---------- hero ---------- */
-.hero {
-  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
-  align-items: center;
-  padding-bottom: 2rem;
-  height: 100vh;
-  overflow: hidden;
+/* ---------- home / hero ---------- */
+.panel.home {
+  grid-template-columns: 1fr;
+  align-items: start;
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+  padding-top: 4.5rem;
+  background:
+    radial-gradient(90% 55% at 82% -5%, rgba(80, 74, 218, 0.4), transparent 62%),
+    radial-gradient(70% 48% at 4% 88%, rgba(15, 156, 21, 0.24), transparent 60%),
+    linear-gradient(168deg, #1c1a4f 0%, var(--pak-blue-2) 42%, #0e0c2e 100%);
 }
 
-.hero .panel-inner { max-width: 62ch; }
+.home-wrap { width: 100%; }
+
+.hero-top {
+  display: grid;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.hero-top .panel-inner { max-width: 62ch; }
 
 .eyebrow {
   display: flex;
@@ -362,7 +418,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 .btn-primary:hover { background: #79beff; border-color: #79beff; color: #04101f; }
 
-/* ---------- president card (hero) ---------- */
+/* ---------- president card (home) ---------- */
 .president {
   display: flex;
   flex-direction: column;
@@ -378,10 +434,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   height: clamp(280px, 54vh, 440px);
   aspect-ratio: 4 / 5;
   border-radius: 16px;
-  border: 1px solid rgba(248, 81, 73, 0.35);
+  border: 1px solid rgba(125, 121, 232, 0.45);
   background:
-    radial-gradient(120% 90% at 72% 0%, rgba(248, 81, 73, 0.18), transparent 62%),
-    linear-gradient(160deg, #1c2128, #0b0f14);
+    radial-gradient(120% 90% at 72% 0%, rgba(125, 121, 232, 0.28), transparent 62%),
+    linear-gradient(160deg, #232068, #0e0c2e);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -391,7 +447,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .pres-silhouette {
   width: 40%;
   height: auto;
-  color: rgba(248, 81, 73, 0.72);
+  color: rgba(70, 199, 87, 0.85);
 }
 
 .pres-placeholder {
@@ -402,17 +458,17 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-size: 0.64rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(248, 81, 73, 0.85);
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(248, 81, 73, 0.3);
+  color: rgba(70, 199, 87, 0.9);
+  background: rgba(9, 8, 30, 0.6);
+  border: 1px solid rgba(125, 121, 232, 0.35);
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
 }
 
 .pres-message {
-  border: 1px solid rgba(248, 81, 73, 0.28);
+  border: 1px solid rgba(125, 121, 232, 0.35);
   border-radius: 12px;
-  background: rgba(22, 27, 34, 0.72);
+  background: rgba(22, 27, 34, 0.55);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 1rem 1.15rem 1.1rem;
@@ -440,6 +496,119 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-weight: 500;
 }
 
+/* ---------- know more (About us / Join us tabs) ---------- */
+.know {
+  margin-top: clamp(4rem, 9vh, 6.5rem);
+  max-width: 48rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: clamp(2.4rem, 5vh, 3.5rem);
+}
+
+.know .eyebrow { margin-bottom: 0.9rem; }
+
+.know-title {
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1.8rem;
+  max-width: 30ch;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.6rem;
+}
+
+.tab {
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #b9b6f2;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease),
+              background 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.tab:not(.is-active):hover { color: #fff; border-color: rgba(255, 255, 255, 0.45); }
+.tab.is-active {
+  color: #fff;
+  border-color: var(--pak-green);
+  background: rgba(15, 156, 21, 0.16);
+  box-shadow: 0 0 18px rgba(15, 156, 21, 0.25);
+}
+.tab:active { transform: translateY(1px); }
+.tab:focus-visible { outline: 2px solid var(--pak-green-soft); outline-offset: 2px; }
+
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; animation: fade-in 0.4s var(--ease); }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.tab-panel { color: #e9ebff; }
+
+.tab-lead {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.7;
+  max-width: 46rem;
+  color: #e9ebff;
+  margin-bottom: 1.6rem;
+}
+.tab-lead strong { color: #fff; font-weight: 600; }
+
+.about-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0 0 1.9rem;
+  max-width: 40rem;
+}
+.about-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: #d7d5ff;
+  font-size: 0.98rem;
+}
+.about-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.5em;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--pak-green);
+  box-shadow: 0 0 10px rgba(15, 156, 21, 0.45);
+}
+.about-list strong { color: var(--pak-green-soft); font-weight: 700; }
+
+.tab-title {
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin-bottom: 1rem;
+}
+
+.tab-sub {
+  color: #c9c7ff;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 46rem;
+  margin-bottom: 1.8rem;
+}
+
+.join-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
 /* ---------- header ---------- */
 .topbar {
   position: fixed;
@@ -466,6 +635,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
 
 .brand-logo img { display: block; height: 28px; width: auto; }
+.brand-logo-pk img { height: 40px; max-width: 200px; object-fit: contain; }
 .brand-logo-kmc img { height: 34px; max-width: 220px; object-fit: contain; }
 
 .brand-divider {
@@ -531,59 +701,33 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   box-shadow: 0 0 14px color-mix(in srgb, var(--dot-col, var(--accent)) 55%, transparent);
 }
 
-/* ---------- join ---------- */
-.join {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border-bottom: none;
-}
-
-.join-inner { max-width: 720px; }
-
-.join-inner .eyebrow { justify-content: center; }
-
-.join-title {
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 650;
-  letter-spacing: -0.025em;
-  line-height: 1.08;
-  margin-bottom: 1.2rem;
-}
-
-.join-sub { color: var(--fg-muted); font-size: 1.1rem; margin-bottom: 2rem; }
-
-.join-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
-
-.foot {
-  margin-top: 4.5rem;
+/* ---------- site footer ---------- */
+.site-foot {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 30vh;
+  padding: 4rem clamp(1.5rem, 6vw, 6rem);
+  text-align: center;
+  background: linear-gradient(180deg, #0e0c2e, var(--bg));
   color: var(--fg-faint);
   font-size: 0.82rem;
+  border-top: 1px solid var(--border-soft);
 }
 
-/* ---------- entrance animation for active slide ---------- */
+/* ---------- panels always visible (regular scrollable page) ---------- */
 .panel .col-body,
 .panel .col-meta,
-.hero > * {
-  opacity: 0;
-  transform: translateY(14px);
-}
-.panel.is-active > .col-meta,
-.panel.is-active > .col-body,
-.hero.is-active > * {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.55s var(--ease),
-              transform 0.55s var(--ease);
-}
+.panel .panel-inner,
+.panel .president,
+.panel .home-wrap,
+.panel .join-inner { opacity: 1; transform: none; }
 
 /* ---------- mobile ---------- */
 @media (max-height: 700px) {
-  .hero { padding-top: 4rem; padding-bottom: 1rem; }
+  .panel.home { padding-top: 4rem; padding-bottom: 2rem; }
   .hero-title { font-size: clamp(1.8rem, 4.5vh + 1vw, 3rem); }
   .hero-sub { margin-bottom: 1rem; }
   .hero-actions { gap: 0.6rem; }
@@ -605,7 +749,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
     padding: 6.5rem 1.5rem 3.5rem;
   }
   .rail { display: none; }
-  .hero { grid-template-columns: 1fr; }
+  .hero-top { grid-template-columns: 1fr; gap: 2rem; }
   .president { align-items: stretch; margin-left: 0; max-width: 100%; }
   .pres-photo { width: 100%; height: clamp(220px, 34vh, 300px); aspect-ratio: auto; }
   .col-meta { flex-direction: row; align-items: baseline; gap: 0.85rem; }
@@ -629,9 +773,9 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
      so every snapped committee slide fills the viewport exactly (no peeking) */
   .stage { height: 100vh; height: 100svh; scroll-snap-type: y proximity; }
   .panel { min-height: 100svh; scroll-snap-stop: normal; }
-  /* the hero is taller than the viewport on phones — make it scroll freely
-     down to the president's message instead of snap-pulling to the committee */
-  .hero { height: auto; min-height: 100svh; overflow: visible; scroll-snap-align: none; }
+  /* the home section is taller than the viewport on phones — scroll freely
+     down through the president's message and the tabs without snap-pulling */
+  .panel.home { height: auto; min-height: 100svh; overflow: visible; scroll-snap-align: none; }
 
   .panel {
     padding: 5rem 1.25rem 2.5rem;
@@ -651,6 +795,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .topbar { padding: 0.65rem 1rem; gap: 0.75rem; }
   .brand { gap: 0.6rem; }
   .brand-logo img { height: 24px; }
+  .brand-logo-pk img { height: 32px; }
   .brand-divider { height: 22px; }
   #navbar { gap: 0.9rem; }
   .nav-link { font-size: 0.82rem; }
@@ -669,11 +814,16 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .pres-message { padding: 0.85rem 0.95rem; }
   .pres-quote { font-size: 0.9rem; }
 
-  /* join */
-  .join-title { font-size: clamp(1.7rem, 8vw, 2.2rem); }
-  .join-sub { font-size: 1rem; margin-bottom: 1.6rem; }
+  /* tabs */
+  .know { margin-top: 3rem; padding-top: 2rem; }
+  .tab { padding: 0.5rem 1.15rem; font-size: 0.9rem; }
+  .tab-lead { font-size: 1rem; }
+  .about-list { gap: 0.5rem; }
+  .about-list li { font-size: 0.92rem; }
+  .tab-title { font-size: clamp(1.5rem, 7vw, 1.95rem); }
+  .tab-sub { font-size: 0.98rem; margin-bottom: 1.6rem; }
   .join-actions .btn { flex: 1 1 auto; justify-content: center; }
-  .foot { margin-top: 3rem; font-size: 0.78rem; }
+  .site-foot { min-height: 24vh; font-size: 0.78rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
