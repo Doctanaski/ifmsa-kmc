@@ -48,13 +48,18 @@
   /* ---------- navigation ---------- */
   let animTimer = null;
 
-  /* scroll offset at which each panel's top sits flush with the stage top */
-  const panelTop = (i) => panels[i].getBoundingClientRect().top + stage.scrollTop;
-  const isSnapped = (i) => Math.abs(stage.scrollTop - panelTop(i)) < 4;
+  /* panel tops are stable in normal flow, so measure once instead of forcing
+     a synchronous layout reflow on every scroll frame */
+  let panelTops = [];
+  const measurePanelTops = () => {
+    panelTops = panels.map((p) => p.getBoundingClientRect().top + stage.scrollTop);
+  };
+  const panelTop = (i) => panelTops[i];
+  const isSnapped = (i) => Math.abs(stage.scrollTop - panelTops[i]) < 4;
 
   /* the home page is free-scrollable, but only as far as the jump button —
      the visitor can never scroll past it into the first committee slide */
-  const homeMaxTop = () => Math.max(0, panels[0].offsetHeight - stage.clientHeight);
+  const homeMaxTop = () => Math.max(0, panelTops[1] - stage.clientHeight);
 
   const beginAnim = () => {
     isAnimating = true;
@@ -253,7 +258,7 @@
     let best = 0;
     const pos = stage.scrollTop + 1;
     panels.forEach((p, idx) => {
-      if (p.getBoundingClientRect().top + stage.scrollTop <= pos) best = idx;
+      if (panelTops[idx] <= pos) best = idx;
     });
     if (best !== activeIndex) activate(best);
   };
@@ -267,7 +272,7 @@
   })();
 
   stage.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', () => { measurePanelTops(); onScroll(); });
 
   /* hard ceiling on the home page: never let the scroll spill past the jump
      button into the committee slides (safe with momentum / touch / scrollbar) */
@@ -279,24 +284,8 @@
 
   /* ---------- init ---------- */
   activate(0);
-
-  /* ---------- Feature Tab Cards Slider ---------- */
-  document.querySelectorAll('.feature-tab-card').forEach((card) => {
-    const track = card.querySelector('.card-slider-track');
-    if (!track) return;
-    const slides = Array.from(track.querySelectorAll('.card-slide'));
-    if (slides.length <= 1) return;
-    let curr = 0;
-    const showSlide = (n) => {
-      curr = (n + slides.length) % slides.length;
-      track.style.transform = 'translateX(-' + (curr * 100) + '%)';
-      slides.forEach((s, idx) => s.classList.toggle('is-active', idx === curr));
-    };
-    const prevBtn = card.querySelector('.slider-btn.prev');
-    const nextBtn = card.querySelector('.slider-btn.next');
-    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showSlide(curr - 1); });
-    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showSlide(curr + 1); });
-  });
+  measurePanelTops();
+  window.addEventListener('load', () => measurePanelTops());
 
   /* ---------- "View the committees" jumps to the first committee slide ---------- */
   const committeesBtn = document.getElementById('btn-committees');
@@ -322,5 +311,6 @@
   window.loadSiteData().then((siteData) => {
     window.applySiteSettings(siteData);
     buildCarousels(siteData);
+    measurePanelTops();
   });
 })();

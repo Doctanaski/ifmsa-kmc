@@ -57,7 +57,6 @@ body {
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
   scrollbar-width: none;          /* Firefox */
   -ms-overflow-style: none;       /* old Edge/IE */
 }
@@ -583,9 +582,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .pres-message {
   border: 1px solid rgba(125, 121, 232, 0.35);
   border-radius: 12px;
-  background: rgba(22, 27, 34, 0.55);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  background: rgba(22, 27, 34, 0.82);
   padding: 1rem 1.15rem 1.1rem;
 }
 
@@ -705,45 +702,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
     linear-gradient(160deg, #161234 0%, #102619 100%);
 }
 
-/* slider navigation buttons */
-.card-slider-ctrls {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 4;
-  display: flex;
-  gap: 0.5rem;
-  opacity: 0;
-  transition: opacity 0.25s var(--ease);
-}
-
-.feature-tab-card:hover .card-slider-ctrls {
-  opacity: 1;
-}
-
-.slider-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(8px);
-  border: none;
-  color: #1e1b52;
-  font-size: 1.25rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s var(--ease);
-}
-
-.slider-btn:hover {
-  background: #ffffff;
-  transform: scale(1.1);
-}
-
 /* dark gradient overlay */
 .card-overlay {
   position: absolute;
@@ -753,7 +711,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   pointer-events: none;
 }
 
-/* circular plus badge on top left */
+/* circular icon badge on top left */
 .card-badge-plus {
   position: absolute;
   top: 1.5rem;
@@ -779,7 +737,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .feature-tab-card:hover .card-badge-plus {
-  transform: rotate(90deg) scale(1.08);
+  transform: scale(1.08);
   background: var(--pak-green);
 }
 
