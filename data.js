@@ -33,16 +33,22 @@
     about: {
       eyebrow: "Know more about us",
       title: "One student body, every medical student's opportunity.",
-      body: "The Khyber Medical College Local Chapter is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar."
+      body: "The Khyber Medical College Local Chapter is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar.",
+      btnText: "Join Us",
+      btnHref: "#card-join",
+      img1: "",
+      img2: ""
     },
     join: {
       eyebrow: "Ready when you are",
       title: "One scroll can change a student's path.",
       sub: "Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.",
-      btn1Text: "Visit IFMSA",
-      btn1Href: "https://ifmsa.org",
+      btn1Text: "About Us",
+      btn1Href: "#card-about",
       btn2Text: "Contact the local chapter",
-      btn2Href: "mailto:ifmsa@kmc.edu.pk"
+      btn2Href: "mailto:ifmsa@kmc.edu.pk",
+      img1: "",
+      img2: ""
     }
   };
 
@@ -138,6 +144,13 @@
       var el = byId(id);
       if (el && text != null) el.textContent = text;
     };
+    var setCardBg = function (cls, url) {
+      if (!url) return;
+      var els = document.querySelectorAll('.' + cls);
+      for (var i = 0; i < els.length; i++) {
+        els[i].style.backgroundImage = 'url("' + String(url).replace(/"/g, '&quot;') + '")';
+      }
+    };
 
     if (siteData.hero) {
       var h = siteData.hero;
@@ -182,6 +195,10 @@
       setText('know-eyebrow', a.eyebrow);
       setText('about-title', a.title);
       setText('about-body', a.body);
+      setText('about-btn1', a.btnText);
+      var ab = byId('about-btn1-link'); if (ab && a.btnHref != null) ab.setAttribute('href', a.btnHref);
+      setCardBg('bg-about-1', a.img1);
+      setCardBg('bg-about-2', a.img2);
     }
 
     if (siteData.join) {
@@ -193,6 +210,8 @@
       setText('join-btn2', j.btn2Text);
       var jb1 = byId('join-btn1-link'); if (jb1 && j.btn1Href != null) jb1.setAttribute('href', j.btn1Href);
       var jb2 = byId('join-btn2-link'); if (jb2 && j.btn2Href != null) jb2.setAttribute('href', j.btn2Href);
+      setCardBg('bg-join-1', j.img1);
+      setCardBg('bg-join-2', j.img2);
     }
 
     if (siteData.site) {

@@ -564,6 +564,10 @@
           '<label>Eyebrow pill<input type="text" id="a-eyebrow" value="' + esc(a.eyebrow || '') + '" /></label>' +
           '<label class="full">Title<input type="text" id="a-title" value="' + esc(a.title || '') + '" /></label>' +
           '<label class="full">Body text<textarea id="a-body">' + esc(a.body || '') + '</textarea></label>' +
+          '<label>Button text<input type="text" id="a-btn1t" value="' + esc(a.btnText || '') + '" /></label>' +
+          '<label>Button href<input type="text" id="a-btn1h" value="' + esc(a.btnHref || '') + '" /></label>' +
+          '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="a-img1" value="' + esc(a.img1 || '') + '" /></label>' +
+          '<label class="full">Card image 2 URL<input type="text" id="a-img2" value="' + esc(a.img2 || '') + '" /></label>' +
         '</div></div>' +
 
       '<div class="card settings-section"><h3>Join tab (homepage)</h3>' +
@@ -575,6 +579,8 @@
           '<label>Button 1 href<input type="text" id="j-btn1h" value="' + esc(j.btn1Href || '') + '" /></label>' +
           '<label>Button 2 text<input type="text" id="j-btn2t" value="' + esc(j.btn2Text || '') + '" /></label>' +
           '<label>Button 2 href<input type="text" id="j-btn2h" value="' + esc(j.btn2Href || '') + '" /></label>' +
+          '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="j-img1" value="' + esc(j.img1 || '') + '" /></label>' +
+          '<label class="full">Card image 2 URL<input type="text" id="j-img2" value="' + esc(j.img2 || '') + '" /></label>' +
         '</div>' +
         '<div class="form-actions"><button class="btn btn-primary" id="settings-save">Save settings</button></div>' +
       '</div>';
@@ -606,7 +612,9 @@
         key: 'about',
         value: {
           eyebrow: val('a-eyebrow').trim(), title: val('a-title').trim(),
-          body: val('a-body').trim()
+          body: val('a-body').trim(),
+          btnText: val('a-btn1t').trim(), btnHref: val('a-btn1h').trim(),
+          img1: val('a-img1').trim(), img2: val('a-img2').trim()
         }
       },
       {
@@ -615,7 +623,8 @@
           eyebrow: val('j-eyebrow').trim(), title: val('j-title').trim(),
           sub: val('j-sub').trim(),
           btn1Text: val('j-btn1t').trim(), btn1Href: val('j-btn1h').trim(),
-          btn2Text: val('j-btn2t').trim(), btn2Href: val('j-btn2h').trim()
+          btn2Text: val('j-btn2t').trim(), btn2Href: val('j-btn2h').trim(),
+          img1: val('j-img1').trim(), img2: val('j-img2').trim()
         }
       }
     ];

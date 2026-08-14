@@ -274,10 +274,20 @@
   stage.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => { measurePanelTops(); onScroll(); });
 
+  /* parallax: the about/join card photos drift as the hero scrolls */
+  const cardBgEls = Array.from(document.querySelectorAll('.card-img-bg'));
+  const updateCardParallax = () => {
+    const y = stage.scrollTop;
+    for (let i = 0; i < cardBgEls.length; i++) {
+      cardBgEls[i].style.backgroundPosition = 'center ' + (y * 0.12) + 'px';
+    }
+  };
+
   /* hard ceiling on the home page: never let the scroll spill past the jump
      button into the committee slides (safe with momentum / touch / scrollbar) */
   stage.addEventListener('scroll', () => {
     if (activeIndex !== 0) return;
+    updateCardParallax();
     const maxTop = homeMaxTop();
     if (stage.scrollTop > maxTop) stage.scrollTop = maxTop;
   }, { passive: true });
@@ -285,6 +295,7 @@
   /* ---------- init ---------- */
   activate(0);
   measurePanelTops();
+  updateCardParallax();
   window.addEventListener('load', () => measurePanelTops());
 
   /* ---------- "View the committees" jumps to the first committee slide ---------- */
