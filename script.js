@@ -140,10 +140,54 @@
   });
   };
 
-  /* ---------- wheel: natural scrolling (home is a regular scrollable page,
-     committee panels align via scroll-snap instead of manual jumps) ---------- */
-  /* (wheel and keyboard are intentionally left to the browser so the home
-     section can scroll freely down to the About us / Join us tabs) */
+  /* ---------- wheel: free scroll on the home page, then one slide per gesture
+     once the visitor has left the hero (from the first committee onward) ---------- */
+  let wheelBusy = false;
+
+  stage.addEventListener('wheel', (e) => {
+    const delta = e.deltaY;
+
+    /* keep the home section a regular scrollable page */
+    if (activeIndex === 0) return;
+
+    const dir = delta > 0 ? 1 : -1;
+    const canGo = activeIndex + dir > 0 && activeIndex + dir < panels.length;
+
+    /* you've scrolled past the last committee toward the footer → native scroll */
+    const lastPanel = panels[panels.length - 1];
+    const pastLast = -lastPanel.getBoundingClientRect().top > 24;
+
+    /* boundaries (SCOPE → home, SCORE → footer) stay free-scrollable */
+    if (pastLast || !canGo(dir)) return;
+
+    if (Math.abs(delta) < 8) return;
+    e.preventDefault();
+    if (isAnimating) return;
+
+    syncActiveFromScroll();
+
+    if (!wheelBusy) {
+      wheelBusy = true;
+      if (delta > 0) next(); else prev();
+      window.setTimeout(() => { wheelBusy = false; }, 150);
+    }
+  }, { passive: false });
+
+  /* ---------- keyboard: only jump slides once out of the home page ---------- */
+  window.addEventListener('keydown', (e) => {
+    if (activeIndex === 0) return;
+    if (e.key === ' ' && e.target && e.target.tagName === 'BUTTON') return;
+
+    const keyDir = { ' ': 1, PageDown: 1, ArrowDown: 1, PageUp: -1, ArrowUp: -1 }[e.key];
+
+    if (keyDir) {
+      e.preventDefault();
+      if (keyDir > 0) next(); else prev();
+      return;
+    }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); return; }
+    if (e.key === 'End') { e.preventDefault(); goTo(panels.length - 1); }
+  });
 
   /* ---------- touch: drag a carousel's cards, otherwise swipe sections ---------- */
   let touchY = null;
@@ -222,6 +266,12 @@
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => openTab(tab.dataset.tab));
   });
+
+  /* ---------- "View the committees" jumps to the first committee slide ---------- */
+  const committeesBtn = document.getElementById('btn-committees');
+  if (committeesBtn) {
+    committeesBtn.addEventListener('click', () => goTo(1));
+  }
 
   const openTabFromHash = () => {
     const h = (location.hash || '').replace('#', '').split('?')[0];
