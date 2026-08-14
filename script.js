@@ -43,18 +43,40 @@
   };
 
   /* ---------- navigation ---------- */
-  const goTo = (index) => {
-    if (isAnimating) return;
-    index = Math.max(0, Math.min(panels.length - 1, index));
-    if (index === activeIndex) return;
+  let animTimer = null;
 
+  /* scroll offset at which each panel's top sits flush with the stage top */
+  const panelTop = (i) => panels[i].getBoundingClientRect().top + stage.scrollTop;
+  const isSnapped = (i) => Math.abs(stage.scrollTop - panelTop(i)) < 4;
+
+  const beginAnim = () => {
     isAnimating = true;
-    panels[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    window.setTimeout(() => { isAnimating = false; }, 800);
+    window.clearTimeout(animTimer);
+    animTimer = window.setTimeout(() => { isAnimating = false; }, 1200);
+  };
+  const stopAnim = () => {
+    window.clearTimeout(animTimer);
+    isAnimating = false;
+  };
+
+  const goTo = (index) => {
+    index = Math.max(0, Math.min(panels.length - 1, index));
+    const top = panelTop(index);
+    activate(index);
+
+    if (Math.abs(stage.scrollTop - top) < 2) { stopAnim(); return; }
+
+    beginAnim();
+    stage.scrollTo({ top, behavior: 'smooth' });
   };
 
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
+
+  /* drop the animation lock as soon as the browser finishes moving */
+  if ('onscrollend' in stage) {
+    stage.addEventListener('scrollend', stopAnim);
+  }
 
   /* ---------- committee carousels (up/down arrows) ---------- */
   const carousels = new Map();
@@ -141,36 +163,29 @@
   };
 
   /* ---------- wheel: free scroll on the home page, then one slide per gesture
-     once the visitor has left the hero (from the first committee onward) ---------- */
-  let wheelBusy = false;
-
+     once the visitor reaches the committee area ---------- */
   stage.addEventListener('wheel', (e) => {
     const delta = e.deltaY;
+    if (Math.abs(delta) < 8) return;
 
-    /* keep the home section a regular scrollable page */
+    /* home stays a regular scrollable page */
     if (activeIndex === 0) return;
 
     const dir = delta > 0 ? 1 : -1;
-    const canGo = activeIndex + dir > 0 && activeIndex + dir < panels.length;
+    const target = activeIndex + dir;
 
-    /* you've scrolled past the last committee toward the footer → native scroll */
-    const lastPanel = panels[panels.length - 1];
-    const pastLast = -lastPanel.getBoundingClientRect().top > 24;
+    /* scrolled past the last committee toward the footer → native scroll */
+    if (-panels[panels.length - 1].getBoundingClientRect().top > 24) return;
 
     /* boundaries (SCOPE → home, SCORE → footer) stay free-scrollable */
-    if (pastLast || !canGo(dir)) return;
+    if (target <= 0 || target >= panels.length) return;
 
-    if (Math.abs(delta) < 8) return;
     e.preventDefault();
     if (isAnimating) return;
 
-    syncActiveFromScroll();
-
-    if (!wheelBusy) {
-      wheelBusy = true;
-      if (delta > 0) next(); else prev();
-      window.setTimeout(() => { wheelBusy = false; }, 150);
-    }
+    /* lock onto the slide being drifted past, then step one at a time */
+    if (!isSnapped(activeIndex)) { goTo(activeIndex); return; }
+    goTo(target);
   }, { passive: false });
 
   /* ---------- keyboard: only jump slides once out of the home page ---------- */
@@ -214,6 +229,8 @@
           return;
         }
       }
+      /* lock onto the slide being passed before advancing */
+      if (!isSnapped(activeIndex)) { goTo(activeIndex); touchY = null; return; }
       if (dy > 0) next(); else prev();
       touchY = null;
     }
@@ -222,11 +239,11 @@
 
   /* ---------- keep rail in sync ---------- */
   const syncActiveFromScroll = () => {
+    if (isAnimating) return;
     let best = 0;
-    let bestDist = Infinity;
+    const pos = stage.scrollTop + 1;
     panels.forEach((p, idx) => {
-      const d = Math.abs(p.getBoundingClientRect().top);
-      if (d < bestDist) { bestDist = d; best = idx; }
+      if (p.getBoundingClientRect().top + stage.scrollTop <= pos) best = idx;
     });
     if (best !== activeIndex) activate(best);
   };
