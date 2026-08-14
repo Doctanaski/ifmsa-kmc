@@ -463,14 +463,33 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin-bottom: 0.45rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-spin-digit {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
 }
 
 .stat-label {
-  font-size: 0.86rem;
-  font-weight: 500;
+  font-size: 0.98rem;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
-  line-height: 1.4;
-  max-width: 22ch;
+  line-height: 1.35;
+  max-width: 24ch;
+  min-height: 1.35em;
+}
+
+.stat-label.typing::after {
+  content: "▍";
+  margin-left: 2px;
+  animation: stat-blink 0.9s steps(1) infinite;
+  opacity: 1;
+}
+
+@keyframes stat-blink {
+  50% { opacity: 0; }
 }
 
 .stat-card-link {

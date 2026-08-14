@@ -298,6 +298,72 @@
   updateCardParallax();
   window.addEventListener('load', () => measurePanelTops());
 
+  /* ---------- stat card animations (spin numbers + typewriter labels) ---------- */
+  const spinStatValue = (el, onDone) => {
+    if (el.dataset.animated) { onDone && onDone(); return; }
+    el.dataset.animated = '1';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const chars = Array.from(el.textContent);
+    const cells = chars.map((ch) => {
+      const span = document.createElement('span');
+      span.textContent = ch;
+      if (/\d/.test(ch)) span.className = 'stat-spin-digit';
+      return span;
+    });
+    el.textContent = '';
+    cells.forEach((c) => el.appendChild(c));
+
+    const digits = cells.filter((c) => c.classList.contains('stat-spin-digit'));
+    if (reduceMotion || !digits.length) { onDone && onDone(); return; }
+
+    const duration = 1300;
+    const start = performance.now();
+    const rand = () => Math.random();
+    const frame = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      digits.forEach((cell, idx) => {
+        const settleT = Math.min(1, t * 1.7 - idx * 0.05);
+        if (rand() < Math.max(0, 1 - settleT)) {
+          cell.textContent = String(Math.floor(rand() * 10));
+        }
+      });
+      if (t < 1) requestAnimationFrame(frame);
+      else {
+        cells.forEach((c, i) => { c.textContent = chars[i]; });
+        onDone && onDone();
+      }
+    };
+    requestAnimationFrame(frame);
+  };
+
+  const typewriter = (el) => {
+    if (el.dataset.typed) return;
+    el.dataset.typed = '1';
+    const text = el.textContent;
+    el.textContent = '';
+    el.classList.add('typing');
+    let i = 0;
+    const step = () => {
+      i++;
+      el.textContent = text.slice(0, i);
+      if (i < text.length) setTimeout(step, 14);
+      else el.classList.remove('typing');
+    };
+    setTimeout(step, 260);
+  };
+
+  const animateStats = () => {
+    const cards = document.querySelectorAll('.hero-stat-card');
+    let delay = 0;
+    cards.forEach((card) => {
+      const numEl = card.querySelector('.stat-value');
+      const labelEl = card.querySelector('.stat-label');
+      if (!numEl) return;
+      setTimeout(() => spinStatValue(numEl, () => labelEl && typewriter(labelEl)), delay);
+      delay += 220;
+    });
+  };
+
   /* ---------- "View the committees" jumps to the first committee slide ---------- */
   const committeesBtn = document.getElementById('btn-committees');
   if (committeesBtn) {
@@ -323,5 +389,6 @@
     window.applySiteSettings(siteData);
     buildCarousels(siteData);
     measurePanelTops();
+    animateStats();
   });
 })();
