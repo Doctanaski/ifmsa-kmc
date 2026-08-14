@@ -555,6 +555,8 @@
           '<label>Stat 2 label<input type="text" id="h-m2l" value="' + esc(h.mini2Label || '') + '" /></label>' +
           '<label>Stat 3 number<input type="text" id="h-m3n" value="' + esc(h.mini3Num || '') + '" /></label>' +
           '<label>Stat 3 label<input type="text" id="h-m3l" value="' + esc(h.mini3Label || '') + '" /></label>' +
+          '<label>Stat 4 number<input type="text" id="h-m4n" value="' + esc(h.estNum || '') + '" /></label>' +
+          '<label>Stat 4 label<input type="text" id="h-m4l" value="' + esc(h.estLabel || '') + '" /></label>' +
         '</div></div>' +
 
       '<div class="card settings-section"><h3>About tab (homepage)</h3>' +
@@ -596,7 +598,8 @@
           btn2Text: val('h-btn2t').trim(), btn2Href: val('h-btn2h').trim(),
           mini1Num: val('h-m1n').trim(), mini1Label: val('h-m1l').trim(),
           mini2Num: val('h-m2n').trim(), mini2Label: val('h-m2l').trim(),
-          mini3Num: val('h-m3n').trim(), mini3Label: val('h-m3l').trim()
+          mini3Num: val('h-m3n').trim(), mini3Label: val('h-m3l').trim(),
+          estNum: val('h-m4n').trim(), estLabel: val('h-m4l').trim()
         }
       },
       {

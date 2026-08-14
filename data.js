@@ -27,7 +27,8 @@
       btn2Href: "#join",
       mini1Num: "6", mini1Label: "Standing committees",
       mini2Num: "1.5M+", mini2Label: "Med students worldwide",
-      mini3Num: "123", mini3Label: "Countries & territories"
+      mini3Num: "123", mini3Label: "Countries & territories",
+      estNum: "Est. 1951", estLabel: "Shaping Global Health Leaders Since 1951"
     },
     about: {
       eyebrow: "Know more about us",
@@ -169,6 +170,10 @@
       if (h.mini3Num != null) {
         setText('stat-nmo-num', h.mini3Num);
         setText('stat-nmo-label', h.mini3Label);
+      }
+      if (h.estNum != null) {
+        setText('stat-est-num', h.estNum);
+        setText('stat-est-label', h.estLabel);
       }
     }
 

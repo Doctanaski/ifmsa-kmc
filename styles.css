@@ -399,14 +399,14 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .hero-stat-card {
-  background: #ffffff;
+  background: var(--pak-green);
   border-radius: 20px;
   padding: 1.8rem 1.3rem 1.6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: 0 10px 30px -4px rgba(30, 27, 82, 0.07), 0 0 0 1px rgba(30, 27, 82, 0.07);
+  box-shadow: 0 10px 30px -4px rgba(15, 156, 21, 0.28), 0 0 0 1px rgba(15, 156, 21, 0.35);
   transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
   text-decoration: none;
   position: relative;
@@ -424,42 +424,42 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .hero-stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px -6px rgba(30, 27, 82, 0.14), 0 0 0 1px rgba(15, 156, 21, 0.25);
+  box-shadow: 0 20px 40px -6px rgba(15, 156, 21, 0.42), 0 0 0 1px rgba(15, 156, 21, 0.45);
 }
 
 .hero-stat-card:hover::after {
-  background: var(--pak-green);
+  background: #ffffff;
 }
 
 .stat-icon-wrap {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #1e1b52;
-  color: #ffffff;
+  background: #ffffff;
+  color: var(--pak-green);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.1rem;
-  box-shadow: 0 4px 14px rgba(30, 27, 82, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   transition: transform 0.25s var(--ease), background 0.25s var(--ease);
 }
 
 .hero-stat-card:hover .stat-icon-wrap {
   transform: scale(1.08);
-  background: #282467;
+  background: #ffffff;
 }
 
 .stat-icon {
   width: 22px;
   height: 22px;
-  stroke: #ffffff;
+  stroke: var(--pak-green);
 }
 
 .stat-value {
   font-size: clamp(1.35rem, 1.8vw, 1.75rem);
   font-weight: 700;
-  color: #1e1b52;
+  color: #ffffff;
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin-bottom: 0.45rem;
@@ -468,7 +468,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .stat-label {
   font-size: 0.86rem;
   font-weight: 500;
-  color: #55627a;
+  color: rgba(255, 255, 255, 0.92);
   line-height: 1.4;
   max-width: 22ch;
 }
