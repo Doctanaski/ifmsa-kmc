@@ -316,16 +316,7 @@
     }
   });
 
-  const openTabFromHash = () => {
-    const h = (location.hash || '').replace('#', '').split('?')[0];
-    if (h === 'join' || h === 'about') {
-      openTab(h);
-      const sec = document.getElementById('know');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-  window.addEventListener('hashchange', openTabFromHash);
-  openTabFromHash();
+
 
   /* ---------- load live data (falls back to IFMSA_DATA) ---------- */
   window.loadSiteData().then((siteData) => {
