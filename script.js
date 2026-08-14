@@ -49,6 +49,10 @@
   const panelTop = (i) => panels[i].getBoundingClientRect().top + stage.scrollTop;
   const isSnapped = (i) => Math.abs(stage.scrollTop - panelTop(i)) < 4;
 
+  /* the home page is free-scrollable, but only as far as the jump button —
+     the visitor can never scroll past it into the first committee slide */
+  const homeMaxTop = () => Math.max(0, panels[0].offsetHeight - stage.clientHeight);
+
   const beginAnim = () => {
     isAnimating = true;
     window.clearTimeout(animTimer);
@@ -168,8 +172,11 @@
     const delta = e.deltaY;
     if (Math.abs(delta) < 8) return;
 
-    /* home stays a regular scrollable page */
-    if (activeIndex === 0) return;
+    /* home stays a regular scrollable page, halting at the jump button */
+    if (activeIndex === 0) {
+      if (delta > 0 && stage.scrollTop >= homeMaxTop() - 1) e.preventDefault();
+      return;
+    }
 
     const dir = delta > 0 ? 1 : -1;
     const target = activeIndex + dir;
@@ -259,6 +266,14 @@
   stage.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 
+  /* hard ceiling on the home page: never let the scroll spill past the jump
+     button into the committee slides (safe with momentum / touch / scrollbar) */
+  stage.addEventListener('scroll', () => {
+    if (activeIndex !== 0) return;
+    const maxTop = homeMaxTop();
+    if (stage.scrollTop > maxTop) stage.scrollTop = maxTop;
+  }, { passive: true });
+
   /* ---------- init ---------- */
   activate(0);
 
@@ -289,6 +304,18 @@
   if (committeesBtn) {
     committeesBtn.addEventListener('click', () => goTo(1));
   }
+
+  /* hash links that target a committee slide must go through goTo(), otherwise
+     the native fragment scroll collides with the home scroll ceiling */
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const idx = panels.indexOf(document.getElementById(link.getAttribute('href').slice(1)));
+    if (idx > 0) {
+      e.preventDefault();
+      goTo(idx);
+    }
+  });
 
   const openTabFromHash = () => {
     const h = (location.hash || '').replace('#', '').split('?')[0];
