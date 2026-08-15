@@ -121,12 +121,15 @@ strong { font-weight: 700; }
 .ab-hero-inner {
   position: relative;
   z-index: 1;
-  max-width: 680px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .ab-eyebrow {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
@@ -160,8 +163,8 @@ strong { font-weight: 700; }
 .ab-hero-sub {
   font-size: clamp(1rem, 1.8vw, 1.15rem);
   color: var(--ab-fg-muted);
-  max-width: 56ch;
-  margin-bottom: 2.2rem;
+  max-width: 62ch;
+  margin: 0 auto 2.2rem;
   line-height: 1.7;
 }
 
@@ -192,8 +195,9 @@ strong { font-weight: 700; }
 }
 
 .ab-section-head {
-  max-width: 640px;
-  margin-bottom: clamp(2.8rem, 6vh, 4.5rem);
+  max-width: 720px;
+  margin: 0 auto clamp(2.8rem, 6vh, 4.5rem);
+  text-align: center;
 }
 
 .ab-section-label {
@@ -216,7 +220,8 @@ strong { font-weight: 700; }
 .ab-section-sub {
   color: var(--ab-fg-muted);
   font-size: 1.05rem;
-  max-width: 56ch;
+  max-width: 60ch;
+  margin: 0 auto;
   line-height: 1.7;
 }
 .ab-section-sub strong { color: var(--ab-navy); }
@@ -233,6 +238,7 @@ strong { font-weight: 700; }
 .ab-milestones {
   position: relative;
   max-width: 780px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -369,7 +375,8 @@ strong { font-weight: 700; }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  max-width: 900px;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 .ab-chapter-card {
@@ -423,7 +430,8 @@ strong { font-weight: 700; }
 }
 
 .ab-objective-grid {
-  max-width: 860px;
+  max-width: 920px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -434,23 +442,25 @@ strong { font-weight: 700; }
   grid-template-columns: 84px 1fr;
   gap: 1.5rem;
   align-items: start;
-  background: var(--ab-bg);
-  border: 1px solid var(--ab-border);
+  background: linear-gradient(135deg, var(--ab-navy) 0%, var(--ab-navy-2) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
   border-left: 4px solid var(--ab-green);
   border-radius: 16px;
   padding: clamp(1.3rem, 2.5vw, 1.8rem) clamp(1.3rem, 3vw, 2rem);
-  transition: box-shadow 0.35s var(--ab-ease), transform 0.35s var(--ab-ease);
+  box-shadow: 0 8px 28px rgba(30,27,82,0.18);
+  transition: box-shadow 0.35s var(--ab-ease), transform 0.35s var(--ab-ease), border-color 0.35s var(--ab-ease);
 }
 .ab-objective:hover {
-  box-shadow: 0 10px 32px rgba(30,27,82,0.08);
+  box-shadow: 0 14px 40px rgba(30,27,82,0.28);
   transform: translateX(4px);
+  border-left-color: var(--ab-green-soft);
 }
 
 .ab-objective-num {
   font-family: var(--ab-mono);
   font-size: 1.9rem;
   font-weight: 700;
-  color: rgba(15,156,21,0.25);
+  color: rgba(70,199,87,0.35);
   line-height: 1;
   padding-top: 0.1rem;
 }
@@ -458,17 +468,17 @@ strong { font-weight: 700; }
 .ab-objective-title {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   font-weight: 800;
-  color: var(--ab-navy);
+  color: #fff;
   letter-spacing: -0.02em;
   margin-bottom: 0.45rem;
 }
 
 .ab-objective-body-copy {
-  color: var(--ab-fg-muted);
+  color: rgba(255,255,255,0.82);
   font-size: 0.95rem;
   line-height: 1.7;
 }
-.ab-objective-body-copy strong { color: var(--ab-navy); }
+.ab-objective-body-copy strong { color: #fff; }
 
 /* ============================================================
    WHAT WE AIM TO DO — green CTA band
@@ -490,7 +500,9 @@ strong { font-weight: 700; }
 
 .ab-aim-inner {
   position: relative;
-  max-width: 680px;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .ab-aim-label {
@@ -516,16 +528,21 @@ strong { font-weight: 700; }
   color: rgba(255,255,255,0.88);
   font-size: 1.05rem;
   line-height: 1.68;
-  max-width: 54ch;
-  margin-bottom: 1.8rem;
+  max-width: 58ch;
+  margin: 0 auto 1.8rem;
 }
 .ab-aim-sub strong { color: #fff; }
 
 .ab-aim-points {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.55rem;
   margin-bottom: 2.2rem;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 .ab-aim-points li {
   display: flex;
@@ -549,6 +566,7 @@ strong { font-weight: 700; }
 .ab-aim-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.85rem;
 }
 
