@@ -39,7 +39,7 @@
 
   document.querySelectorAll('.ab-milestone').forEach((m) => milestoneObserver.observe(m));
 
-  /* ─── Generic reveal for chapter cards / objectives ────── */
+  /* ─── Generic reveal for council cards / objectives ────── */
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {

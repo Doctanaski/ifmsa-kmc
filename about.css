@@ -365,13 +365,15 @@ strong { font-weight: 700; }
 .ab-milestone-body strong { color: var(--ab-navy); }
 
 /* ============================================================
-   HOW LOCAL CHAPTERS WORK
+   HOW LOCAL COUNCILS WORK
    ============================================================ */
-.ab-chapters {
+ .ab-councils {
+   background: var(--ab-bg);
+}
   background: var(--ab-bg);
 }
 
-.ab-chapter-grid {
+.ab-council-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
@@ -379,20 +381,20 @@ strong { font-weight: 700; }
   margin: 0 auto;
 }
 
-.ab-chapter-card {
+.ab-council-card {
   background: var(--ab-bg-2);
   border: 1px solid var(--ab-border);
   border-radius: 20px;
   padding: clamp(1.5rem, 3vw, 2.2rem);
   transition: box-shadow 0.35s var(--ab-ease), transform 0.35s var(--ab-ease), border-color 0.35s var(--ab-ease);
 }
-.ab-chapter-card:hover {
+.ab-council-card:hover {
   box-shadow: 0 12px 36px rgba(30,27,82,0.1);
   transform: translateY(-4px);
   border-color: rgba(15,156,21,0.25);
 }
 
-.ab-chapter-icon {
+.ab-council-icon {
   width: 52px;
   height: 52px;
   border-radius: 14px;
@@ -403,9 +405,9 @@ strong { font-weight: 700; }
   justify-content: center;
   margin-bottom: 1.2rem;
 }
-.ab-chapter-icon svg { width: 26px; height: 26px; }
+.ab-council-icon svg { width: 26px; height: 26px; }
 
-.ab-chapter-title {
+.ab-council-title {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--ab-navy);
@@ -413,12 +415,12 @@ strong { font-weight: 700; }
   margin-bottom: 0.6rem;
 }
 
-.ab-chapter-body {
+.ab-council-body {
   color: var(--ab-fg-muted);
   font-size: 0.95rem;
   line-height: 1.7;
 }
-.ab-chapter-body strong { color: var(--ab-navy); }
+.ab-council-body strong { color: var(--ab-navy); }
 
 /* ============================================================
    OBJECTIVES
@@ -644,7 +646,7 @@ strong { font-weight: 700; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-  .ab-chapter-grid { grid-template-columns: 1fr; }
+  .ab-council-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {

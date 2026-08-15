@@ -503,6 +503,23 @@ ul { list-style: none; }
   transform: translateY(-2px);
 }
 
+/* sleek email reveal buttons */
+.jn-btn-email {
+  font-family: var(--jn-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  padding: 0.72rem 1.4rem;
+}
+.jn-btn-email::before {
+  content: "\2709";
+  margin-right: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  opacity: 0.75;
+}
+.jn-btn-white.jn-btn-email::before { color: var(--jn-green); }
+.jn-btn-primary.jn-btn-email::before { color: rgba(255,255,255,0.85); }
+
 /* ============================================================
    FAQ
    ============================================================ */

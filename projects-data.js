@@ -29,7 +29,7 @@ window.IFMSA_DATA = {
       theme: "Outbound · IFMSA Exchanges",
       summary: "Four-week clinical rotations in teaching hospitals across twelve exchange partner countries.",
       about: [
-        "Every summer SCOPE wakes the chapter up and sends it abroad. Selected students match to a host committee, then live, learn and clerk beside peers in hospitals they would otherwise never step into — from operating theatres in Türkiye to rural clinics in Colombia.",
+        "Every summer SCOPE wakes the council up and sends it abroad. Selected students match to a host committee, then live, learn and clerk beside peers in hospitals they would otherwise never step into — from operating theatres in Türkiye to rural clinics in Colombia.",
         "Outbound preparation runs through the spring: visa clinics, insurance and immunisation checks, safety briefings and a buddy-pairing system so no one crosses a border alone. Every returning student debriefs with the exchange committee, so the next cohort starts a step ahead.",
         "![Rotations at partner hospitals](https://picsum.photos/seed/scope-hospital-1/1200/900)",
         "![Wards and ward rounds](https://picsum.photos/seed/scope-hospital-2/1200/900)",
@@ -87,7 +87,7 @@ window.IFMSA_DATA = {
       theme: "Inbound · Friendship",
       summary: "Hosting international students on exchange in Peshawar — from airport pickup to ward rotation.",
       about: [
-        "Not all exchange energy flows outward. The chapter opens KMC's doors to inbound students from SCOPE committees worldwide. They rotate through the clinical departments while experiencing the city, our wards and our teaching.",
+        "Not all exchange energy flows outward. The council opens KMC's doors to inbound students from SCOPE committees worldwide. They rotate through the clinical departments while experiencing the city, our wards and our teaching.",
         "Hosting needs a changing cast of volunteers: airport pickups, weekend cultural tours, guided hospital navigation and a genuine welcome. It is the cheapest international medical conference that ever mistakes you for a colleague, and you get to host.",
       ],
       goals: [
@@ -103,10 +103,10 @@ window.IFMSA_DATA = {
       status: "Planned",
       timeframe: "Oct 2026",
       theme: "Community · Retrospective",
-      summary: "Returning students share real case stories, budgets and lessons with the whole chapter.",
+      summary: "Returning students share real case stories, budgets and lessons with the whole council.",
       about: [
         "The report-back ritual. Students who just returned from summer exchange take the stage for a public debrief — what surprised them, what teaching-culture collisions happened, and what they wish they had packed.",
-        "The panel is the chapter's living memory: full of warm diagnoses, bad laundry stories and one very specific cautionary tale about a health insurance card that expired mid-flight. Every future applicant must listen once.",
+        "The panel is the council's living memory: full of warm diagnoses, bad laundry stories and one very specific cautionary tale about a health insurance card that expired mid-flight. Every future applicant must listen once.",
       ],
       goals: [
         "Fill the auditorium with the next season of would-be applicants.",
@@ -161,9 +161,9 @@ window.IFMSA_DATA = {
       status: "Upcoming",
       timeframe: "21 Oct 2026",
       theme: "Advocacy · Visibility",
-      summary: "A chapter-wide day celebrating students who teach, with a marathon of open classes.",
+      summary: "A council-wide day celebrating students who teach, with a marathon of open classes.",
       about: [
-        "On 21 October the chapter runs dozens of short, open teaching sessions simultaneously — the campus becomes a labyrinth of classes-meets-concert, summed into one loud message: students are teachers too.",
+        "On 21 October the council runs dozens of short, open teaching sessions simultaneously — the campus becomes a labyrinth of classes-meets-concert, summed into one loud message: students are teachers too.",
         "The day doubles as a political pitch: a written ask, delivered to the curriculum committee, that peer teaching be recognised with formal credit in the degree. The quiet lecture becomes the official one.",
       ],
       goals: [
@@ -313,7 +313,7 @@ window.IFMSA_DATA = {
       theme: "Community · Access",
       summary: "Monthly weekend camps in Peshawar for blood pressure, sugar and friendly triage.",
       about: [
-        "One Saturday a month the chapter packs up and stands outside a school, mosque or community centre to screen a whole block down Racecourse Road and beyond. Blood pressures, random blood sugars and a calm talk with a student trained to refer.",
+        "One Saturday a month the council packs up and stands outside a school, mosque or community centre to screen a whole block down Racecourse Road and beyond. Blood pressures, random blood sugars and a calm talk with a student trained to refer.",
         "The impact is durable: each person walks out with a simple card showing what normal is for their age and where to go if the number is red. Nobody is graded; everyone is counted.",
         "![Screening camp at a community centre](https://picsum.photos/seed/scoph-screening-1/1200/900)",
         "![Blood-pressure checks on site](https://picsum.photos/seed/scoph-screening-2/1200/900)",
@@ -352,7 +352,7 @@ window.IFMSA_DATA = {
       summary: "Five days, five daily disciplines — dengue to hypertension to mental illness.",
       about: [
         "One theme per day, five disciplines in six: dengue (with a standing-water audit), hypertension (a measuring booth), nutrition (a plate that makes sense), tobacco, and the mind being public. The visitors take everything seriously.",
-        "The week signs off with the chapter's own declaration of the public-health minute for the year: students committing to the habit of the campus.",
+        "The week signs off with the council's own declaration of the public-health minute for the year: students committing to the habit of the campus.",
       ],
       goals: [
         "Host five discipline-days with at least 150 visits each.",
@@ -428,11 +428,11 @@ window.IFMSA_DATA = {
       summary: "Talks, art and a quiet evening remembering that lasting peace is the best of medicine.",
       about: [
         "Every war is a long and avoidable public-health emergency. Peace Week borrows the campus to talk about medical neutrality, host a panel, screen one intelligent story and end in a lit candle evening where students hang a note of a wish on the tree.",
-        "The week is not naive — a doctor's oath is the same over and under. The lectures of the week translate to a simple promise the chapter adopts aloud.",
+        "The week is not naive — a doctor's oath is the same over and under. The lectures of the week translate to a simple promise the council adopts aloud.",
       ],
       goals: [
         "Reach 60% of students through the week's events.",
-        "Adopt one \"Humanity First\" chapter statement.",
+        "Adopt one \"Humanity First\" council statement.",
       ],
     },
     {
@@ -450,7 +450,7 @@ window.IFMSA_DATA = {
       ],
       goals: [
         "Reach one in two students with the coverage chart.",
-        "Publish a one-page chapter call for wider district coverage.",
+        "Publish a one-page council call for wider district coverage.",
       ],
     },
     {
@@ -502,7 +502,7 @@ window.IFMSA_DATA = {
       summary: "Bench and genuinely research placements abroad for the curious-minded.",
       about: [
         "Some students want to spend their summer in a lab instead of on the lido. SCORE placements put candidates into research teams that need a pair of clean hands — molecular biology, epidemiology, guideline writing, or pure cellular curiosity — and pay them forward in mentors, ink and name.",
-        "We run the matching as a negotiation: the student's question is picked, the host is studied, and the placement is confirmed before fights. On return, every summer resident gives a ten-minute \"share the lab\" answer to the chapter.",
+        "We run the matching as a negotiation: the student's question is picked, the host is studied, and the placement is confirmed before fights. On return, every summer resident gives a ten-minute \"share the lab\" answer to the council.",
         "![Bench time in a host lab](https://picsum.photos/seed/score-lab-1/1200/900)",
         "![A summer resident after data collection](https://picsum.photos/seed/score-lab-2/1200/900)",
       ],

@@ -17,13 +17,13 @@
     },
     hero: {
       eyebrowPill: "IFMSA Pakistan",
-      eyebrowRest: "Local Chapter 2026",
+      eyebrowRest: "Local Council 2026",
       title1: "Medical students.",
       title2: "Moving medicine forward.",
-      sub: "The Khyber Medical College local chapter of the International Federation of Medical Students' Associations — six standing committees, one chapter.",
+      sub: "The Khyber Medical College local council of the International Federation of Medical Students' Associations — six standing committees, one council.",
       btn1Text: "Explore committees ↓",
       btn1Href: "#scope",
-      btn2Text: "Join the chapter",
+      btn2Text: "Join the council",
       btn2Href: "#join",
       mini1Num: "6", mini1Label: "Standing committees",
       mini2Num: "1.5M+", mini2Label: "Med students worldwide",
@@ -33,7 +33,7 @@
     about: {
       eyebrow: "Know more about us",
       title: "One student body, every medical student's opportunity.",
-      body: "The Khyber Medical College Local Chapter is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar.",
+      body: "The Khyber Medical College Local Council is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar.",
       btnText: "Join Us",
       btnHref: "#card-join",
       img1: "",
@@ -42,11 +42,11 @@
     join: {
       eyebrow: "Ready when you are",
       title: "One scroll can change a student's path.",
-      sub: "Membership is open to every KMC student. Come to an intro session, meet your Local Committee Officers, and pick anywhere to start.",
+      sub: "Membership is open to every KMC student. Come to an intro session, meet your Local Officer, and pick anywhere to start.",
       btn1Text: "About Us",
       btn1Href: "#card-about",
-      btn2Text: "Contact the local chapter",
-      btn2Href: "mailto:ifmsa@kmc.edu.pk",
+      btn2Text: "president.kmclc.ifmsapakistan@gmail.com",
+      btn2Href: "mailto:president.kmclc.ifmsapakistan@gmail.com",
       img1: "",
       img2: ""
     }
