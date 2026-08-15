@@ -26,7 +26,7 @@
       btn2Text: "Join the council",
       btn2Href: "#join",
       mini1Num: "6", mini1Label: "Standing committees",
-      mini2Num: "1.5M+", mini2Label: "Med students worldwide",
+      mini2Num: "1.5M+", mini2Label: "Members Worldwide",
       mini3Num: "123", mini3Label: "Countries & territories",
       estNum: "Est. 1951", estLabel: "Shaping Global Health Leaders Since 1951"
     },
@@ -176,10 +176,8 @@
         setText('stat-committees-num', h.mini1Num);
         setText('stat-committees-label', h.mini1Label);
       }
-      if (h.mini2Num != null) {
-        setText('stat-members-num', h.mini2Num);
-        setText('stat-members-label', h.mini2Label);
-      }
+      /* the members card now shows two fixed values (worldwide + LC), so it is
+         intentionally left static and not overwritten from site settings */
       if (h.mini3Num != null) {
         setText('stat-nmo-num', h.mini3Num);
         setText('stat-nmo-label', h.mini3Label);

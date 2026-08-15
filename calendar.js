@@ -182,8 +182,25 @@
       more = dayEvents.length - 3;
       moreHtml = more > 0 ? '<span class="cal-more">+' + more + ' more</span>' : '';
 
+      /* paint the whole cell with the committee colour(s):
+         one committee → full cell in that colour,
+         two committees → 50/50 split, never more than two colours */
+      var cellColors = [];
+      dayEvents.forEach(function (e) {
+        if (cellColors.indexOf(e.color) === -1) cellColors.push(e.color);
+      });
+      var bgStyle = '';
+      if (cellColors.length === 1) {
+        bgStyle = ' style="background:' + esc(cellColors[0]) + ';"';
+      } else if (cellColors.length > 1) {
+        bgStyle = ' style="background:linear-gradient(90deg,' + esc(cellColors[0]) +
+          ' 0%, ' + esc(cellColors[0]) + ' 50%, ' + esc(cellColors[1]) + ' 50%, ' +
+          esc(cellColors[1]) + ' 100%);"';
+      }
+      var paintedCls = cellColors.length ? ' is-painted' : '';
+
       cells.push(
-        '<div class="cal-cell' + (isToday ? ' is-today' : '') + '" data-day="' + date.getTime() + '">' +
+        '<div class="cal-cell' + (isToday ? ' is-today' : '') + paintedCls + '"' + bgStyle + ' data-day="' + date.getTime() + '">' +
           '<span class="cal-date">' + d + '</span>' +
           '<div class="cal-chips">' + chips + moreHtml + '</div>' +
         '</div>'

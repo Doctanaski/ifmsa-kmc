@@ -496,6 +496,22 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   cursor: pointer;
 }
 
+.stat-divider {
+  width: 58%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.28);
+  margin: 0.9rem auto;
+}
+
+.stat-value-sub {
+  font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+}
+
+.stat-label-sub {
+  font-size: 0.88rem;
+  min-height: 0;
+}
+
 /* ---------- buttons ---------- */
 .btn {
   display: inline-flex;

@@ -469,6 +469,18 @@ strong { font-weight: 700; }
   box-shadow: 0 0 0 1px var(--cal-green);
 }
 
+/* committee-coloured cells: whole cell painted, date readable on top */
+.cal-cell.is-painted .cal-date {
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.22);
+}
+.cal-cell.is-painted .cal-more {
+  color: rgba(255, 255, 255, 0.92);
+}
+.cal-cell.is-painted .cal-chip {
+  background: rgba(255, 255, 255, 0.94);
+}
+
 .cal-date {
   align-self: flex-start;
   font-family: var(--cal-mono);
