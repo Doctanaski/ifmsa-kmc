@@ -81,6 +81,24 @@ ul { list-style: none; }
   transition: color 0.15s;
 }
 .jn-nav-link:hover { color: #fff; }
+.jn-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.jn-nav-btn:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+}
+.jn-nav-icon {
+  width: 15px;
+  height: 15px;
+}
 .jn-nav-active {
   color: var(--jn-green-soft);
   border-bottom: 2px solid var(--jn-green-soft);

@@ -74,6 +74,24 @@ strong { font-weight: 700; }
   transition: color 0.15s;
 }
 .ab-nav-link:hover { color: #fff; }
+.ab-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.ab-nav-btn:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+}
+.ab-nav-icon {
+  width: 15px;
+  height: 15px;
+}
 .ab-nav-active {
   color: var(--ab-green-soft);
   border-bottom: 2px solid var(--ab-green-soft);

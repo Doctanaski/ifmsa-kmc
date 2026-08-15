@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IFMSA KMC events calendar — executed, upcoming and planned projects across all six standing committees, synced with the committee project cards." />
+  <title>Events Calendar | KMC × IFMSA Local Council</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="calendar.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="cal-topbar">
+    <div class="cal-brand">
+      <a href="index.html" class="cal-brand-logo cal-logo-pk">
+        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
+      </a>
+      <span class="cal-brand-divider" aria-hidden="true"></span>
+      <a href="index.html" class="cal-brand-logo cal-logo-kmc">
+        <img src="assets/kmc-logo.png" alt="Khyber Medical College logo" />
+      </a>
+    </div>
+    <nav class="cal-nav" aria-label="Site navigation">
+      <a href="calendar.html" class="cal-nav-link cal-nav-btn" aria-current="page">
+        <svg class="cal-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Calendar
+      </a>
+      <a href="/admin" class="cal-nav-link cal-nav-admin">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO BAND -->
+    <section class="cal-hero" aria-labelledby="cal-hero-title">
+      <div class="cal-hero-watermark" aria-hidden="true">
+        <img src="assets/ifmsa-pakistan-logo-new.png" alt="" />
+      </div>
+      <div class="cal-hero-inner">
+        <p class="cal-eyebrow">
+          <span class="cal-eyebrow-pill">IFMSA Pakistan</span>
+          <span class="cal-eyebrow-rest">KMC Local Council</span>
+        </p>
+        <h1 class="cal-hero-title" id="cal-hero-title">
+          The council calendar<span class="cal-hero-dot">.</span>
+        </h1>
+        <p class="cal-hero-sub">
+          Every date from every committee project — <strong>executed</strong>, <strong>upcoming</strong> and
+          <strong>planned</strong> — on one page, synced straight from the project cards.
+        </p>
+
+        <div class="cal-hero-stats" id="cal-hero-stats">
+          <div class="cal-hero-stat cal-stat-executed">
+            <span class="cal-hero-stat-num" id="cal-stat-executed">0</span>
+            <span class="cal-hero-stat-label">Executed</span>
+          </div>
+          <div class="cal-hero-stat cal-stat-upcoming">
+            <span class="cal-hero-stat-num" id="cal-stat-upcoming">0</span>
+            <span class="cal-hero-stat-label">Upcoming</span>
+          </div>
+          <div class="cal-hero-stat cal-stat-planned">
+            <span class="cal-hero-stat-num" id="cal-stat-planned">0</span>
+            <span class="cal-hero-stat-label">Planned</span>
+          </div>
+        </div>
+
+        <div class="cal-hero-actions">
+          <a href="#calendar" class="cal-hero-cta" id="cal-scroll-cta">
+            Browse events &#x2193;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="cal-section" id="calendar" aria-labelledby="cal-title">
+      <div class="cal-section-head">
+        <p class="cal-section-label">2026 &middot; Six committees &middot; One calendar</p>
+        <h2 class="cal-section-title" id="cal-title">Projects, exchanges &amp; campaigns</h2>
+        <p class="cal-section-sub">
+          Jump to any month, or scan the full list of what has run, what is running and what comes next.
+        </p>
+      </div>
+
+      <!-- status + committee legend -->
+      <div class="cal-legend">
+        <div class="cal-legend-status" aria-label="Event statuses">
+          <span class="cal-key cal-key-executed"><i aria-hidden="true"></i> Executed</span>
+          <span class="cal-key cal-key-upcoming"><i aria-hidden="true"></i> Upcoming</span>
+          <span class="cal-key cal-key-planned"><i aria-hidden="true"></i> Planned</span>
+        </div>
+        <div class="cal-legend-committees" id="cal-committees" aria-label="Filter by committee"></div>
+      </div>
+
+      <div class="cal-layout">
+        <!-- calendar grid -->
+        <div class="cal-grid-side">
+          <div class="cal-toolbar">
+            <button class="cal-nav-btn" id="cal-prev" type="button" aria-label="Previous month">&lsaquo;</button>
+            <h3 class="cal-month-label" id="cal-month-label">Loading&hellip;</h3>
+            <button class="cal-nav-btn" id="cal-next" type="button" aria-label="Next month">&rsaquo;</button>
+            <button class="cal-today-btn" id="cal-today" type="button">Today</button>
+          </div>
+          <div class="cal-weekdays" aria-hidden="true">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+          <div class="cal-days" id="cal-days"></div>
+        </div>
+
+        <!-- event list grouped by status -->
+        <aside class="cal-panel" id="cal-panel" aria-label="Events by status"></aside>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section class="cal-cta-band" aria-labelledby="cal-cta-title">
+      <div class="cal-cta-inner">
+        <p class="cal-cta-label">Keep the dates</p>
+        <h2 class="cal-cta-title" id="cal-cta-title">A calendar that moves with the committees.</h2>
+        <p class="cal-cta-sub">
+          Every date on this page is pulled from the same data that drives the committee project cards —
+          when a committee updates a project, the calendar follows.
+        </p>
+        <div class="cal-cta-actions">
+          <a href="index.html" class="cal-btn cal-btn-white">Meet the committees &rarr;</a>
+          <a href="index.html" class="cal-btn cal-btn-ghost-white">&larr; Back to home</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="cal-footer">
+    <p>IFMSA &mdash; Khyber Medical College, Peshawar</p>
+    <p>Built by students, for the future of medicine.</p>
+  </footer>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="projects-data.js"></script>
+  <script src="data.js"></script>
+  <script src="calendar.js"></script>
+</body>
+</html>

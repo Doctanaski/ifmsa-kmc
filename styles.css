@@ -875,6 +875,17 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
 }
+
+#navbar .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+#navbar .nav-icon {
+  width: 15px;
+  height: 15px;
+}
 .btn-outline:hover {
   border-color: #ffffff;
   color: #ffffff;
