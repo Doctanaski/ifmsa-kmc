@@ -54,66 +54,35 @@ ul { list-style: none; }
 strong { font-weight: 700; }
 
 /* ============================================================
-   TOPBAR
+   BACK TO HOMEPAGE BUTTON (fixed, top-left)
    ============================================================ */
-.cal-topbar {
+.cal-back-home {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 0.85rem clamp(1.5rem, 6vw, 6rem);
-  background: var(--cal-navy-2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 30px rgba(10, 8, 32, 0.25);
-}
-
-.cal-brand { display: flex; align-items: center; gap: 1rem; }
-.cal-brand-logo img { display: block; height: auto; }
-.cal-logo-pk img  { height: 38px; max-width: 190px; object-fit: contain; }
-.cal-logo-kmc img { height: 32px; max-width: 200px; object-fit: contain; }
-.cal-brand-divider { width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2); }
-
-.cal-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-}
-.cal-nav-link {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: color 0.15s;
-}
-.cal-nav-link:hover { color: #fff; }
-.cal-nav-btn {
+  top: 1.1rem;
+  left: 1.1rem;
+  z-index: 70;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.42rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--cal-navy);
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(30, 27, 82, 0.35);
+  transition: background 0.2s var(--cal-ease), transform 0.2s var(--cal-ease), box-shadow 0.2s var(--cal-ease);
 }
-.cal-nav-btn:hover {
-  border-color: #ffffff;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.2);
+.cal-back-home:hover {
+  background: var(--cal-navy-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(30, 27, 82, 0.4);
 }
-.cal-nav-icon {
+.cal-back-icon {
   width: 15px;
   height: 15px;
 }
-.cal-nav-admin {
-  opacity: 0.6;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.cal-nav-admin:hover { opacity: 1; color: #fff; }
 
 /* ============================================================
    HERO
@@ -123,6 +92,8 @@ strong { font-weight: 700; }
   min-height: 84vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: clamp(6rem, 14vh, 10rem) clamp(1.5rem, 8vw, 8rem) clamp(4rem, 8vh, 6rem);
   background:
     radial-gradient(85% 55% at 85% -5%, rgba(40, 36, 103, 0.06), transparent 60%),
@@ -136,8 +107,7 @@ strong { font-weight: 700; }
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: clamp(2rem, 8vw, 8rem);
+  justify-content: center;
   pointer-events: none;
   z-index: 0;
 }
@@ -152,12 +122,17 @@ strong { font-weight: 700; }
 .cal-hero-inner {
   position: relative;
   z-index: 1;
-  max-width: 760px;
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cal-eyebrow {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.8rem;
   margin-bottom: 1.4rem;
   font-size: 0.86rem;
@@ -193,7 +168,7 @@ strong { font-weight: 700; }
   color: var(--cal-fg-muted);
   font-size: clamp(1.02rem, 1.6vw, 1.25rem);
   max-width: 56ch;
-  margin-bottom: 2.2rem;
+  margin: 0 auto 2.2rem;
 }
 .cal-hero-sub strong { color: var(--cal-navy); }
 
@@ -201,6 +176,7 @@ strong { font-weight: 700; }
 .cal-hero-stats {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 2.4rem;
 }
@@ -234,7 +210,7 @@ strong { font-weight: 700; }
 .cal-stat-planned { border-top: 3px solid var(--cal-plan); }
 .cal-stat-planned .cal-hero-stat-num { color: var(--cal-plan); }
 
-.cal-hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.cal-hero-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 .cal-hero-cta {
   display: inline-flex;
   align-items: center;
@@ -363,9 +339,9 @@ strong { font-weight: 700; }
 /* ---------- layout ---------- */
 .cal-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
-  max-width: 1280px;
+  max-width: none;
   margin: 0 auto;
   align-items: start;
 }
@@ -556,11 +532,13 @@ strong { font-weight: 700; }
   padding-left: 0.15rem;
 }
 
-/* ---------- side panel ---------- */
+/* ---------- event lists: three equal columns below the calendar ---------- */
 .cal-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.6rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
 }
 
 .cal-panel-section {
@@ -753,19 +731,13 @@ strong { font-weight: 700; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
-  .cal-layout {
+  .cal-panel {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 720px) {
-  .cal-topbar { padding: 0.7rem 1rem; gap: 0.75rem; }
-  .cal-brand { gap: 0.6rem; }
-  .cal-logo-pk img { height: 32px; }
-  .cal-logo-kmc img { height: 28px; }
-  .cal-nav { gap: 0.9rem; }
-  .cal-nav-link { font-size: 0.84rem; }
-  .cal-nav-admin { font-size: 0.72rem; }
+  .cal-back-home { top: 0.85rem; left: 0.85rem; padding: 0.5rem 0.95rem; font-size: 0.8rem; }
 
   .cal-hero { padding: 6rem 1.25rem 4rem; min-height: auto; }
   .cal-hero-title { font-size: clamp(2rem, 9vw, 2.8rem); }
@@ -788,7 +760,6 @@ strong { font-weight: 700; }
 }
 
 @media (max-width: 480px) {
-  .cal-logo-kmc { display: none; }
   .cal-today-btn { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
   .cal-nav-btn { width: 34px; height: 34px; font-size: 1.25rem; }
   .cal-weekdays span { font-size: 0.58rem; }

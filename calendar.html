@@ -13,30 +13,14 @@
 </head>
 <body>
 
-  <!-- TOPBAR -->
-  <header class="cal-topbar">
-    <div class="cal-brand">
-      <a href="index.html" class="cal-brand-logo cal-logo-pk">
-        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
-      </a>
-      <span class="cal-brand-divider" aria-hidden="true"></span>
-      <a href="index.html" class="cal-brand-logo cal-logo-kmc">
-        <img src="assets/kmc-logo.png" alt="Khyber Medical College logo" />
-      </a>
-    </div>
-    <nav class="cal-nav" aria-label="Site navigation">
-      <a href="calendar.html" class="cal-nav-link cal-nav-btn" aria-current="page">
-        <svg class="cal-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
-        Calendar
-      </a>
-      <a href="/admin" class="cal-nav-link cal-nav-admin">Admin</a>
-    </nav>
-  </header>
+  <!-- BACK TO HOMEPAGE -->
+  <a href="index.html" class="cal-back-home">
+    <svg class="cal-back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Home
+  </a>
 
   <main>
 
@@ -115,10 +99,10 @@
           </div>
           <div class="cal-days" id="cal-days"></div>
         </div>
-
-        <!-- event list grouped by status -->
-        <aside class="cal-panel" id="cal-panel" aria-label="Events by status"></aside>
       </div>
+
+      <!-- event lists grouped by status -->
+      <aside class="cal-panel" id="cal-panel" aria-label="Events by status"></aside>
     </section>
 
     <!-- CTA BAND -->
