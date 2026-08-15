@@ -76,6 +76,26 @@
     });
   }
 
+  /* ─── Email reveal on click ──────────────────────────── */
+  const COUNCIL_EMAIL = 'president.kmclc.ifmsapakistan@gmail.com';
+  const emailBtns = Array.from(document.querySelectorAll('.jn-btn-email'));
+
+  emailBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      if (btn.dataset.revealed === '1') return; // second click opens the mail client
+      e.preventDefault();
+      btn.dataset.revealed = '1';
+      btn.classList.add('is-swapping');
+
+      window.setTimeout(() => {
+        const label = btn.querySelector('.jn-btn-label');
+        if (label) label.textContent = COUNCIL_EMAIL;
+        btn.classList.remove('is-swapping');
+        btn.classList.add('is-revealed');
+      }, 260);
+    });
+  });
+
   /* ─── FAQ accordion ──────────────────────────────────── */
   const faqBtns = Array.from(document.querySelectorAll('.jn-faq-q'));
 

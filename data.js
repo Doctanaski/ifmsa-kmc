@@ -45,7 +45,7 @@
       sub: "Membership is open to every KMC student. Come to an intro session, meet your Local Officer, and pick anywhere to start.",
       btn1Text: "About Us",
       btn1Href: "#card-about",
-      btn2Text: "president.kmclc.ifmsapakistan@gmail.com",
+      btn2Text: "Contact the council",
       btn2Href: "mailto:president.kmclc.ifmsapakistan@gmail.com",
       img1: "",
       img2: ""
