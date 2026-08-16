@@ -241,11 +241,15 @@ strong { font-weight: 700; }
   overflow-y: auto;
   overscroll-behavior: contain;
   scroll-snap-type: y mandatory;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   border: 1px solid var(--ex-border);
   border-radius: 28px;
   background: var(--ex-bg);
   box-shadow: 0 24px 64px -22px rgba(30, 27, 82, 0.3);
+}
+.ex-stage::-webkit-scrollbar {
+  display: none;
 }
 
 .ex-track {
