@@ -1,8 +1,10 @@
 /* ============================================================
    IFMSA · Khyber Medical College
-   Standing committee data + planned projects for the year.
-   Consumed by index.html (committee project lists) and
-   projects.html (single-project detail view).
+   Standing committee data + planned projects for the year +
+   the stories behind them (highlights).
+   Consumed by index.html (committee project lists),
+   projects.html (single-project detail view) and
+   highlights.html (highlights page).
    ============================================================ */
 
 window.IFMSA_DATA = {
@@ -581,6 +583,155 @@ window.IFMSA_DATA = {
       goals: [
         "Run 30 pairings in the 2026 cohort.",
         "Convert 60% of pairings from a started study into a result.",
+      ],
+    },
+  ],
+
+  /* ---------------- Highlights ----------------
+     category: 'away'   → events our members went to
+               'campus' → significant on-campus events
+               'win'    → wins & recognition
+     about: one paragraph per line; a picture is a line in
+     the form ![caption](image-url).                 */
+  highlights: [
+    {
+      id: "hl-2026-ga-cape-town",
+      category: "away",
+      tag: "International Conference",
+      title: "IFMSA General Assembly · Cape Town",
+      date: "March 2026",
+      location: "Cape Town, South Africa",
+      committee: "",
+      featured: true,
+      summary: "Six KMC delegates joined 1,500 medical students from 130+ countries in Cape Town — running workshops, voting on global policy and bringing Peshawar's voice to the floor.",
+      about: [
+        "For nine days in March the whole movement met in Cape Town: the March Meeting of the IFMSA General Assembly. Our six delegates carried the council across two continents on hand-written proposals, a workshop on peer-led medical education, and a very patient poster about KMC's screening Saturdays.",
+        "They came home with more than souvenirs. Two standing committees were awarded seats in IFMSA-Pakistan's national teams — a direct line from a hostel room in Peshawar to the rooms where the federation's health agenda is written.",
+        "![Plenary hall at the General Assembly](https://picsum.photos/seed/hl-ga-cape-1/1200/900)",
+        "![KMC delegates at the closing ceremony](https://picsum.photos/seed/hl-ga-cape-2/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-national-ga-islamabad",
+      category: "away",
+      tag: "National Conference",
+      title: "National General Assembly · Pakistan",
+      date: "Dec 2026",
+      location: "Islamabad, Pakistan",
+      committee: "",
+      summary: "The council's largest delegation yet travelled to the capital — and two of its members came home with national team roles.",
+      about: [
+        "The National General Assembly is where every local council in Pakistan meets to set the year ahead. KMC sent its biggest delegation on record — the full executive plus the Local Officers of every standing committee.",
+        "Policy positions were debated, regional projects were pledged, and for two students the trip ended with a badge: national team roles under the IFMSA-Pakistan umbrella, representing the council on the national stage for the coming year.",
+        "![Delegation photo outside the assembly hall](https://picsum.photos/seed/hl-nga-1/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-scope-cape-cohort",
+      category: "away",
+      tag: "Exchange",
+      title: "SCOPE Summer Exchange — the biggest cohort yet",
+      date: "May – Aug 2026",
+      location: "Twelve countries",
+      committee: "scope",
+      summary: "Twenty-two students matched to clinical rotations in twelve countries — the council's largest outbound cohort on record, from Ankara to Bogotá.",
+      about: [
+        "Every spring SCOPE wakes the council up and sends it abroad, and this year was different in scale: twenty-two matches, twelve countries, one very busy airport terminal. Rotations ran from operating theatres in Türkiye to rural clinics in Colombia.",
+        "The pre-departure bootcamp ran twice to fit the demand, and every returning student debriefed to camera so the report-back lives on for the next cohort. The taster reel at the end of the year was, frankly, unfair to everyone graduating.",
+        "![Rotations across partner hospitals](https://picsum.photos/seed/hl-scope-1/1200/900)",
+        "![The outbound cohort's group call](https://picsum.photos/seed/hl-scope-2/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-score-summer-research",
+      category: "away",
+      tag: "Research Exchange",
+      title: "SCORE Summer Research — bench time abroad",
+      date: "May – Aug 2026",
+      location: "Labs across Europe & Asia",
+      committee: "score",
+      summary: "Eight students traded Peshawar for research labs across Europe and Asia — and three placements came home as published abstracts.",
+      about: [
+        "While SCOPE filled the wards, SCORE filled the benches. Eight students matched to research teams abroad — molecular biology, epidemiology and guideline writing — and spent the summer asking questions worth answering.",
+        "The return rate was the real headline: three placements turned into accepted abstracts within months, and each summer resident gave the council a ten-minute 'share the lab' talk that convinced at least one second-year to apply immediately.",
+        "![Bench time in a host research lab](https://picsum.photos/seed/hl-score-1/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-scora-srh-week",
+      category: "campus",
+      tag: "Campus Campaign",
+      title: "SRH Week drew a thousand students",
+      date: "May 2026",
+      location: "KMC Campus, Peshawar",
+      committee: "scora",
+      summary: "Booths, a myth-busting wall and a locked box of anonymous questions saw record footfall — and 600 information kits walked out the door.",
+      about: [
+        "For one week the taboos opened like a clinic door. SCORA turned the campus into a loud, warm, myth-busting marketplace with nurse-led talks — the ones students actually stayed for — and a night screening for those who couldn't be on campus.",
+        "The numbers spoke: more than a thousand students touched the week, 600 SRH information kits went out free, and the locked box of anonymous questions took a week to read out because nobody expected that many.",
+        "![SRH awareness booth on campus](https://picsum.photos/seed/hl-scora-1/1200/900)",
+        "![Students at the myth-busting wall](https://picsum.photos/seed/hl-scora-2/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-scoph-screening-saturdays",
+      category: "campus",
+      tag: "Community Outreach",
+      title: "Screening Saturday reached the whole block",
+      date: "All year",
+      location: "Racecourse Road, Peshawar",
+      committee: "scoph",
+      summary: "Monthly weekend camps screened 2,000+ neighbours for blood pressure and sugar — with a calm hand to point the way.",
+      about: [
+        "One Saturday a month the council packs up and stands outside a school, mosque or community centre to screen a whole block. Blood pressures, random blood sugars, and a calm talk with a student trained to refer.",
+        "The year-end total crossed two thousand people screened. Each one walked away with a card showing what normal is for their age and where to go if the number is red — a public-health habit worn one Saturday at a time.",
+        "![Screening camp at a community centre](https://picsum.photos/seed/hl-scoph-1/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-scom-tutor-of-the-year",
+      category: "campus",
+      tag: "Medical Education",
+      title: "Peer Teaching crowned its first Tutor of the Year",
+      date: "Oct 2026",
+      location: "KMC Campus, Peshawar",
+      committee: "scom",
+      summary: "Twenty sessions, forty trained tutors, and an end-of-year ceremony that made teaching the campus's favourite skill.",
+      about: [
+        "The Peer Teaching Series ran twenty weekly sessions across ten subject streams, taught entirely by students who had just survived the exam themselves — the fastest teaching format in medicine.",
+        "Forty tutors were trained through the pedagogy workshop, and at the end-of-year ceremony the series crowned its first Tutor of the Year: a third-year who graded highest with the students she taught. The petition to make peer teaching count for real credit reached the curriculum committee with 500 signatures.",
+        "![Small-group revision in full flow](https://picsum.photos/seed/hl-scom-1/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-scorp-humanity-trucks",
+      category: "campus",
+      tag: "Relief & Solidarity",
+      title: "Humanity Trucks moved 5,000 kg of relief",
+      date: "Dec 2026",
+      location: "Two priority districts",
+      committee: "scorp",
+      summary: "A student-run winter collection delivered blankets, warm clothes and medicines to two hard-hit districts — with an audited list to match.",
+      about: [
+        "In midwinter, blankets are the difference between a room and a crime of indifference. Students ran a coordinated collection — blankets, warm clothes, simple medicines — and moved the convoy to registered sites over two days.",
+        "The convoy cleared five tonnes of relief goods, every item logged against a published, audited list. The community's trust was the real cargo, and the run has already been pencilled in bigger for next winter.",
+        "![Loading the convoy at dawn](https://picsum.photos/seed/hl-scorp-1/1200/900)",
+        "![Distribution at a community site](https://picsum.photos/seed/hl-scorp-2/1200/900)",
+      ],
+    },
+    {
+      id: "hl-2026-natl-best-lc-award",
+      category: "win",
+      tag: "Recognition",
+      title: "Best Local Committee — National Awards",
+      date: "Dec 2026",
+      location: "Islamabad, Pakistan",
+      committee: "",
+      summary: "The council was named Best Local Committee at the national assembly — the first time KMC has taken the title.",
+      about: [
+        "When they called the name at the national assembly, the KMC block needed a second to react. Best Local Committee is voted on by every other council in the country — a peer-graded verdict on the year we actually had.",
+        "The award now hangs in the council room next to a much older one, and everyone agrees the gap between the two is the point: a local council that grew up, one project at a time.",
+        "![The award held up at the assembly stage](https://picsum.photos/seed/hl-win-1/1200/900)",
       ],
     },
   ],

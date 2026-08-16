@@ -51,7 +51,7 @@
       title: "Highlights",
       body: "Standout moments, campaigns and wins from across the council — the sessions, exchanges and drives that make KMC members proud.",
       btnText: "See Highlights",
-      btnHref: "about.html",
+      btnHref: "highlights.html",
       img1: "",
       img2: ""
     },
@@ -92,6 +92,7 @@
       year: d.year || DEFAULTS.site.year,
       committees: d.committees || {},
       projects: d.projects || [],
+      highlightsList: d.highlights || [],
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
       about: DEFAULTS.about,
@@ -117,15 +118,22 @@
     return Promise.all([
       client.from('committees').select('*').order('sort_order'),
       client.from('projects').select('*').order('sort_order'),
-      client.from('site_settings').select('key, value')
+      client.from('site_settings').select('key, value'),
+      client.from('highlights').select('*').order('sort_order')
     ]).then(function (results) {
       var committeesRes = results[0];
       var projectsRes = results[1];
       var settingsRes = results[2];
+      var highlightsRes = results[3];
 
       if (committeesRes.error) throw committeesRes.error;
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
+
+      /* the highlights table is optional — a missing table simply falls
+         back to the bundled list, never taking the whole site down */
+      var highlights = (highlightsRes && highlightsRes.data) || [];
+      if (highlightsRes && highlightsRes.error) highlights = [];
 
       var committees = {};
       (committeesRes.data || []).forEach(function (r) {
@@ -150,6 +158,7 @@
         year: site.year || DEFAULTS.site.year,
         committees: committees,
         projects: projectsRes.data || [],
+        highlightsList: highlights,
         site: site,
         hero: hero,
         about: about,

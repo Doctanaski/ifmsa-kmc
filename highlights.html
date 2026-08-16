@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IFMSA KMC highlights — the events our members attended abroad and the significant moments that happened on campus, from exchanges and assemblies to drives and awards." />
+  <title>Highlights | KMC × IFMSA Local Council</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="highlights.css" />
+</head>
+<body>
+
+  <!-- BACK TO HOMEPAGE -->
+  <a href="index.html" class="hl-back-home">
+    <svg class="hl-back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Home
+  </a>
+
+  <main>
+
+    <!-- HERO BAND -->
+    <section class="hl-hero" aria-labelledby="hl-hero-title">
+      <div class="hl-hero-watermark" aria-hidden="true">
+        <img src="assets/ifmsa-pakistan-logo-new.png" alt="" />
+      </div>
+      <div class="hl-hero-inner">
+        <p class="hl-eyebrow">
+          <span class="hl-eyebrow-pill">IFMSA Pakistan</span>
+          <span class="hl-eyebrow-rest">KMC Local Council</span>
+        </p>
+        <h1 class="hl-hero-title" id="hl-hero-title">
+          The year in <span class="hl-green">highlights.</span>
+        </h1>
+        <p class="hl-hero-sub">
+          Every <strong>assembly we attended</strong>, every <strong>exchange we sent</strong>, and every
+          campaign that made the campus louder — the moments that carried this local council through the year.
+        </p>
+
+        <div class="hl-hero-stats" id="hl-hero-stats" aria-label="Highlights at a glance">
+          <div class="hl-hero-stat hl-stat-total">
+            <span class="hl-hero-stat-num" id="hl-stat-total">0</span>
+            <span class="hl-hero-stat-label">Moments</span>
+          </div>
+          <div class="hl-hero-stat hl-stat-away">
+            <span class="hl-hero-stat-num" id="hl-stat-away">0</span>
+            <span class="hl-hero-stat-label">We travelled for</span>
+          </div>
+          <div class="hl-hero-stat hl-stat-campus">
+            <span class="hl-hero-stat-num" id="hl-stat-campus">0</span>
+            <span class="hl-hero-stat-label">On campus</span>
+          </div>
+          <div class="hl-hero-stat hl-stat-win">
+            <span class="hl-hero-stat-num" id="hl-stat-win">0</span>
+            <span class="hl-hero-stat-label">Recognised</span>
+          </div>
+        </div>
+
+        <div class="hl-hero-actions">
+          <a href="#spotlight" class="hl-hero-cta" id="hl-scroll-cta">
+            Relive the year &#x2193;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPOTLIGHT -->
+    <section class="hl-section hl-spotlight-section" id="spotlight" aria-labelledby="hl-spotlight-label">
+      <div class="hl-section-head">
+        <p class="hl-section-label hl-section-label--left">01 &mdash; Spotlight</p>
+        <h2 class="hl-section-title" id="hl-spotlight-title">The one we'll talk about for a while</h2>
+        <p class="hl-section-sub">
+          Every year has a headline. This is ours.
+        </p>
+      </div>
+      <div class="hl-spotlight" id="hl-spotlight"></div>
+    </section>
+
+    <!-- ALL HIGHLIGHTS -->
+    <section class="hl-section hl-grid-section" id="highlights" aria-labelledby="hl-grid-title">
+      <div class="hl-section-head">
+        <p class="hl-section-label hl-section-label--left">02 &mdash; All moments</p>
+        <h2 class="hl-section-title" id="hl-grid-title">Assemblies we attended, things we did on campus</h2>
+        <p class="hl-section-sub">
+          Filter by where the moment happened — abroad, on campus, or in the trophy cabinet.
+        </p>
+      </div>
+
+      <div class="hl-filters" id="hl-filters" aria-label="Filter highlights"></div>
+
+      <div class="hl-grid" id="hl-grid"></div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section class="hl-cta-band" aria-labelledby="hl-cta-title">
+      <div class="hl-cta-inner">
+        <p class="hl-cta-label">Been there, next one's yours</p>
+        <h2 class="hl-cta-title" id="hl-cta-title">The best highlights are the ones you're in.</h2>
+        <p class="hl-cta-sub">
+          Every moment on this page started with a student saying yes — to a trip, a stall, a Saturday morning.
+          The next one has your name on it.
+        </p>
+        <div class="hl-cta-actions">
+          <a href="join.html" class="hl-btn hl-btn-white">Join the council</a>
+          <a href="index.html" class="hl-btn hl-btn-ghost-white">&larr; Back to home</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="hl-footer">
+    <p>IFMSA &mdash; Khyber Medical College, Peshawar</p>
+    <p>Built by students, for the future of medicine.</p>
+  </footer>
+
+  <!-- DETAIL MODAL -->
+  <div class="hl-modal-root" id="hl-modal-root" hidden></div>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="projects-data.js"></script>
+  <script src="data.js"></script>
+  <script src="highlights.js"></script>
+</body>
+</html>

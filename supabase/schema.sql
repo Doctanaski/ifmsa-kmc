@@ -33,6 +33,21 @@ create table if not exists public.projects (
   sort_order int  not null default 0
 );
 
+-- ---------- highlights (stories behind the projects) ----------
+create table if not exists public.highlights (
+  id         text primary key,
+  category   text not null default 'campus',   -- away | campus | win
+  tag        text,
+  title      text not null,
+  date       text,
+  location   text,
+  committee  text,
+  summary    text,
+  about      jsonb not null default '[]'::jsonb,
+  featured   boolean not null default false,
+  sort_order int  not null default 0
+);
+
 -- ---------- site settings (key -> json value) ----------
 create table if not exists public.site_settings (
   key   text primary key,
@@ -48,6 +63,7 @@ create table if not exists public.admin_users (
 -- ---------- row level security ----------
 alter table public.committees    enable row level security;
 alter table public.projects      enable row level security;
+alter table public.highlights    enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.admin_users   enable row level security;
 
@@ -65,6 +81,7 @@ $$;
 -- public can read content (the public site needs it)
 create policy "public read committees"    on public.committees    for select using (true);
 create policy "public read projects"      on public.projects      for select using (true);
+create policy "public read highlights"    on public.highlights    for select using (true);
 create policy "public read site_settings" on public.site_settings for select using (true);
 
 -- only listed admins can write content
@@ -73,6 +90,10 @@ create policy "admin write committees"    on public.committees    for all to aut
   with check (public.is_admin());
 
 create policy "admin write projects"      on public.projects      for all to authenticated
+  using    (public.is_admin())
+  with check (public.is_admin());
+
+create policy "admin write highlights"    on public.highlights    for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
