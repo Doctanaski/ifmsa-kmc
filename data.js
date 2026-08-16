@@ -59,7 +59,7 @@
       title: "Alumni",
       body: "The KMC alumni network — doctors and leaders around the world who grew up in IFMSA here in Peshawar and still give back.",
       btnText: "Alumni Stories",
-      btnHref: "about.html",
+      btnHref: "alumni.html",
       img1: "",
       img2: ""
     },
@@ -94,6 +94,7 @@
       projects: d.projects || [],
       highlightsList: d.highlights || [],
       execBoard: d.execBoard || [],
+      alumniList: d.alumni || [],
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
       about: DEFAULTS.about,
@@ -121,25 +122,31 @@
       client.from('projects').select('*').order('sort_order'),
       client.from('site_settings').select('key, value'),
       client.from('highlights').select('*').order('sort_order'),
-      client.from('exec_board').select('*').order('sort_order')
+      client.from('exec_board').select('*').order('sort_order'),
+      client.from('alumni').select('*').order('sort_order')
     ]).then(function (results) {
       var committeesRes = results[0];
       var projectsRes = results[1];
       var settingsRes = results[2];
       var highlightsRes = results[3];
       var execRes = results[4];
+      var alumniRes = results[5];
 
       if (committeesRes.error) throw committeesRes.error;
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
 
-      /* the highlights / exec_board tables are optional — a missing table simply
-         falls back to the bundled list, never taking the whole site down */
+      /* the highlights / exec_board / alumni tables are optional — a missing
+         table simply falls back to the bundled list, never taking the whole
+         site down */
       var highlights = (highlightsRes && highlightsRes.data) || [];
       if (highlightsRes && highlightsRes.error) highlights = [];
 
       var execBoard = (execRes && execRes.data) || [];
       if (execRes && execRes.error) execBoard = [];
+
+      var alumniList = (alumniRes && alumniRes.data) || [];
+      if (alumniRes && alumniRes.error) alumniList = [];
 
       var committees = {};
       (committeesRes.data || []).forEach(function (r) {
@@ -166,6 +173,7 @@
         projects: projectsRes.data || [],
         highlightsList: highlights,
         execBoard: execBoard,
+        alumniList: alumniList,
         site: site,
         hero: hero,
         about: about,

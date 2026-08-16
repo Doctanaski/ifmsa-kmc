@@ -33,6 +33,132 @@ window.IFMSA_DATA = {
     { name: "Iqra Yousaf",       role: "Local Officer — SCORE",        photo: "", quote: "Research is how medicine grows. SCORE is how students get their first taste of asking a question worth answering." }
   ],
 
+  // Where they are now — alumni of the council.
+  alumni: [
+    {
+      name: "Dr. Sana Yousafzai", cohort: "Batch of 2018", track: "Clinical",
+      role_now: "Resident — Internal Medicine", location: "Peshawar, Pakistan",
+      specialty: "Internal Medicine", committees: "SCOPE, SCORE", photo: "",
+      quote: "Her first SCOPE rotation was in Türkiye. Today she clerks at a teaching hospital in Peshawar — and still signs outbound students before every summer exchange.",
+      story: [
+        "Sana left KMC with one exchange on her CV and a second one booked. Her SCOPE rotation in Türkiye convinced her that a ward is a ward everywhere, and that the doctor inside you travels with you.",
+        "She returned the favour: for five years she ran the exchange committee's pre-departure sessions, and to this day a new cohort of outbound students sit through her briefing before flying.",
+        "Now a resident in internal medicine at a Peshawar teaching hospital, she credits IFMSA for teaching her to introduce herself to a patient in any language and to treat a colleague on the far side of the planet as one.",
+        "![Sana on rounds](https://picsum.photos/seed/al-sana-1/1200/900)"
+      ],
+      links: { linkedin: "https://www.linkedin.com/" },
+      featured: true, sort_order: 0
+    },
+    {
+      name: "Dr. Ali Haider", cohort: "Batch of 2016", track: "Research",
+      role_now: "PhD Candidate — Global Health", location: "London, UK",
+      specialty: "Public Health Research", committees: "SCORP, SCOPH", photo: "",
+      quote: "Left a ward job to ask why health systems fail the people they exist for. Now a PhD candidate in London.",
+      story: [
+        "Ali walked out of his final year with more questions than answers — and SCORP had taught him to ask them out loud. After a few years on the wards he traded the stethoscope for a spreadsheet and started a PhD in global health.",
+        "His thesis follows the exact communities SCOPH's screening Saturdays used to serve — the referral chain between a blood-pressure reading and a prescription.",
+        "He still calls KMC his laboratory: the campus campaigns taught him more about access than any textbook.",
+        "![Ali in his research office](https://picsum.photos/seed/al-ali-1/1200/900)"
+      ],
+      links: { linkedin: "https://www.linkedin.com/", twitter: "https://twitter.com/" },
+      featured: false, sort_order: 1
+    },
+    {
+      name: "Dr. Ayesha Begum", cohort: "Batch of 2019", track: "Clinical",
+      role_now: "Resident — Pediatrics", location: "Islamabad, Pakistan",
+      specialty: "Pediatrics", committees: "SCOPH", photo: "",
+      quote: "SCOPH taught her to talk to parents, not just patients. Now a pediatrics resident in the capital.",
+      story: [
+        "Ayesha's first talk was to a classroom of children holding habit cards, courtesy of SCOPH's school outreach. She was terrified. By her third year she was the one training the new volunteers.",
+        "That early practice is now her whole job: every consultation with a worried parent is a small outreach clinic. She is a pediatrics resident in Islamabad and still runs a school health day every term when the roster allows.",
+        "Her advice to a first-year: take the outreach project, not the easy seat. The bedside will teach itself; the classroom teaches you to be heard.",
+        "![Ayesha in the children's ward](https://picsum.photos/seed/al-ayesha-1/1200/900)"
+      ],
+      links: { linkedin: "https://www.linkedin.com/" },
+      featured: false, sort_order: 2
+    },
+    {
+      name: "Dr. Hamza Gondal", cohort: "Batch of 2015", track: "Beyond Medicine",
+      role_now: "Founder — HealthTech Startup", location: "Karachi, Pakistan",
+      specialty: "MedTech / Entrepreneurship", committees: "SCOME", photo: "",
+      quote: "SCOME's peer-teaching series showed him he could build a room and fill it. Now he builds products for clinics.",
+      story: [
+        "Hamza never intended to leave clinical medicine — he intended to build tools for the doctors who stayed. SCOME's Tutor Academy gave him his first taste of designing a session people actually turned up to; a decade later he designs software instead.",
+        "His startup builds clinic management tools for small practices in Pakistan — the exact kind of practice where his classmates started their careers.",
+        "He still uses the feedback loops SCOME taught him: ship something, watch how people react, rebuild.",
+        "![Hamza demoing his product](https://picsum.photos/seed/al-hamza-1/1200/900)"
+      ],
+      links: { linkedin: "https://www.linkedin.com/", twitter: "https://twitter.com/" },
+      featured: false, sort_order: 3
+    },
+    {
+      name: "Dr. Zainab Qureshi", cohort: "Batch of 2017", track: "Public Health",
+      role_now: "District Health Officer", location: "Khyber, Pakistan",
+      specialty: "District Health", committees: "SCORP, SCOPH", photo: "",
+      quote: "Led the Humanity Trucks convoy in her final year. Now she runs a district health office where relief plans get made.",
+      story: [
+        "In her final year Zainab stood at the front of the Humanity Trucks convoy, audited every blanket, and wrote the report that made the district trust the council.",
+        "She has spent the years since scaling that single convoy into a career: as a district health officer she now draws the plans that move supplies, staff and vaccines to the places the road ends.",
+        "She quotes her own first-year self often: health is a human right. The difference is she now signs the requisition forms.",
+        "![Zainab at a district planning meeting](https://picsum.photos/seed/al-zainab-1/1200/900)"
+      ],
+      links: { linkedin: "https://www.linkedin.com/" },
+      featured: true, sort_order: 4
+    },
+    {
+      name: "Dr. Omar Farooq", cohort: "Batch of 2014", track: "Clinical",
+      role_now: "Consultant — Cardiology", location: "Rawalpindi, Pakistan",
+      specialty: "Cardiology", committees: "SCOPE, SCORE", photo: "",
+      quote: "One SCORE summer in a London lab turned into a career in cardiology and an annual lecture for KMC students.",
+      story: [
+        "Omar's SCORE summer research placement in London ended with his name on an abstract — and a conviction that a clinical question is the best research question there is.",
+        "He trained into cardiology and now consults in Rawalpindi, but returns to KMC most years to deliver the research hour the committee still books him for.",
+        "His standing invitation stands: any student who wants a poster, an abstract or a plain honest read of their data can send it to him. He answers."
+      ],
+      links: { linkedin: "https://www.linkedin.com/", email: "president.kmclc.ifmsapakistan@gmail.com" },
+      featured: false, sort_order: 5
+    },
+    {
+      name: "Dr. Mahnoor Aslam", cohort: "Batch of 2020", track: "Research",
+      role_now: "Research Fellow", location: "Boston, USA",
+      specialty: "Epidemiology", committees: "SCORE", photo: "",
+      quote: "SCORE's mentorship pairing gave her a first project; an NIH fellowship gave her the next ten.",
+      story: [
+        "Mahnoor's first research question was written in a KMC corridor, on the back of a SCORE mentorship signup sheet. The mentor she was paired with stayed with her through the project, the poster and the paper.",
+        "She is now an epidemiology research fellow in Boston, working on datasets that would have seemed fictional to her as a student.",
+        "She still mentors a KMC student every year — her way of paying forward the pair of hands that once steadied her first sample size calculation."
+      ],
+      links: { linkedin: "https://www.linkedin.com/", twitter: "https://twitter.com/" },
+      featured: false, sort_order: 6
+    },
+    {
+      name: "Dr. Bilal Khattak", cohort: "Batch of 2013", track: "Leadership",
+      role_now: "National President — IFMSA-Pakistan", location: "Islamabad, Pakistan",
+      specialty: "Policy / Federation", committees: "SCOPE", photo: "",
+      quote: "From KMC Local Officer to leading the federation: the longest journey on this page, started with a single committee desk.",
+      story: [
+        "Bilal's first IFMSA role was a desk in the KMC SCOPE office. He was the Local Officer who matched the first exchange cohort, then the delegate, then the national team.",
+        "A decade later he leads IFMSA-Pakistan, representing Pakistani medical students to the federation's global assembly.",
+        "His message to KMC is unchanged from his first ever speech: the council is a ladder, and it is built to be climbed by every student who steps on it."
+      ],
+      links: { linkedin: "https://www.linkedin.com/" },
+      featured: true, sort_order: 7
+    },
+    {
+      name: "Dr. Sarah Ahmed", cohort: "Batch of 2021", track: "Beyond Medicine",
+      role_now: "Medical Writer & Educator", location: "Lahore, Pakistan",
+      specialty: "Health Communication", committees: "SCOME", photo: "",
+      quote: "Writes the teaching material SCOME now uses — proof that a peer-teaching series can outlive its tutors.",
+      story: [
+        "Sarah wrote her first lesson plan for the Peer Teaching Series and never really stopped writing. What began as a student's slide deck became a career in medical communication.",
+        "She now works as a medical writer and educator, producing curricula and patient material that clinics actually use — including the updated pack SCOME distributes on campus.",
+        "She likes to tell students that the only skill you keep forever is the one you use to teach someone else."
+      ],
+      links: { linkedin: "https://www.linkedin.com/", email: "president.kmclc.ifmsapakistan@gmail.com" },
+      featured: false, sort_order: 8
+    }
+  ],
+
   projects: [
     /* ---------------- SCOPE · Professional Exchange ---------------- */
     {

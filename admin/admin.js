@@ -35,6 +35,7 @@
     projects: [],
     highlights: [],
     execBoard: [],
+    alumni: [],
     settings: { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} },
     tab: 'projects',
     search: ''
@@ -72,6 +73,22 @@
   var HL_CAT_OPTIONS = function (selected) {
     return HL_CATS.map(function (c) {
       return '<option value="' + c.key + '"' + (c.key === selected ? ' selected' : '') + '>' + c.label + '</option>';
+    }).join('');
+  };
+
+  /* ---------- alumni ---------- */
+  var AL_TRACKS = [
+    { key: 'clinical',     label: 'Clinical',         color: '#1d4ed8' },
+    { key: 'research',     label: 'Research',         color: '#6d28d9' },
+    { key: 'publichealth', label: 'Public Health',    color: '#0f9c15' },
+    { key: 'leadership',   label: 'Leadership',       color: '#d29922' },
+    { key: 'beyond',       label: 'Beyond Medicine',  color: '#db2777' }
+  ];
+  var AL_TRACK_BY_KEY = {};
+  AL_TRACKS.forEach(function (t) { AL_TRACK_BY_KEY[t.key] = t; });
+  var AL_TRACK_OPTIONS = function (selected) {
+    return AL_TRACKS.map(function (t) {
+      return '<option value="' + t.key + '"' + (t.key === selected ? ' selected' : '') + '>' + t.label + '</option>';
     }).join('');
   };
 
@@ -359,6 +376,112 @@
     pre.innerHTML = execSlide(null, 0);
   }
 
+  /* ---------- alumni live preview (mirrors alumni.js rendering) ---------- */
+  var alInitials = function (name) {
+    return String(name || '').split(/\s+/).filter(Boolean)
+      .map(function (w) { return w.charAt(0).toUpperCase(); })
+      .slice(0, 2).join('');
+  };
+  var alTrackKey = function (track) {
+    return String(track || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  };
+  var alTrack = function (track) {
+    return AL_TRACK_BY_KEY[alTrackKey(track)] || AL_TRACK_BY_KEY.clinical;
+  };
+
+  function alMedia(a, size) {
+    var cls = size === 'feat' ? 'al-pv-avatar al-pv-avatar--feat' : 'al-pv-avatar';
+    return a.photo
+      ? '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '" loading="lazy" decoding="async" />'
+      : '<div class="' + cls + '"><span>' + esc(alInitials(a.name)) + '</span></div>';
+  }
+
+  function alCard(a) {
+    var t = alTrack(a.track);
+    return (
+      '<article class="al-pv-card" style="--al-pv-accent:' + t.color + '">' +
+        '<div class="al-pv-media">' + alMedia(a) +
+          '<span class="al-pv-pill"><i></i>' + esc(t.label) + '</span>' +
+        '</div>' +
+        '<div class="al-pv-body">' +
+          '<h4 class="al-pv-name">' + (a.name ? esc(a.name) : '<em>Untitled alumnus</em>') + '</h4>' +
+          '<p class="al-pv-role">' + esc(a.role_now) + '</p>' +
+          '<div class="al-pv-meta">' +
+            (a.cohort ? '<span>' + esc(a.cohort) + '</span>' : '') +
+            (a.cohort && a.location ? '<i></i>' : '') +
+            (a.location ? '<span>' + esc(a.location) + '</span>' : '') +
+          '</div>' +
+          (a.quote ? '<p class="al-pv-quote">' + esc(a.quote) + '</p>' : '') +
+          '<div class="al-pv-foot">' +
+            (a.committees ? '<span class="al-pv-com">' + esc(a.committees) + '</span>' : '') +
+            '<span class="al-pv-open">Read story &#8594;</span>' +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function alFeatured(a) {
+    var t = alTrack(a.track);
+    return (
+      '<article class="al-pv-feat" style="--al-pv-accent:' + t.color + '">' +
+        '<div class="al-pv-feat-media">' + alMedia(a, 'feat') + '</div>' +
+        '<div class="al-pv-feat-body">' +
+          '<span class="al-pv-pill"><i></i>' + esc(t.label) + '</span>' +
+          '<h4 class="al-pv-feat-name">' + (a.name ? esc(a.name) : '<em>Untitled alumnus</em>') + '</h4>' +
+          '<p class="al-pv-feat-role">' + esc(a.role_now) + '</p>' +
+          '<p class="al-pv-feat-quote">' + esc(a.quote) + '</p>' +
+          '<span class="al-pv-open">Read their story &#8594;</span>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function alStory(a) {
+    var blocks = splitBlocks(a.story);
+    var hero = blocks.images[0] || {};
+    var t = alTrack(a.track);
+    return (
+      '<div class="al-pv-story">' +
+        '<div class="al-pv-story-hero">' + (hero.src ? '<img src="' + esc(hero.src) + '" alt="' + esc(hero.alt) + '" loading="lazy" decoding="async" />' : '<div class="al-pv-avatar al-pv-avatar--story"><span>' + esc(alInitials(a.name)) + '</span></div>') + '</div>' +
+        '<div class="al-pv-story-body">' +
+          '<h4 class="al-pv-story-name">' + (a.name ? esc(a.name) : '<em>Untitled alumnus</em>') + '</h4>' +
+          '<p class="al-pv-story-role">' + esc(a.role_now) + '</p>' +
+          '<div class="al-pv-story-meta">' +
+            '<span class="al-pv-pill"><i></i>' + esc(t.label) + '</span>' +
+            (a.cohort ? '<span class="al-pv-pill">' + esc(a.cohort) + '</span>' : '') +
+            (a.location ? '<span class="al-pv-pill">' + esc(a.location) + '</span>' : '') +
+            (a.specialty ? '<span class="al-pv-pill">' + esc(a.specialty) + '</span>' : '') +
+            (a.committees ? '<span class="al-pv-pill">' + esc(a.committees) + '</span>' : '') +
+          '</div>' +
+          '<div class="al-pv-prose">' + blocks.paras + '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderAlumniPreview() {
+    var pre = el('al-preview');
+    if (!pre) return;
+    var a = {
+      name: val('a-name').trim(),
+      cohort: val('a-cohort').trim(),
+      track: val('a-track'),
+      role_now: val('a-role').trim(),
+      location: val('a-loc').trim(),
+      specialty: val('a-specialty').trim(),
+      committees: val('a-committees').trim(),
+      photo: val('a-photo').trim(),
+      quote: val('a-quote').trim(),
+      story: splitLines(val('a-story')),
+      featured: el('a-featured') ? el('a-featured').checked : false
+    };
+    pre.innerHTML =
+      '<div class="al-pv-block"><div class="al-pv-heading">Grid card</div>' + alCard(a) + '</div>' +
+      (a.featured ? '<div class="al-pv-block"><div class="al-pv-heading">Featured (spotlight)</div>' + alFeatured(a) + '</div>' : '') +
+      '<div class="al-pv-block"><div class="al-pv-heading">Story (modal)</div>' + alStory(a) + '</div>';
+  }
+
   /* ============ auth ============ */
   function boot() {
     sb.auth.getSession().then(function (r) {
@@ -450,6 +573,7 @@
         '<button data-tab="committees">Committees</button>' +
         '<button data-tab="highlights">Highlights</button>' +
         '<button data-tab="executive">Executive Board</button>' +
+        '<button data-tab="alumni">Alumni</button>' +
         '<button data-tab="settings">Settings</button>' +
         '<button data-tab="cards">Feature Cards</button>' +
       '</nav>' +
@@ -457,6 +581,7 @@
       '<main id="tab-committees" class="tab-pane" hidden></main>' +
       '<main id="tab-highlights" class="tab-pane" hidden></main>' +
       '<main id="tab-executive" class="tab-pane" hidden></main>' +
+      '<main id="tab-alumni" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
       '<main id="tab-cards" class="tab-pane" hidden></main>' +
       '<div id="modal-root"></div>';
@@ -468,7 +593,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'highlights', 'executive', 'settings', 'cards'].forEach(function (t) {
+        ['projects', 'committees', 'highlights', 'executive', 'alumni', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -482,7 +607,8 @@
       sb.from('projects').select('*').order('sort_order'),
       sb.from('site_settings').select('key, value'),
       sb.from('highlights').select('*').order('sort_order'),
-      sb.from('exec_board').select('*').order('sort_order')
+      sb.from('exec_board').select('*').order('sort_order'),
+      sb.from('alumni').select('*').order('sort_order')
     ]).then(function (rs) {
       if (rs[0].error) throw rs[0].error;
       if (rs[1].error) throw rs[1].error;
@@ -493,6 +619,7 @@
       (rs[2].data || []).forEach(function (s) { state.settings[s.key] = s.value || {}; });
       state.highlights = rs[3].data || [];
       state.execBoard = rs[4].data || [];
+      state.alumni = rs[5].data || [];
     });
   }
 
@@ -509,6 +636,7 @@
     else if (state.tab === 'committees') renderCommittees();
     else if (state.tab === 'highlights') renderHighlights();
     else if (state.tab === 'executive') renderExecutive();
+    else if (state.tab === 'alumni') renderAlumni();
     else if (state.tab === 'cards') renderCards();
     else renderSettings();
   }
@@ -964,6 +1092,138 @@
     sb.from('exec_board').delete().eq('id', id).then(function (r) {
       if (r.error) { alert(r.error.message); return; }
       loadData().then(renderExecutive);
+    });
+  }
+
+  /* ============ alumni (Where they are now page) ============ */
+  function renderAlumni() {
+    var pane = el('tab-alumni');
+
+    var rows = state.alumni.slice().sort(function (a, b) {
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
+
+    pane.innerHTML =
+      '<div class="toolbar">' +
+        '<div></div>' +
+        '<button class="btn btn-primary" id="al-new">+ Add alumnus</button>' +
+      '</div>' +
+      '<div class="count">' + rows.length + ' alumn' + (rows.length === 1 ? 'us' : 'i') + '</div>' +
+      '<table class="table">' +
+        '<thead><tr><th>Name</th><th>Track</th><th>Role now</th><th>Location</th><th>Featured</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<tbody>' + rows.map(function (a) {
+          var t = alTrack(a.track);
+          return '<tr>' +
+            '<td><strong>' + esc(a.name) + '</strong></td>' +
+            '<td><span class="tag" style="color:' + esc(t.color) + '">' + esc(t.label) + '</span></td>' +
+            '<td>' + esc(a.role_now || '') + '</td>' +
+            '<td>' + esc(a.location || '') + '</td>' +
+            '<td>' + (a.featured ? '&#9733;' : '') + '</td>' +
+            '<td class="actions-cell">' +
+              '<button class="btn btn-small" data-edit="' + esc(a.id) + '">Edit</button> ' +
+              '<button class="btn btn-small btn-danger" data-del="' + esc(a.id) + '">Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        (rows.length ? '' : '<tr><td colspan="6" class="empty">No alumni yet.</td></tr>') +
+        '</tbody>' +
+      '</table>';
+
+    el('al-new').addEventListener('click', function () { alumniModal(null); });
+    pane.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        alumniModal(state.alumni.find(function (a) { return String(a.id) === b.getAttribute('data-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delAlumnus(b.getAttribute('data-del')); });
+    });
+  }
+
+  function alumniModal(a) {
+    a = a || {
+      id: '', name: '', cohort: '', track: 'clinical', role_now: '', location: '',
+      specialty: '', committees: '', photo: '', quote: '', story: [],
+      links: {}, featured: false, sort_order: state.alumni.length
+    };
+
+    openModal(
+      '<h2>' + (a.id ? 'Edit alumnus' : 'Add alumnus') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Name<input type="text" id="a-name" value="' + esc(a.name) + '" required placeholder="e.g. Dr. Sana Yousafzai" /></label>' +
+            '<label>Cohort<input type="text" id="a-cohort" value="' + esc(a.cohort) + '" placeholder="Batch of 2018" /></label>' +
+            '<label>Track<select id="a-track">' + AL_TRACK_OPTIONS(alTrackKey(a.track)) + '</select></label>' +
+            '<label>Sort order<input type="number" id="a-sort" value="' + (a.sort_order || 0) + '" /></label>' +
+            '<label class="full">Role now<input type="text" id="a-role" value="' + esc(a.role_now) + '" placeholder="e.g. Resident — Internal Medicine" /></label>' +
+            '<label class="full">Location<input type="text" id="a-loc" value="' + esc(a.location) + '" placeholder="Peshawar, Pakistan" /></label>' +
+            '<label class="full">Specialty<input type="text" id="a-specialty" value="' + esc(a.specialty) + '" placeholder="e.g. Cardiology" /></label>' +
+            '<label class="full">Committees<input type="text" id="a-committees" value="' + esc(a.committees) + '" placeholder="SCOPE, SCORE" /></label>' +
+            '<label class="full">Photo URL<input type="text" id="a-photo" value="' + esc(a.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Quote (card)<textarea id="a-quote">' + esc(a.quote) + '</textarea></label>' +
+            '<label class="full">Story — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="a-story">' + esc((a.story || []).join('\n')) + '</textarea></label>' +
+            '<label>LinkedIn URL<input type="text" id="a-linkedin" value="' + esc((a.links && a.links.linkedin) || '') + '" /></label>' +
+            '<label>Twitter URL<input type="text" id="a-twitter" value="' + esc((a.links && a.links.twitter) || '') + '" /></label>' +
+            '<label class="full">Email<input type="text" id="a-email" value="' + esc((a.links && a.links.email) || '') + '" /></label>' +
+            '<label class="full check"><input type="checkbox" id="a-featured"' + (a.featured ? ' checked' : '') + ' /> Feature in the spotlight</label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save alumnus</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="al-preview" id="al-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['a-name', 'a-cohort', 'a-track', 'a-role', 'a-loc', 'a-specialty', 'a-committees',
+     'a-photo', 'a-quote', 'a-story', 'a-featured'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderAlumniPreview);
+      input.addEventListener('change', renderAlumniPreview);
+    });
+    renderAlumniPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        name: val('a-name').trim(),
+        cohort: val('a-cohort').trim() || null,
+        track: val('a-track'),
+        role_now: val('a-role').trim() || null,
+        location: val('a-loc').trim() || null,
+        specialty: val('a-specialty').trim() || null,
+        committees: val('a-committees').trim() || null,
+        photo: val('a-photo').trim() || null,
+        quote: val('a-quote').trim() || null,
+        story: splitLines(val('a-story')),
+        links: {
+          linkedin: val('a-linkedin').trim() || null,
+          twitter: val('a-twitter').trim() || null,
+          email: val('a-email').trim() || null
+        },
+        featured: !!el('a-featured').checked,
+        sort_order: parseInt(val('a-sort'), 10) || 0
+      };
+      if (!row.name) { alert('Name is required.'); return; }
+      if (a.id) row.id = a.id;
+      sb.from('alumni').upsert(row).then(function (r) {
+        if (r.error) { alert(r.error.message); return; }
+        closeModal();
+        loadData().then(renderAlumni);
+      });
+    });
+  }
+
+  function delAlumnus(id) {
+    if (!confirm('Remove this alumnus?')) return;
+    sb.from('alumni').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderAlumni);
     });
   }
 

@@ -58,6 +58,24 @@ create table if not exists public.exec_board (
   sort_order int  not null default 0
 );
 
+-- ---------- alumni (Where they are now page) ----------
+create table if not exists public.alumni (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  cohort     text,                        -- e.g. "Batch of 2018"
+  track      text,                        -- Clinical | Research | Public Health | Leadership | Beyond Medicine
+  role_now   text,                        -- current position
+  location   text,                        -- city, country
+  specialty  text,
+  committees text,                        -- committee acronyms, comma separated
+  photo      text,
+  quote      text,                        -- short line shown on the card
+  story      jsonb not null default '[]'::jsonb, -- paragraphs + ![caption](url) image lines
+  links      jsonb not null default '{}'::jsonb, -- { linkedin, twitter, email }
+  featured   boolean not null default false,
+  sort_order int  not null default 0
+);
+
 -- ---------- site settings (key -> json value) ----------
 create table if not exists public.site_settings (
   key   text primary key,
@@ -75,6 +93,7 @@ alter table public.committees    enable row level security;
 alter table public.projects      enable row level security;
 alter table public.highlights    enable row level security;
 alter table public.exec_board    enable row level security;
+alter table public.alumni        enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.admin_users   enable row level security;
 
@@ -94,12 +113,14 @@ drop policy if exists "public read committees"    on public.committees;
 drop policy if exists "public read projects"      on public.projects;
 drop policy if exists "public read highlights"    on public.highlights;
 drop policy if exists "public read exec_board"    on public.exec_board;
+drop policy if exists "public read alumni"        on public.alumni;
 drop policy if exists "public read site_settings" on public.site_settings;
 
 create policy "public read committees"    on public.committees    for select using (true);
 create policy "public read projects"      on public.projects      for select using (true);
 create policy "public read highlights"    on public.highlights    for select using (true);
 create policy "public read exec_board"    on public.exec_board    for select using (true);
+create policy "public read alumni"        on public.alumni        for select using (true);
 create policy "public read site_settings" on public.site_settings for select using (true);
 
 -- only listed admins can write content
@@ -107,6 +128,7 @@ drop policy if exists "admin write committees"    on public.committees;
 drop policy if exists "admin write projects"      on public.projects;
 drop policy if exists "admin write highlights"    on public.highlights;
 drop policy if exists "admin write exec_board"    on public.exec_board;
+drop policy if exists "admin write alumni"        on public.alumni;
 drop policy if exists "admin write site_settings" on public.site_settings;
 
 create policy "admin write committees"    on public.committees    for all to authenticated
@@ -122,6 +144,10 @@ create policy "admin write highlights"    on public.highlights    for all to aut
   with check (public.is_admin());
 
 create policy "admin write exec_board"    on public.exec_board    for all to authenticated
+  using    (public.is_admin())
+  with check (public.is_admin());
+
+create policy "admin write alumni"        on public.alumni        for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
