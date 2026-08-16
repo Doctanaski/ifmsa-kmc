@@ -76,6 +76,24 @@ create table if not exists public.alumni (
   sort_order int  not null default 0
 );
 
+-- ---------- awards (Achievements & Awards page) ----------
+create table if not exists public.awards (
+  id         text primary key,
+  category   text not null default 'project', -- officer | project | research | international | national | community
+  title      text not null,
+  awardee    text,                        -- person / project / partner honoured, or authors for a paper
+  role       text,                        -- subtitle, e.g. "Local Officer — SCOPH"
+  year       text,                        -- "2026"
+  location   text,
+  source     text,                        -- journal / assembly / body that granted it
+  link       text,                        -- DOI or external URL
+  summary    text,                        -- short line shown on the card
+  about      jsonb not null default '[]'::jsonb, -- paragraphs + ![caption](url) image lines
+  medal      text,                        -- gold | silver | bronze
+  featured   boolean not null default false,
+  sort_order int  not null default 0
+);
+
 -- ---------- site settings (key -> json value) ----------
 create table if not exists public.site_settings (
   key   text primary key,
@@ -94,6 +112,7 @@ alter table public.projects      enable row level security;
 alter table public.highlights    enable row level security;
 alter table public.exec_board    enable row level security;
 alter table public.alumni        enable row level security;
+alter table public.awards        enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.admin_users   enable row level security;
 
@@ -114,6 +133,7 @@ drop policy if exists "public read projects"      on public.projects;
 drop policy if exists "public read highlights"    on public.highlights;
 drop policy if exists "public read exec_board"    on public.exec_board;
 drop policy if exists "public read alumni"        on public.alumni;
+drop policy if exists "public read awards"        on public.awards;
 drop policy if exists "public read site_settings" on public.site_settings;
 
 create policy "public read committees"    on public.committees    for select using (true);
@@ -121,6 +141,7 @@ create policy "public read projects"      on public.projects      for select usi
 create policy "public read highlights"    on public.highlights    for select using (true);
 create policy "public read exec_board"    on public.exec_board    for select using (true);
 create policy "public read alumni"        on public.alumni        for select using (true);
+create policy "public read awards"        on public.awards        for select using (true);
 create policy "public read site_settings" on public.site_settings for select using (true);
 
 -- only listed admins can write content
@@ -129,6 +150,7 @@ drop policy if exists "admin write projects"      on public.projects;
 drop policy if exists "admin write highlights"    on public.highlights;
 drop policy if exists "admin write exec_board"    on public.exec_board;
 drop policy if exists "admin write alumni"        on public.alumni;
+drop policy if exists "admin write awards"        on public.awards;
 drop policy if exists "admin write site_settings" on public.site_settings;
 
 create policy "admin write committees"    on public.committees    for all to authenticated
@@ -148,6 +170,10 @@ create policy "admin write exec_board"    on public.exec_board    for all to aut
   with check (public.is_admin());
 
 create policy "admin write alumni"        on public.alumni        for all to authenticated
+  using    (public.is_admin())
+  with check (public.is_admin());
+
+create policy "admin write awards"        on public.awards        for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 

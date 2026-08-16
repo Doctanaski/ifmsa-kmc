@@ -67,7 +67,7 @@
       title: "Achievements & Awards",
       body: "The recognitions our members, projects and committees have earned — nationally and on the international IFMSA stage.",
       btnText: "Our Awards",
-      btnHref: "about.html",
+      btnHref: "awards.html",
       img1: "",
       img2: ""
     },
@@ -95,6 +95,7 @@
       highlightsList: d.highlights || [],
       execBoard: d.execBoard || [],
       alumniList: d.alumni || [],
+      awardsList: d.awards || [],
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
       about: DEFAULTS.about,
@@ -123,7 +124,8 @@
       client.from('site_settings').select('key, value'),
       client.from('highlights').select('*').order('sort_order'),
       client.from('exec_board').select('*').order('sort_order'),
-      client.from('alumni').select('*').order('sort_order')
+      client.from('alumni').select('*').order('sort_order'),
+      client.from('awards').select('*').order('sort_order')
     ]).then(function (results) {
       var committeesRes = results[0];
       var projectsRes = results[1];
@@ -131,14 +133,14 @@
       var highlightsRes = results[3];
       var execRes = results[4];
       var alumniRes = results[5];
-
+      var awardsRes = results[6];
       if (committeesRes.error) throw committeesRes.error;
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
 
-      /* the highlights / exec_board / alumni tables are optional — a missing
-         table simply falls back to the bundled list, never taking the whole
-         site down */
+      /* the highlights / exec_board / alumni / awards tables are optional — a
+         missing table simply falls back to the bundled list, never taking the
+         whole site down */
       var highlights = (highlightsRes && highlightsRes.data) || [];
       if (highlightsRes && highlightsRes.error) highlights = [];
 
@@ -147,6 +149,9 @@
 
       var alumniList = (alumniRes && alumniRes.data) || [];
       if (alumniRes && alumniRes.error) alumniList = [];
+
+      var awardsList = (awardsRes && awardsRes.data) || [];
+      if (awardsRes && awardsRes.error) awardsList = [];
 
       var committees = {};
       (committeesRes.data || []).forEach(function (r) {
@@ -174,6 +179,7 @@
         highlightsList: highlights,
         execBoard: execBoard,
         alumniList: alumniList,
+        awardsList: awardsList,
         site: site,
         hero: hero,
         about: about,

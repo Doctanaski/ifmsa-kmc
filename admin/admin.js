@@ -36,6 +36,7 @@
     highlights: [],
     execBoard: [],
     alumni: [],
+    awards: [],
     settings: { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} },
     tab: 'projects',
     search: ''
@@ -90,6 +91,35 @@
     return AL_TRACKS.map(function (t) {
       return '<option value="' + t.key + '"' + (t.key === selected ? ' selected' : '') + '>' + t.label + '</option>';
     }).join('');
+  };
+
+  /* ---------- awards ---------- */
+  var AW_CATS = [
+    { key: 'officer',       label: 'Officer of the Year',       color: '#d29922' },
+    { key: 'project',       label: 'Best Project',              color: '#0f9c15' },
+    { key: 'research',      label: 'Research Publications',     color: '#6d28d9' },
+    { key: 'international', label: 'International Recognition', color: '#1d4ed8' },
+    { key: 'national',      label: 'National Partnerships',     color: '#0d9488' },
+    { key: 'community',     label: 'Community Impact',          color: '#db2777' }
+  ];
+  var AW_CAT_BY_KEY = {};
+  AW_CATS.forEach(function (c) { AW_CAT_BY_KEY[c.key] = c; });
+  var AW_MEDAL_LABEL = { gold: 'Gold', silver: 'Silver', bronze: 'Bronze' };
+  var AW_MEDAL_OPTIONS = function (selected) {
+    var list = [{ value: '', label: '— none —' }].concat(
+      Object.keys(AW_MEDAL_LABEL).map(function (m) { return { value: m, label: AW_MEDAL_LABEL[m] }; })
+    );
+    return list.map(function (m) {
+      return '<option value="' + m.value + '"' + (m.value === selected ? ' selected' : '') + '>' + m.label + '</option>';
+    }).join('');
+  };
+  var AW_CAT_OPTIONS = function (selected) {
+    return AW_CATS.map(function (c) {
+      return '<option value="' + c.key + '"' + (c.key === selected ? ' selected' : '') + '>' + c.label + '</option>';
+    }).join('');
+  };
+  var awCatOf = function (key) {
+    return AW_CAT_BY_KEY[String(key || 'project').toLowerCase().replace(/[^a-z0-9]/g, '')] || AW_CAT_BY_KEY.project;
   };
 
   var esc = function (s) {
@@ -482,6 +512,121 @@
       '<div class="al-pv-block"><div class="al-pv-heading">Story (modal)</div>' + alStory(a) + '</div>';
   }
 
+  /* ============ awards live preview (mirrors awards.js rendering) ============ */
+  var AW_MEDAL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"></circle><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"></path></svg>';
+  var awMedalBadge = function (a, cls) {
+    var m = String(a.medal || '').toLowerCase();
+    if (!m || !AW_MEDAL_LABEL[m]) return '';
+    return '<span class="' + cls + '">' + AW_MEDAL_ICON + AW_MEDAL_LABEL[m] + '</span>';
+  };
+  var awKicker = function (a) {
+    var bits = [];
+    if (a.year) bits.push('<span>' + esc(a.year) + '</span>');
+    if (a.location) bits.push('<span>' + esc(a.location) + '</span>');
+    return '<div class="aw-pv-kicker">' + bits.join('<i></i>') + '</div>';
+  };
+  var awCover = function (a, cls) {
+    var blocks = splitBlocks(a.about);
+    var img = blocks.images[0] || {};
+    return img.src
+      ? '<img src="' + esc(img.src) + '" alt="' + esc(a.title) + '" loading="lazy" decoding="async" />'
+      : '<div class="' + cls + '"><span>' + esc(alInitials(a.awardee || a.title)) + '</span></div>';
+  };
+
+  function awGenericCard(a) {
+    var c = awCatOf(a.category);
+    return (
+      '<article class="aw-pv-card" style="--aw-pv-cat:' + c.color + '">' +
+        '<div class="aw-pv-media">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-body">' +
+          awKicker(a) +
+          '<h4 class="aw-pv-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
+          (a.awardee ? '<p class="aw-pv-awardee">' + esc(a.awardee) + (a.role ? ' · ' + esc(a.role) : '') + '</p>' : '') +
+          '<p class="aw-pv-summary">' + esc(a.summary) + '</p>' +
+          '<div class="aw-pv-foot"><span class="aw-pv-source">' + esc(a.source || c.label) + '</span><span class="aw-pv-open">View recognition &#8594;</span></div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function awPersonCard(a) {
+    var c = awCatOf(a.category);
+    return (
+      '<article class="aw-pv-card" style="--aw-pv-cat:' + c.color + '">' +
+        '<div class="aw-pv-media aw-pv-media--person">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-body">' +
+          awKicker(a) +
+          '<h4 class="aw-pv-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
+          (a.awardee ? '<p class="aw-pv-awardee">' + esc(a.awardee) + '</p>' : '') +
+          (a.role ? '<p class="aw-pv-role">' + esc(a.role) + '</p>' : '') +
+          '<p class="aw-pv-summary">' + esc(a.summary) + '</p>' +
+          '<div class="aw-pv-foot"><span class="aw-pv-source">' + esc(a.source || c.label) + '</span><span class="aw-pv-open">View recognition &#8594;</span></div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function awPaper(a) {
+    var c = awCatOf(a.category);
+    var meta = [];
+    if (a.source) meta.push('<span>' + esc(a.source) + '</span>');
+    if (a.year) meta.push('<span>' + esc(a.year) + '</span>');
+    var doi = a.link
+      ? '<a class="aw-pv-doi" href="' + esc(a.link) + '" target="_blank" rel="noopener">' + esc(/^https?:\/\//i.test(a.link) ? 'Open link' : 'DOI ' + a.link) + '</a>'
+      : '';
+    return (
+      '<article class="aw-pv-paper" style="--aw-pv-cat:' + c.color + '">' +
+        '<div class="aw-pv-paper-main">' +
+          '<div class="aw-pv-paper-meta">' + meta.join('<i></i>') + '</div>' +
+          '<h4 class="aw-pv-title">' + (a.title ? esc(a.title) : '<em>Untitled paper</em>') + '</h4>' +
+          (a.awardee ? '<p class="aw-pv-authors">' + esc(a.awardee) + '</p>' : '') +
+          '<p class="aw-pv-summary">' + esc(a.summary) + '</p>' +
+        '</div>' +
+        doi +
+      '</article>'
+    );
+  }
+
+  function awPod(a) {
+    var c = awCatOf(a.category);
+    return (
+      '<article class="aw-pv-pod" style="--aw-pv-cat:' + c.color + '">' +
+        '<div class="aw-pv-pod-media">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-pod-body">' +
+          '<span class="aw-pv-pill"><i></i>' + esc(c.label) + '</span>' +
+          '<h4 class="aw-pv-pod-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
+          (a.awardee ? '<p class="aw-pv-awardee">' + esc(a.awardee) + '</p>' : '') +
+          (a.role ? '<p class="aw-pv-role">' + esc(a.role) + '</p>' : '') +
+          '<p class="aw-pv-summary">' + esc(a.summary) + '</p>' +
+          '<span class="aw-pv-open">Read the full story &#8594;</span>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function renderAwardsPreview() {
+    var pre = el('aw-preview');
+    if (!pre) return;
+    var a = {
+      category: val('w-cat'),
+      title: val('w-title').trim(),
+      awardee: val('w-awardee').trim(),
+      role: val('w-role').trim(),
+      year: val('w-year').trim(),
+      location: val('w-loc').trim(),
+      source: val('w-source').trim(),
+      link: val('w-link').trim(),
+      summary: val('w-summary').trim(),
+      about: splitLines(val('w-about')),
+      medal: val('w-medal'),
+      featured: el('w-featured') ? el('w-featured').checked : false
+    };
+    var card = a.category === 'research' ? awPaper(a) : (a.category === 'officer' ? awPersonCard(a) : awGenericCard(a));
+    pre.innerHTML =
+      '<div class="aw-pv-block"><div class="aw-pv-heading">' + (a.category === 'research' ? 'Publication entry' : 'Card') + '</div>' + card + '</div>' +
+      (a.featured ? '<div class="aw-pv-block"><div class="aw-pv-heading">Hall of Fame (featured)</div>' + awPod(a) + '</div>' : '');
+  }
+
   /* ============ auth ============ */
   function boot() {
     sb.auth.getSession().then(function (r) {
@@ -574,6 +719,7 @@
         '<button data-tab="highlights">Highlights</button>' +
         '<button data-tab="executive">Executive Board</button>' +
         '<button data-tab="alumni">Alumni</button>' +
+        '<button data-tab="awards">Awards</button>' +
         '<button data-tab="settings">Settings</button>' +
         '<button data-tab="cards">Feature Cards</button>' +
       '</nav>' +
@@ -582,6 +728,7 @@
       '<main id="tab-highlights" class="tab-pane" hidden></main>' +
       '<main id="tab-executive" class="tab-pane" hidden></main>' +
       '<main id="tab-alumni" class="tab-pane" hidden></main>' +
+      '<main id="tab-awards" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
       '<main id="tab-cards" class="tab-pane" hidden></main>' +
       '<div id="modal-root"></div>';
@@ -593,7 +740,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'highlights', 'executive', 'alumni', 'settings', 'cards'].forEach(function (t) {
+        ['projects', 'committees', 'highlights', 'executive', 'alumni', 'awards', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -608,7 +755,8 @@
       sb.from('site_settings').select('key, value'),
       sb.from('highlights').select('*').order('sort_order'),
       sb.from('exec_board').select('*').order('sort_order'),
-      sb.from('alumni').select('*').order('sort_order')
+      sb.from('alumni').select('*').order('sort_order'),
+      sb.from('awards').select('*').order('sort_order')
     ]).then(function (rs) {
       if (rs[0].error) throw rs[0].error;
       if (rs[1].error) throw rs[1].error;
@@ -620,6 +768,7 @@
       state.highlights = rs[3].data || [];
       state.execBoard = rs[4].data || [];
       state.alumni = rs[5].data || [];
+      state.awards = rs[6].data || [];
     });
   }
 
@@ -637,6 +786,7 @@
     else if (state.tab === 'highlights') renderHighlights();
     else if (state.tab === 'executive') renderExecutive();
     else if (state.tab === 'alumni') renderAlumni();
+    else if (state.tab === 'awards') renderAwards();
     else if (state.tab === 'cards') renderCards();
     else renderSettings();
   }
@@ -1224,6 +1374,154 @@
     sb.from('alumni').delete().eq('id', id).then(function (r) {
       if (r.error) { alert(r.error.message); return; }
       loadData().then(renderAlumni);
+    });
+  }
+
+  /* ============ awards (Achievements & Awards page) ============ */
+  function renderAwards() {
+    var pane = el('tab-awards');
+
+    var rows = state.awards.slice().sort(function (a, b) {
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
+
+    pane.innerHTML =
+      '<div class="toolbar">' +
+        '<div></div>' +
+        '<button class="btn btn-primary" id="aw-new">+ New award</button>' +
+      '</div>' +
+      '<div class="count">' + rows.length + ' award' + (rows.length === 1 ? '' : 's') + '</div>' +
+      '<table class="table">' +
+        '<thead><tr><th>Title</th><th>Category</th><th>Awardee</th><th>Year</th><th>Featured</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<tbody>' + rows.map(function (a) {
+          var c = awCatOf(a.category);
+          return '<tr>' +
+            '<td><strong>' + esc(a.title) + '</strong></td>' +
+            '<td><span class="tag" style="color:' + esc(c.color) + '">' + esc(c.label) + '</span></td>' +
+            '<td>' + esc(a.awardee || '') + '</td>' +
+            '<td>' + esc(a.year || '') + '</td>' +
+            '<td>' + (a.featured ? '&#9733;' : '') + '</td>' +
+            '<td class="actions-cell">' +
+              '<button class="btn btn-small" data-edit="' + esc(a.id) + '">Edit</button> ' +
+              '<button class="btn btn-small btn-danger" data-del="' + esc(a.id) + '">Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        (rows.length ? '' : '<tr><td colspan="6" class="empty">No awards yet.</td></tr>') +
+        '</tbody>' +
+      '</table>';
+
+    el('aw-new').addEventListener('click', function () { awardsModal(null); });
+    pane.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        awardsModal(state.awards.find(function (a) { return a.id === b.getAttribute('data-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delAward(b.getAttribute('data-del')); });
+    });
+  }
+
+  function awardsModal(a) {
+    a = a || {
+      id: '', category: 'project', title: '', awardee: '', role: '', year: '',
+      location: '', source: '', link: '', summary: '', about: [],
+      medal: '', featured: false, sort_order: state.awards.length
+    };
+
+    openModal(
+      '<h2>' + (a.id ? 'Edit award' : 'New award') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Title<input type="text" id="w-title" value="' + esc(a.title) + '" required placeholder="e.g. Officer of the Year" /></label>' +
+            '<label>Category<select id="w-cat">' + AW_CAT_OPTIONS(a.category) + '</select></label>' +
+            '<label>Medal<select id="w-medal">' + AW_MEDAL_OPTIONS(a.medal) + '</select></label>' +
+            '<label>Year<input type="text" id="w-year" value="' + esc(a.year) + '" placeholder="2026" /></label>' +
+            '<label>Sort order<input type="number" id="w-sort" value="' + (a.sort_order || 0) + '" /></label>' +
+            '<label class="full">Awardee (person / project / authors)<input type="text" id="w-awardee" value="' + esc(a.awardee) + '" placeholder="e.g. Mahnoor Khan" /></label>' +
+            '<label class="full">Role (subtitle)<input type="text" id="w-role" value="' + esc(a.role) + '" placeholder="e.g. Local Officer — SCOPH" /></label>' +
+            '<label class="full">Location<input type="text" id="w-loc" value="' + esc(a.location) + '" placeholder="Cape Town, South Africa" /></label>' +
+            '<label class="full">Source (journal / assembly / body)<input type="text" id="w-source" value="' + esc(a.source) + '" placeholder="e.g. Journal of the Pakistan Medical Association" /></label>' +
+            '<label class="full">Link (DOI / URL)<input type="text" id="w-link" value="' + esc(a.link) + '" placeholder="https://doi.org/…" /></label>' +
+            '<label class="full check"><input type="checkbox" id="w-featured"' + (a.featured ? ' checked' : '') + ' /> Feature in the Hall of Fame</label>' +
+            '<label class="full">Summary<textarea id="w-summary">' + esc(a.summary) + '</textarea></label>' +
+            '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="w-about">' + esc((a.about || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">ID (leave blank to auto-generate)<input type="text" id="w-id" value="' + esc(a.id) + '" placeholder="e.g. aw-2026-officer-of-year" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save award</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="aw-preview" id="aw-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['w-title', 'w-cat', 'w-medal', 'w-year', 'w-awardee', 'w-role', 'w-loc',
+     'w-source', 'w-link', 'w-summary', 'w-about', 'w-featured'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderAwardsPreview);
+      input.addEventListener('change', renderAwardsPreview);
+    });
+    renderAwardsPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        category: val('w-cat'),
+        medal: val('w-medal') || null,
+        title: val('w-title').trim(),
+        awardee: val('w-awardee').trim() || null,
+        role: val('w-role').trim() || null,
+        year: val('w-year').trim() || null,
+        location: val('w-loc').trim() || null,
+        source: val('w-source').trim() || null,
+        link: val('w-link').trim() || null,
+        summary: val('w-summary').trim() || null,
+        about: splitLines(val('w-about')),
+        featured: !!el('w-featured').checked,
+        sort_order: parseInt(val('w-sort'), 10) || 0
+      };
+      if (!row.title) { alert('Title is required.'); return; }
+      if (!val('w-id').trim()) {
+        row.id = slugify(row.title);
+        if (!row.id) { alert('Give the award an ID.'); return; }
+      } else {
+        row.id = val('w-id').trim();
+      }
+      if (a.id) row.id = a.id;
+
+      /* keep only one featured item on the podium if this one is featured */
+      if (row.featured) {
+        var others = state.awards.filter(function (x) { return x.featured && x.id !== row.id; });
+        if (others.length) {
+          var keys = others.map(function (x) { return x.id; });
+          sb.from('awards').update({ featured: false }).in('id', keys)
+            .then(function () { doSaveAward(row); });
+          return;
+        }
+      }
+      doSaveAward(row);
+    });
+  }
+
+  function doSaveAward(row) {
+    sb.from('awards').upsert(row).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      closeModal();
+      loadData().then(renderAwards);
+    });
+  }
+
+  function delAward(id) {
+    if (!confirm('Delete this award?')) return;
+    sb.from('awards').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderAwards);
     });
   }
 
