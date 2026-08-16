@@ -33,7 +33,7 @@
     isAdmin: false,
     committees: [],
     projects: [],
-    settings: { site: {}, hero: {}, about: {}, join: {} },
+    settings: { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} },
     tab: 'projects',
     search: ''
   };
@@ -259,10 +259,12 @@
         '<button data-tab="projects" class="active">Projects</button>' +
         '<button data-tab="committees">Committees</button>' +
         '<button data-tab="settings">Settings</button>' +
+        '<button data-tab="cards">Feature Cards</button>' +
       '</nav>' +
       '<main id="tab-projects" class="tab-pane"></main>' +
       '<main id="tab-committees" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
+      '<main id="tab-cards" class="tab-pane" hidden></main>' +
       '<div id="modal-root"></div>';
 
     el('logout-btn').addEventListener('click', logout);
@@ -272,7 +274,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'settings'].forEach(function (t) {
+        ['projects', 'committees', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -291,7 +293,7 @@
       if (rs[2].error) throw rs[2].error;
       state.committees = rs[0].data || [];
       state.projects = rs[1].data || [];
-      state.settings = { site: {}, hero: {}, about: {}, join: {} };
+      state.settings = { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} };
       (rs[2].data || []).forEach(function (s) { state.settings[s.key] = s.value || {}; });
     });
   }
@@ -307,6 +309,7 @@
   function renderTab() {
     if (state.tab === 'projects') renderProjects();
     else if (state.tab === 'committees') renderCommittees();
+    else if (state.tab === 'cards') renderCards();
     else renderSettings();
   }
 
@@ -527,8 +530,6 @@
     var pane = el('tab-settings');
     var s = state.settings.site || {};
     var h = state.settings.hero || {};
-    var a = state.settings.about || {};
-    var j = state.settings.join || {};
 
     pane.innerHTML =
       '<div class="card settings-section"><h3>Site</h3>' +
@@ -557,17 +558,36 @@
           '<label>Stat 3 label<input type="text" id="h-m3l" value="' + esc(h.mini3Label || '') + '" /></label>' +
           '<label>Stat 4 number<input type="text" id="h-m4n" value="' + esc(h.estNum || '') + '" /></label>' +
           '<label>Stat 4 label<input type="text" id="h-m4l" value="' + esc(h.estLabel || '') + '" /></label>' +
-        '</div></div>' +
+          '<div class="form-actions"><button class="btn btn-primary" id="settings-save">Save settings</button></div>' +
+        '</div></div>';
 
+    el('settings-save').addEventListener('click', saveSettings);
+  }
+
+  /* ============ feature cards (About / Join / Exec / Highlights / Alumni / Awards) ============ */
+  function cardFields(slug, titleId, bodyId, btnTextId, btnHrefId, img1Id, img2Id, extra, data) {
+    return '<label class="full">Title<input type="text" id="' + titleId + '" value="' + esc(data.title || '') + '" /></label>' +
+      '<label class="full">Body text<textarea id="' + bodyId + '">' + esc(data.body || '') + '</textarea></label>' +
+      '<label>Button text<input type="text" id="' + btnTextId + '" value="' + esc(data.btnText || '') + '" /></label>' +
+      '<label>Button href<input type="text" id="' + btnHrefId + '" value="' + esc(data.btnHref || '') + '" /></label>' +
+      '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="' + img1Id + '" value="' + esc(data.img1 || '') + '" /></label>' +
+      '<label class="full">Card image 2 URL<input type="text" id="' + img2Id + '" value="' + esc(data.img2 || '') + '" /></label>';
+  }
+
+  function renderCards() {
+    var pane = el('tab-cards');
+    var a = state.settings.about || {};
+    var j = state.settings.join || {};
+    var ex = state.settings.exec || {};
+    var h = state.settings.highlights || {};
+    var al = state.settings.alumni || {};
+    var aw = state.settings.awards || {};
+
+    pane.innerHTML =
       '<div class="card settings-section"><h3>About tab (homepage)</h3>' +
         '<div class="form-grid">' +
-          '<label>Eyebrow pill<input type="text" id="a-eyebrow" value="' + esc(a.eyebrow || '') + '" /></label>' +
-          '<label class="full">Title<input type="text" id="a-title" value="' + esc(a.title || '') + '" /></label>' +
-          '<label class="full">Body text<textarea id="a-body">' + esc(a.body || '') + '</textarea></label>' +
-          '<label>Button text<input type="text" id="a-btn1t" value="' + esc(a.btnText || '') + '" /></label>' +
-          '<label>Button href<input type="text" id="a-btn1h" value="' + esc(a.btnHref || '') + '" /></label>' +
-          '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="a-img1" value="' + esc(a.img1 || '') + '" /></label>' +
-          '<label class="full">Card image 2 URL<input type="text" id="a-img2" value="' + esc(a.img2 || '') + '" /></label>' +
+          '<label>Eyebrow<input type="text" id="a-eyebrow" value="' + esc(a.eyebrow || '') + '" /></label>' +
+          cardFields('about', 'a-title', 'a-body', 'a-btn1t', 'a-btn1h', 'a-img1', 'a-img2', null, a) +
         '</div></div>' +
 
       '<div class="card settings-section"><h3>Join tab (homepage)</h3>' +
@@ -581,11 +601,92 @@
           '<label>Button 2 href<input type="text" id="j-btn2h" value="' + esc(j.btn2Href || '') + '" /></label>' +
           '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="j-img1" value="' + esc(j.img1 || '') + '" /></label>' +
           '<label class="full">Card image 2 URL<input type="text" id="j-img2" value="' + esc(j.img2 || '') + '" /></label>' +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Meet the Executive Board tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('exec', 'x-title', 'x-body', 'x-btn1t', 'x-btn1h', 'x-img1', 'x-img2', null, ex) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Highlights tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('highlights', 'hl-title', 'hl-body', 'hl-btn1t', 'hl-btn1h', 'hl-img1', 'hl-img2', null, h) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Alumni tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('alumni', 'al-title', 'al-body', 'al-btn1t', 'al-btn1h', 'al-img1', 'al-img2', null, al) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Achievements &amp; Awards tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('awards', 'aw-title', 'aw-body', 'aw-btn1t', 'aw-btn1h', 'aw-img1', 'aw-img2', null, aw) +
         '</div>' +
-        '<div class="form-actions"><button class="btn btn-primary" id="settings-save">Save settings</button></div>' +
+        '<div class="form-actions"><button class="btn btn-primary" id="cards-save">Save feature cards</button></div>' +
       '</div>';
 
-    el('settings-save').addEventListener('click', saveSettings);
+    el('cards-save').addEventListener('click', saveCards);
+  }
+
+  function saveCards() {
+    var rows = [
+      {
+        key: 'about',
+        value: {
+          eyebrow: val('a-eyebrow').trim(), title: val('a-title').trim(),
+          body: val('a-body').trim(),
+          btnText: val('a-btn1t').trim(), btnHref: val('a-btn1h').trim(),
+          img1: val('a-img1').trim(), img2: val('a-img2').trim()
+        }
+      },
+      {
+        key: 'join',
+        value: {
+          eyebrow: val('j-eyebrow').trim(), title: val('j-title').trim(),
+          sub: val('j-sub').trim(),
+          btn1Text: val('j-btn1t').trim(), btn1Href: val('j-btn1h').trim(),
+          btn2Text: val('j-btn2t').trim(), btn2Href: val('j-btn2h').trim(),
+          img1: val('j-img1').trim(), img2: val('j-img2').trim()
+        }
+      },
+      {
+        key: 'exec',
+        value: {
+          title: val('x-title').trim(), body: val('x-body').trim(),
+          btnText: val('x-btn1t').trim(), btnHref: val('x-btn1h').trim(),
+          img1: val('x-img1').trim(), img2: val('x-img2').trim()
+        }
+      },
+      {
+        key: 'highlights',
+        value: {
+          title: val('hl-title').trim(), body: val('hl-body').trim(),
+          btnText: val('hl-btn1t').trim(), btnHref: val('hl-btn1h').trim(),
+          img1: val('hl-img1').trim(), img2: val('hl-img2').trim()
+        }
+      },
+      {
+        key: 'alumni',
+        value: {
+          title: val('al-title').trim(), body: val('al-body').trim(),
+          btnText: val('al-btn1t').trim(), btnHref: val('al-btn1h').trim(),
+          img1: val('al-img1').trim(), img2: val('al-img2').trim()
+        }
+      },
+      {
+        key: 'awards',
+        value: {
+          title: val('aw-title').trim(), body: val('aw-body').trim(),
+          btnText: val('aw-btn1t').trim(), btnHref: val('aw-btn1h').trim(),
+          img1: val('aw-img1').trim(), img2: val('aw-img2').trim()
+        }
+      }
+    ];
+    sb.from('site_settings').upsert(rows, { onConflict: 'key' }).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      alert('Feature cards saved.');
+      loadData();
+    });
   }
 
   function saveSettings() {
@@ -606,25 +707,6 @@
           mini2Num: val('h-m2n').trim(), mini2Label: val('h-m2l').trim(),
           mini3Num: val('h-m3n').trim(), mini3Label: val('h-m3l').trim(),
           estNum: val('h-m4n').trim(), estLabel: val('h-m4l').trim()
-        }
-      },
-      {
-        key: 'about',
-        value: {
-          eyebrow: val('a-eyebrow').trim(), title: val('a-title').trim(),
-          body: val('a-body').trim(),
-          btnText: val('a-btn1t').trim(), btnHref: val('a-btn1h').trim(),
-          img1: val('a-img1').trim(), img2: val('a-img2').trim()
-        }
-      },
-      {
-        key: 'join',
-        value: {
-          eyebrow: val('j-eyebrow').trim(), title: val('j-title').trim(),
-          sub: val('j-sub').trim(),
-          btn1Text: val('j-btn1t').trim(), btn1Href: val('j-btn1h').trim(),
-          btn2Text: val('j-btn2t').trim(), btn2Href: val('j-btn2h').trim(),
-          img1: val('j-img1').trim(), img2: val('j-img2').trim()
         }
       }
     ];

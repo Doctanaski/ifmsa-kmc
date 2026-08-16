@@ -39,6 +39,38 @@
       img1: "",
       img2: ""
     },
+    exec: {
+      title: "Meet the Executive Board",
+      body: "The heartbeat of the local council — the President, Vice-Presidents and Local Officers who run IFMSA KMC day to day, from national delegation to on-campus coordination.",
+      btnText: "Meet the Board",
+      btnHref: "about.html",
+      img1: "",
+      img2: ""
+    },
+    highlights: {
+      title: "Highlights",
+      body: "Standout moments, campaigns and wins from across the council — the sessions, exchanges and drives that make KMC members proud.",
+      btnText: "See Highlights",
+      btnHref: "about.html",
+      img1: "",
+      img2: ""
+    },
+    alumni: {
+      title: "Alumni",
+      body: "The KMC alumni network — doctors and leaders around the world who grew up in IFMSA here in Peshawar and still give back.",
+      btnText: "Alumni Stories",
+      btnHref: "about.html",
+      img1: "",
+      img2: ""
+    },
+    awards: {
+      title: "Achievements & Awards",
+      body: "The recognitions our members, projects and committees have earned — nationally and on the international IFMSA stage.",
+      btnText: "Our Awards",
+      btnHref: "about.html",
+      img1: "",
+      img2: ""
+    },
     join: {
       eyebrow: "Ready when you are",
       title: "One scroll can change a student's path.",
@@ -63,6 +95,10 @@
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
       about: DEFAULTS.about,
+      exec: DEFAULTS.exec,
+      highlights: DEFAULTS.highlights,
+      alumni: DEFAULTS.alumni,
+      awards: DEFAULTS.awards,
       join: DEFAULTS.join
     };
   }
@@ -104,6 +140,10 @@
       var site = merge(DEFAULTS.site, settings.site);
       var hero = merge(DEFAULTS.hero, settings.hero);
       var about = merge(DEFAULTS.about, settings.about);
+      var exec = merge(DEFAULTS.exec, settings.exec);
+      var highlights = merge(DEFAULTS.highlights, settings.highlights);
+      var alumni = merge(DEFAULTS.alumni, settings.alumni);
+      var awards = merge(DEFAULTS.awards, settings.awards);
       var join = merge(DEFAULTS.join, settings.join);
 
       return {
@@ -113,6 +153,10 @@
         site: site,
         hero: hero,
         about: about,
+        exec: exec,
+        highlights: highlights,
+        alumni: alumni,
+        awards: awards,
         join: join
       };
     });
@@ -211,6 +255,23 @@
       setCardBg('bg-join-1', j.img1);
       setCardBg('bg-join-2', j.img2);
     }
+
+    /* generic feature-card (tab) block: title + body + one button + two bg images */
+    var applyCard = function (slug, titleId, bodyId, btnId, btnLinkId, bg1, bg2) {
+      var c = siteData[slug];
+      if (!c) return;
+      setText(titleId, c.title);
+      setText(bodyId, c.body);
+      setText(btnId, c.btnText);
+      var link = byId(btnLinkId);
+      if (link && c.btnHref != null) link.setAttribute('href', c.btnHref);
+      setCardBg(bg1, c.img1);
+      setCardBg(bg2, c.img2);
+    };
+    applyCard('exec', 'exec-title', 'exec-body', 'exec-btn1', 'exec-btn1-link', 'bg-exec-1', 'bg-exec-2');
+    applyCard('highlights', 'highlights-title', 'highlights-body', 'highlights-btn1', 'highlights-btn1-link', 'bg-highlights-1', 'bg-highlights-2');
+    applyCard('alumni', 'alumni-title', 'alumni-body', 'alumni-btn1', 'alumni-btn1-link', 'bg-alumni-1', 'bg-alumni-2');
+    applyCard('awards', 'awards-title', 'awards-body', 'awards-btn1', 'awards-btn1-link', 'bg-awards-1', 'bg-awards-2');
 
     if (siteData.site) {
       var s = siteData.site;

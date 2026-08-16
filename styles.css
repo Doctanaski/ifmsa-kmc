@@ -496,20 +496,35 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   cursor: pointer;
 }
 
-.stat-divider {
-  width: 58%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.28);
-  margin: 0.9rem auto;
+/* members card: two stats side by side (stays the same height as the others) */
+.hero-stat-card--members .stat-split {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
 }
-
-.stat-value-sub {
-  font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+.stat-split-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1 1 0;
+  min-width: 0;
 }
-
-.stat-label-sub {
-  font-size: 0.88rem;
-  min-height: 0;
+.stat-split-item .stat-value {
+  font-size: clamp(1.25rem, 1.7vw, 1.6rem);
+}
+.stat-split-item .stat-label {
+  font-size: 0.82rem;
+  max-width: 13ch;
+  min-height: 2.7em;
+}
+.stat-split-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ---------- buttons ---------- */
@@ -622,7 +637,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .feature-tabs-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
@@ -706,6 +721,66 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   background-image: 
     radial-gradient(90% 90% at 25% 25%, rgba(70, 199, 87, 0.35), transparent 60%),
     linear-gradient(160deg, #161234 0%, #102619 100%);
+}
+
+.bg-exec-1 {
+  background-color: #182447;
+  background-image:
+    radial-gradient(100% 100% at 80% 20%, rgba(1, 128, 200, 0.45), transparent 60%),
+    radial-gradient(90% 90% at 20% 80%, rgba(15, 156, 21, 0.28), transparent 70%),
+    linear-gradient(145deg, #1c1a4f 0%, #122246 50%, #0d1c33 100%);
+}
+
+.bg-exec-2 {
+  background-color: #161f3d;
+  background-image:
+    radial-gradient(90% 90% at 75% 25%, rgba(88, 166, 255, 0.4), transparent 60%),
+    linear-gradient(160deg, #111a34 0%, #1a2a4a 100%);
+}
+
+.bg-highlights-1 {
+  background-color: #1e193e;
+  background-image:
+    radial-gradient(100% 100% at 20% 20%, rgba(244, 125, 60, 0.4), transparent 60%),
+    radial-gradient(90% 90% at 80% 80%, rgba(15, 156, 21, 0.32), transparent 70%),
+    linear-gradient(145deg, #241b46 0%, #14243a 50%, #0d1c33 100%);
+}
+
+.bg-highlights-2 {
+  background-color: #211b42;
+  background-image:
+    radial-gradient(90% 90% at 25% 75%, rgba(70, 199, 87, 0.32), transparent 60%),
+    linear-gradient(160deg, #191436 0%, #1c2b46 100%);
+}
+
+.bg-alumni-1 {
+  background-color: #18264a;
+  background-image:
+    radial-gradient(100% 100% at 75% 25%, rgba(15, 156, 21, 0.35), transparent 60%),
+    radial-gradient(90% 90% at 25% 85%, rgba(1, 128, 200, 0.4), transparent 70%),
+    linear-gradient(145deg, #1c1a4f 0%, #0e1e38 50%, #132a1f 100%);
+}
+
+.bg-alumni-2 {
+  background-color: #162035;
+  background-image:
+    radial-gradient(90% 90% at 75% 75%, rgba(88, 166, 255, 0.35), transparent 60%),
+    linear-gradient(160deg, #10192e 0%, #1b2838 100%);
+}
+
+.bg-awards-1 {
+  background-color: #1b1638;
+  background-image:
+    radial-gradient(100% 100% at 80% 20%, rgba(178, 34, 42, 0.35), transparent 60%),
+    radial-gradient(90% 90% at 15% 80%, rgba(244, 125, 60, 0.3), transparent 70%),
+    linear-gradient(145deg, #20163f 0%, #2a1f3a 50%, #0d1c33 100%);
+}
+
+.bg-awards-2 {
+  background-color: #1a1733;
+  background-image:
+    radial-gradient(90% 90% at 25% 25%, rgba(15, 156, 21, 0.28), transparent 60%),
+    linear-gradient(160deg, #141232 0%, #2a1f3c 100%);
 }
 
 /* dark gradient overlay */
@@ -991,6 +1066,9 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .hero-stat-cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.1rem;
+  }
+  .feature-tabs-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

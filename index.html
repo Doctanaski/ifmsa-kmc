@@ -79,7 +79,7 @@
 
         <!-- Key statistics cards (inspired by IFMSA.org) -->
         <div class="hero-stat-cards" id="hero-stat-cards" role="region" aria-label="Key statistics">
-          <div class="hero-stat-card">
+          <div class="hero-stat-card hero-stat-card--members">
             <div class="stat-icon-wrap" aria-hidden="true">
               <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -88,11 +88,17 @@
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
             </div>
-            <div class="stat-value" id="stat-members-num">1.5M+</div>
-            <div class="stat-label" id="stat-members-label">Members Worldwide</div>
-            <div class="stat-divider" aria-hidden="true"></div>
-            <div class="stat-value stat-value-sub" id="stat-lc-num">460</div>
-            <div class="stat-label stat-label-sub" id="stat-lc-label">Members in the LC</div>
+            <div class="stat-split">
+              <div class="stat-split-item">
+                <div class="stat-value" id="stat-members-num">1.5M+</div>
+                <div class="stat-label" id="stat-members-label">Members Worldwide</div>
+              </div>
+              <div class="stat-split-divider" aria-hidden="true"></div>
+              <div class="stat-split-item">
+                <div class="stat-value" id="stat-lc-num">460</div>
+                <div class="stat-label" id="stat-lc-label">Members in the LC</div>
+              </div>
+            </div>
           </div>
 
           <a href="#scope" class="hero-stat-card stat-card-link" aria-label="Explore the 6 standing committees">
@@ -198,6 +204,142 @@
                 </p>
                 <a href="about.html" class="card-action-btn" id="join-btn1-link">
                   <span id="join-btn1">About Us</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 3: Meet the Executive Board -->
+            <article class="feature-tab-card" id="card-exec">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-exec-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-exec-2"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-overlay"></div>
+
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="exec-title">Meet the Executive Board</h2>
+                <p class="card-desc" id="exec-body">
+                  The heartbeat of the local council — the President, Vice-Presidents and Local Officers who run IFMSA KMC day to day, from national delegation to on-campus coordination.
+                </p>
+                <a href="about.html" class="card-action-btn" id="exec-btn1-link">
+                  <span id="exec-btn1">Meet the Board</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 4: Highlights -->
+            <article class="feature-tab-card" id="card-highlights">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-highlights-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-highlights-2"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-overlay"></div>
+
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="highlights-title">Highlights</h2>
+                <p class="card-desc" id="highlights-body">
+                  Standout moments, campaigns and wins from across the council — the sessions, exchanges and drives that make KMC members proud.
+                </p>
+                <a href="about.html" class="card-action-btn" id="highlights-btn1-link">
+                  <span id="highlights-btn1">See Highlights</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 5: Alumni -->
+            <article class="feature-tab-card" id="card-alumni">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-alumni-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-alumni-2"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-overlay"></div>
+
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10L12 5 2 10l10 5 10-5z"></path>
+                  <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"></path>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="alumni-title">Alumni</h2>
+                <p class="card-desc" id="alumni-body">
+                  The KMC alumni network — doctors and leaders around the world who grew up in IFMSA here in Peshawar and still give back.
+                </p>
+                <a href="about.html" class="card-action-btn" id="alumni-btn1-link">
+                  <span id="alumni-btn1">Alumni Stories</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 6: Achievements & Awards -->
+            <article class="feature-tab-card" id="card-awards">
+              <div class="card-media-slider">
+                <div class="card-slider-track">
+                  <div class="card-slide is-active">
+                    <div class="card-img-bg bg-awards-1"></div>
+                  </div>
+                  <div class="card-slide">
+                    <div class="card-img-bg bg-awards-2"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-overlay"></div>
+
+              <div class="card-badge-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 21h8"></path>
+                  <path d="M12 17v4"></path>
+                  <path d="M7 4h10v4a5 5 0 0 1-10 0V4z"></path>
+                  <path d="M7 6H4v1a4 4 0 0 0 3 4"></path>
+                  <path d="M17 6h3v1a4 4 0 0 1-3 4"></path>
+                </svg>
+              </div>
+
+              <div class="card-content">
+                <h2 class="card-title" id="awards-title">Achievements &amp; Awards</h2>
+                <p class="card-desc" id="awards-body">
+                  The recognitions our members, projects and committees have earned — nationally and on the international IFMSA stage.
+                </p>
+                <a href="about.html" class="card-action-btn" id="awards-btn1-link">
+                  <span id="awards-btn1">Our Awards</span>
                 </a>
               </div>
             </article>
