@@ -79,8 +79,6 @@
   var track = document.getElementById('ex-track');
   var rail = document.getElementById('ex-rail');
   var countEl = document.getElementById('ex-count');
-  var prevBtn = document.getElementById('ex-prev');
-  var nextBtn = document.getElementById('ex-next');
 
   var pad = function (n) { return n < 10 ? '0' + n : String(n); };
 
@@ -155,8 +153,19 @@
 
   function goTo(i) {
     i = Math.max(0, Math.min(EXEC.length - 1, i));
-    stage.scrollTo({ top: i * stage.clientHeight, behavior: 'smooth' });
-    refresh();
+    var r = stage.getBoundingClientRect();
+    var onScreen = r.top < window.innerHeight && r.bottom > 0;
+    if (onScreen) {
+      stage.scrollTo({ top: i * stage.clientHeight, behavior: 'smooth' });
+      refresh();
+      return;
+    }
+    var board = document.getElementById('board');
+    if (board) board.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.setTimeout(function () {
+      stage.scrollTo({ top: i * stage.clientHeight, behavior: 'smooth' });
+      refresh();
+    }, 200);
   }
 
   stage.addEventListener('scroll', function () {
@@ -164,23 +173,6 @@
   }, { passive: true });
 
   window.addEventListener('resize', refresh);
-
-  prevBtn.addEventListener('click', function () { goTo(current() - 1); });
-  nextBtn.addEventListener('click', function () { goTo(current() + 1); });
-
-  window.addEventListener('keydown', function (e) {
-    var t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || (t.isContentEditable))) return;
-    var r = stage.getBoundingClientRect();
-    if (r.top >= window.innerHeight || r.bottom <= 0) return;   /* stage not on screen */
-    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-      e.preventDefault();
-      goTo(current() + 1);
-    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-      e.preventDefault();
-      goTo(current() - 1);
-    }
-  });
 
   render();
   refresh();
