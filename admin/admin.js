@@ -33,6 +33,8 @@
     isAdmin: false,
     committees: [],
     projects: [],
+    highlights: [],
+    execBoard: [],
     settings: { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} },
     tab: 'projects',
     search: ''
@@ -58,6 +60,20 @@
     'Open', 'Accepting tutors', 'Recruiting', 'Live', 'Beta',
     'On hold', 'Completed', 'Cancelled'
   ];
+
+  /* ---------- highlights ---------- */
+  var HL_CATS = [
+    { key: 'away',  label: 'We travelled' },
+    { key: 'campus', label: 'On campus' },
+    { key: 'win',   label: 'Recognised' }
+  ];
+  var HL_CAT_LABEL = { away: 'We travelled', campus: 'On campus', win: 'Recognised' };
+  var HL_CAT_COLOR = { away: '#1d4ed8', campus: '#0f9c15', win: '#d29922' };
+  var HL_CAT_OPTIONS = function (selected) {
+    return HL_CATS.map(function (c) {
+      return '<option value="' + c.key + '"' + (c.key === selected ? ' selected' : '') + '>' + c.label + '</option>';
+    }).join('');
+  };
 
   var esc = function (s) {
     return String(s == null ? '' : s)
@@ -169,6 +185,180 @@
       '</article></main>';
   };
 
+  /* ---------- highlights live preview (mirrors highlights.js rendering) ---------- */
+  var hlCommitteeOf = function (slug) {
+    return state.committees.find(function (c) { return c.slug === slug; }) || {};
+  };
+  var hlCatColor = function (h) {
+    return HL_CAT_COLOR[h.category] || HL_CAT_COLOR.campus;
+  };
+  var hlCover = function (src, alt) {
+    return src
+      ? '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" />'
+      : '';
+  };
+  var hlBadge = function (h) {
+    var label = h.tag || HL_CAT_LABEL[h.category] || 'Highlight';
+    return '<span class="hl-pv-badge"><span class="hl-pv-dot"></span>' + esc(label) + '</span>';
+  };
+
+  function hlCard(h) {
+    var blocks = splitBlocks(h.about);
+    var img = blocks.images[0] || {};
+    var com = hlCommitteeOf(h.committee);
+    var comAccent = com.accent || com.color || '';
+    var chips = '';
+    if (h.committee && com.acronym) {
+      chips = '<span class="hl-pv-com"><i style="background:' + esc(comAccent) + '"></i>' + esc(com.acronym) + '</span>';
+    } else {
+      chips = '<span class="hl-pv-com"><i style="background:' + esc(hlCatColor(h)) + '"></i>' + esc(HL_CAT_LABEL[h.category] || '') + '</span>';
+    }
+    var meta = [];
+    if (h.date) meta.push('<span>' + esc(h.date) + '</span>');
+    if (h.date && h.location) meta.push('<i class="hl-pv-sep"></i>');
+    if (h.location) meta.push('<span>' + esc(h.location) + '</span>');
+
+    return (
+      '<article class="hl-pv-card" style="--hl-pv-cat:' + esc(hlCatColor(h)) + '">' +
+        '<div class="hl-pv-media">' + hlCover(img.src, img.alt) + hlBadge(h) + '</div>' +
+        '<div class="hl-pv-body">' +
+          '<h4 class="hl-pv-title">' + (h.title ? esc(h.title) : '<em>Untitled moment</em>') + '</h4>' +
+          '<div class="hl-pv-meta">' + meta.join('') + '</div>' +
+          '<p class="hl-pv-summary">' + esc(h.summary) + '</p>' +
+          '<div class="hl-pv-foot">' + chips +
+            '<span class="hl-pv-open">Open story &#8594;</span>' +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function hlSpotlight(h) {
+    var blocks = splitBlocks(h.about);
+    var img = blocks.images[0] || {};
+    var tag = h.tag || HL_CAT_LABEL[h.category] || 'Highlight';
+    var meta = [];
+    if (h.date) meta.push(esc(h.date));
+    if (h.location) meta.push(esc(h.location));
+
+    return (
+      '<article class="hl-pv-spot" style="--hl-pv-cat:' + esc(hlCatColor(h)) + '">' +
+        '<div class="hl-pv-spot-media">' + hlCover(img.src, img.alt) + '</div>' +
+        '<div class="hl-pv-spot-body">' +
+          '<span class="hl-pv-spot-tag"><i class="hl-pv-dot"></i>' + esc(tag) + '</span>' +
+          '<h4 class="hl-pv-spot-title">' + (h.title ? esc(h.title) : '<em>Untitled moment</em>') + '</h4>' +
+          (meta.length ? '<div class="hl-pv-spot-meta">' + meta.join('<i class="hl-pv-sep"></i>') + '</div>' : '') +
+          '<p class="hl-pv-spot-summary">' + esc(h.summary) + '</p>' +
+          '<span class="hl-pv-spot-more">Read the full story &#8594;</span>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function hlStory(h) {
+    var blocks = splitBlocks(h.about);
+    var hero = blocks.images[0] || {};
+    var gallery = blocks.images.slice(1);
+    var com = hlCommitteeOf(h.committee);
+    var tag = h.tag || HL_CAT_LABEL[h.category] || 'Highlight';
+
+    var pills = [];
+    if (h.date) pills.push('<span class="hl-pv-pill">' + esc(h.date) + '</span>');
+    if (h.location) pills.push('<span class="hl-pv-pill">' + esc(h.location) + '</span>');
+    pills.push('<span class="hl-pv-pill"><i style="background:' + esc(hlCatColor(h)) + '"></i>' + esc(tag) + '</span>');
+    if (com.acronym) {
+      pills.push('<span class="hl-pv-pill"><i style="background:' + esc(com.accent || com.color || '') + '"></i>' + esc(com.acronym) + '</span>');
+    }
+
+    var galleryHtml = gallery.length
+      ? '<div class="hl-pv-gallery">' + gallery.map(function (g) {
+          return '<figure class="hl-pv-g-img">' +
+            '<img src="' + esc(g.src) + '" alt="' + esc(g.alt) + '" loading="lazy" decoding="async" />' +
+            (g.alt ? '<figcaption>' + esc(g.alt) + '</figcaption>' : '') +
+          '</figure>';
+        }).join('') + '</div>'
+      : '';
+
+    return (
+      '<div class="hl-pv-story">' +
+        '<div class="hl-pv-story-hero">' + hlCover(hero.src, hero.alt) + '</div>' +
+        '<div class="hl-pv-story-body">' +
+          '<h4 class="hl-pv-story-title">' + (h.title ? esc(h.title) : '<em>Untitled moment</em>') + '</h4>' +
+          '<div class="hl-pv-story-meta">' + pills.join('') + '</div>' +
+          '<div class="hl-pv-story-prose">' + blocks.paras + '</div>' +
+          galleryHtml +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderHighlightPreview() {
+    var pre = el('hl-preview');
+    if (!pre) return;
+    var h = {
+      category: val('f-cat'),
+      tag: val('f-tag').trim(),
+      title: val('f-title').trim(),
+      date: val('f-date').trim(),
+      location: val('f-loc').trim(),
+      committee: val('f-committee'),
+      summary: val('f-summary').trim(),
+      about: splitLines(val('f-about')),
+      featured: el('f-feat') ? el('f-feat').checked : false
+    };
+    var featured = el('f-feat') ? el('f-feat').checked : false;
+    pre.innerHTML =
+      '<div class="hl-pv-block"><div class="hl-pv-heading">Grid card</div>' + hlCard(h) + '</div>' +
+      (featured ? '<div class="hl-pv-block"><div class="hl-pv-heading">Spotlight (featured)</div>' + hlSpotlight(h) + '</div>' : '') +
+      '<div class="hl-pv-block"><div class="hl-pv-heading">Story (modal)</div>' + hlStory(h) + '</div>';
+  }
+
+  /* ---------- executive board live preview (mirrors executive.js slideHtml) ---------- */
+  var exInitials = function (name) {
+    return String(name || '').split(/\s+/).filter(Boolean)
+      .map(function (w) { return w.charAt(0).toUpperCase(); })
+      .slice(0, 2).join('');
+  };
+
+  function execSlide(m, i) {
+    var p = val('x-photo');
+    var name = val('x-name');
+    var role = val('x-role');
+    var quote = val('x-quote');
+    var photo = p
+      ? '<div class="ex-pv-photo"><img src="' + esc(p) + '" alt="Portrait of ' + esc(name) + '" loading="lazy" decoding="async" /></div>'
+      : '<div class="ex-pv-photo ex-pv-photo--avatar"><span class="ex-pv-avatar">' + esc(exInitials(name)) + '</span></div>';
+
+    /* use the actual saved object's values so the table-side preview stays correct */
+    if (!m) {
+      m = { name: name, role: role, quote: quote, photo: p };
+      i = 0;
+    }
+
+    return (
+      '<div class="ex-pv-slide' + (i % 2 ? ' is-flip' : '') + '">' +
+        '<div class="ex-pv-quote">' +
+          '<span class="ex-pv-mark" aria-hidden="true">&ldquo;</span>' +
+          '<blockquote class="ex-pv-text">' + (esc(quote || m.quote)) + '</blockquote>' +
+          '<p class="ex-pv-attr">' + esc(role || m.role) + ' &middot; KMC &times; IFMSA</p>' +
+        '</div>' +
+        '<figure class="ex-pv-photo-block">' +
+          photo +
+          '<figcaption class="ex-pv-cap">' +
+            '<span class="ex-pv-name">' + esc(name || m.name) + '</span>' +
+            '<span class="ex-pv-role">' + esc(role || m.role) + '</span>' +
+          '</figcaption>' +
+        '</figure>' +
+      '</div>'
+    );
+  }
+
+  function renderExecPreview() {
+    var pre = el('ex-preview');
+    if (!pre) return;
+    pre.innerHTML = execSlide(null, 0);
+  }
+
   /* ============ auth ============ */
   function boot() {
     sb.auth.getSession().then(function (r) {
@@ -258,11 +448,15 @@
       '<nav class="tabs" id="tabs">' +
         '<button data-tab="projects" class="active">Projects</button>' +
         '<button data-tab="committees">Committees</button>' +
+        '<button data-tab="highlights">Highlights</button>' +
+        '<button data-tab="executive">Executive Board</button>' +
         '<button data-tab="settings">Settings</button>' +
         '<button data-tab="cards">Feature Cards</button>' +
       '</nav>' +
       '<main id="tab-projects" class="tab-pane"></main>' +
       '<main id="tab-committees" class="tab-pane" hidden></main>' +
+      '<main id="tab-highlights" class="tab-pane" hidden></main>' +
+      '<main id="tab-executive" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
       '<main id="tab-cards" class="tab-pane" hidden></main>' +
       '<div id="modal-root"></div>';
@@ -274,7 +468,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'settings', 'cards'].forEach(function (t) {
+        ['projects', 'committees', 'highlights', 'executive', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -286,7 +480,9 @@
     return Promise.all([
       sb.from('committees').select('*').order('sort_order'),
       sb.from('projects').select('*').order('sort_order'),
-      sb.from('site_settings').select('key, value')
+      sb.from('site_settings').select('key, value'),
+      sb.from('highlights').select('*').order('sort_order'),
+      sb.from('exec_board').select('*').order('sort_order')
     ]).then(function (rs) {
       if (rs[0].error) throw rs[0].error;
       if (rs[1].error) throw rs[1].error;
@@ -295,6 +491,8 @@
       state.projects = rs[1].data || [];
       state.settings = { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} };
       (rs[2].data || []).forEach(function (s) { state.settings[s.key] = s.value || {}; });
+      state.highlights = rs[3].data || [];
+      state.execBoard = rs[4].data || [];
     });
   }
 
@@ -309,6 +507,8 @@
   function renderTab() {
     if (state.tab === 'projects') renderProjects();
     else if (state.tab === 'committees') renderCommittees();
+    else if (state.tab === 'highlights') renderHighlights();
+    else if (state.tab === 'executive') renderExecutive();
     else if (state.tab === 'cards') renderCards();
     else renderSettings();
   }
@@ -522,6 +722,248 @@
     sb.from('committees').delete().eq('slug', slug).then(function (r) {
       if (r.error) { alert(r.error.message); return; }
       loadData().then(renderCommittees);
+    });
+  }
+
+  /* ============ highlights (Highlights page) ============ */
+  function renderHighlights() {
+    var pane = el('tab-highlights');
+    var comBySlug = {};
+    state.committees.forEach(function (c) { comBySlug[c.slug] = c; });
+
+    var rows = state.highlights.slice().sort(function (a, b) {
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
+
+    pane.innerHTML =
+      '<div class="toolbar">' +
+        '<div></div>' +
+        '<button class="btn btn-primary" id="hl-new">+ New highlight</button>' +
+      '</div>' +
+      '<div class="count">' + rows.length + ' highlight' + (rows.length === 1 ? '' : 's') + '</div>' +
+      '<table class="table">' +
+        '<thead><tr><th>Title</th><th>Category</th><th>Tag</th><th>Committee</th><th>Spotlight</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<tbody>' + rows.map(function (h) {
+          var com = comBySlug[h.committee] || {};
+          return '<tr>' +
+            '<td><strong>' + esc(h.title) + '</strong></td>' +
+            '<td><span class="tag" style="color:' + esc(HL_CAT_COLOR[h.category] || '') + '">' + esc(HL_CAT_LABEL[h.category] || h.category || '') + '</span></td>' +
+            '<td>' + esc(h.tag || '') + '</td>' +
+            '<td>' + esc(com.acronym || '') + '</td>' +
+            '<td>' + (h.featured ? '&#9733;' : '') + '</td>' +
+            '<td class="actions-cell">' +
+              '<button class="btn btn-small" data-edit="' + esc(h.id) + '">Edit</button> ' +
+              '<button class="btn btn-small btn-danger" data-del="' + esc(h.id) + '">Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        (rows.length ? '' : '<tr><td colspan="6" class="empty">No highlights yet.</td></tr>') +
+        '</tbody>' +
+      '</table>';
+
+    el('hl-new').addEventListener('click', function () { highlightModal(null); });
+    pane.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        highlightModal(state.highlights.find(function (h) { return h.id === b.getAttribute('data-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delHighlight(b.getAttribute('data-del')); });
+    });
+  }
+
+  function highlightModal(h) {
+    h = h || {
+      id: '', category: 'campus', tag: '', title: '', date: '', location: '',
+      committee: '', summary: '', about: [], featured: false, sort_order: state.highlights.length
+    };
+
+    openModal(
+      '<h2>' + (h.id ? 'Edit highlight' : 'New highlight') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Title<input type="text" id="f-title" value="' + esc(h.title) + '" required /></label>' +
+            '<label>Category<select id="f-cat">' + HL_CAT_OPTIONS(h.category) + '</select></label>' +
+            '<label>Tag<input type="text" id="f-tag" value="' + esc(h.tag) + '" placeholder="e.g. Campus Campaign" /></label>' +
+            '<label>Date<input type="text" id="f-date" value="' + esc(h.date) + '" placeholder="March 2026" /></label>' +
+            '<label>Location<input type="text" id="f-loc" value="' + esc(h.location) + '" placeholder="Cape Town, South Africa" /></label>' +
+            '<label>Committee<select id="f-committee"><option value="">— none —</option>' + committeeOptions(h.committee) + '</select></label>' +
+            '<label>Sort order<input type="number" id="f-sort" value="' + (h.sort_order || 0) + '" /></label>' +
+            '<label class="full check"><input type="checkbox" id="f-feat"' + (h.featured ? ' checked' : '') + ' /> Feature as the spotlight</label>' +
+            '<label class="full">Summary<textarea id="f-summary">' + esc(h.summary) + '</textarea></label>' +
+            '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((h.about || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(h.id) + '" placeholder="e.g. hl-2026-summer-campaign" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save highlight</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="hl-preview" id="hl-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['f-title', 'f-cat', 'f-tag', 'f-date', 'f-loc', 'f-committee',
+     'f-summary', 'f-about', 'f-feat'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderHighlightPreview);
+      input.addEventListener('change', renderHighlightPreview);
+    });
+    renderHighlightPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        id: val('f-id').trim(),
+        category: val('f-cat'),
+        tag: val('f-tag').trim() || null,
+        title: val('f-title').trim(),
+        date: val('f-date').trim() || null,
+        location: val('f-loc').trim() || null,
+        committee: val('f-committee') || null,
+        summary: val('f-summary').trim() || null,
+        about: splitLines(val('f-about')),
+        featured: !!el('f-feat').checked,
+        sort_order: parseInt(val('f-sort'), 10) || 0
+      };
+      if (el('f-feat').checked) {
+        // un-feature any other spotlight before saving this one
+        var others = state.highlights.filter(function (x) { return x.featured && x.id !== row.id; });
+        if (others.length) {
+          var keys = others.map(function (x) { return x.id; });
+          sb.from('highlights').update({ featured: false }).in('id', keys)
+            .then(function () { doSaveHighlight(row); });
+          return;
+        }
+      }
+      doSaveHighlight(row);
+    });
+  }
+
+  function doSaveHighlight(row) {
+    if (!row.title || !row.id) {
+      if (!row.title) { alert('Title is required.'); return; }
+      row.id = slugify(row.title);
+      if (!row.id) { alert('Give the highlight an ID.'); return; }
+    }
+    sb.from('highlights').upsert(row).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      closeModal();
+      loadData().then(renderHighlights);
+    });
+  }
+
+  function delHighlight(id) {
+    if (!confirm('Delete this highlight?')) return;
+    sb.from('highlights').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderHighlights);
+    });
+  }
+
+  /* ============ executive board (Meet the Executive Board page) ============ */
+  function renderExecutive() {
+    var pane = el('tab-executive');
+
+    var rows = state.execBoard.slice().sort(function (a, b) {
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
+
+    pane.innerHTML =
+      '<div class="toolbar">' +
+        '<div></div>' +
+        '<button class="btn btn-primary" id="ex-new">+ Add member</button>' +
+      '</div>' +
+      '<div class="count">' + rows.length + ' board member' + (rows.length === 1 ? '' : 's') + '</div>' +
+      '<table class="table">' +
+        '<thead><tr><th>Name</th><th>Role</th><th>Photo</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<tbody>' + rows.map(function (m) {
+          return '<tr>' +
+            '<td><strong>' + esc(m.name) + '</strong></td>' +
+            '<td>' + esc(m.role) + '</td>' +
+            '<td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(m.photo || '—') + '</td>' +
+            '<td class="actions-cell">' +
+              '<button class="btn btn-small" data-edit="' + esc(m.id) + '">Edit</button> ' +
+              '<button class="btn btn-small btn-danger" data-del="' + esc(m.id) + '">Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        (rows.length ? '' : '<tr><td colspan="4" class="empty">No board members yet.</td></tr>') +
+        '</tbody>' +
+      '</table>';
+
+    el('ex-new').addEventListener('click', function () { execModal(null); });
+    pane.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        execModal(state.execBoard.find(function (m) { return m.id === b.getAttribute('data-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delExec(b.getAttribute('data-del')); });
+    });
+  }
+
+  function execModal(m) {
+    m = m || { id: '', name: '', role: '', photo: '', quote: '', sort_order: state.execBoard.length };
+
+    openModal(
+      '<h2>' + (m.id ? 'Edit board member' : 'Add board member') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Name<input type="text" id="x-name" value="' + esc(m.name) + '" required /></label>' +
+            '<label class="full">Role<input type="text" id="x-role" value="' + esc(m.role) + '" required placeholder="e.g. Local Officer — SCOPE" /></label>' +
+            '<label class="full">Photo URL<input type="text" id="x-photo" value="' + esc(m.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Quote<textarea id="x-quote">' + esc(m.quote) + '</textarea></label>' +
+            '<label>Sort order<input type="number" id="x-sort" value="' + (m.sort_order || 0) + '" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save member</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="ex-preview" id="ex-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['x-name', 'x-role', 'x-photo', 'x-quote'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderExecPreview);
+      input.addEventListener('change', renderExecPreview);
+    });
+    renderExecPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        name: val('x-name').trim(),
+        role: val('x-role').trim(),
+        photo: val('x-photo').trim() || null,
+        quote: val('x-quote').trim() || null,
+        sort_order: parseInt(val('x-sort'), 10) || 0
+      };
+      if (!row.name || !row.role) { alert('Name and role are required.'); return; }
+      if (m.id) row.id = m.id;
+      sb.from('exec_board').upsert(row).then(function (r) {
+        if (r.error) { alert(r.error.message); return; }
+        closeModal();
+        loadData().then(renderExecutive);
+      });
+    });
+  }
+
+  function delExec(id) {
+    if (!confirm('Remove this board member?')) return;
+    sb.from('exec_board').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderExecutive);
     });
   }
 

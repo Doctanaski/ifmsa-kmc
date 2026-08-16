@@ -5,14 +5,15 @@
    placeholder), their role underneath, and a quote beside it
    that alternates left / right.
 
-   Member content edit lives here (names, roles, quotes, photo
-   URLs).  Add a member by appending an object to EXEC.
+   Member content is loaded from the site data (Supabase → falls
+   back to projects-data.js).  Edit members from the admin panel;
+   the bundled list here is only a safe default.
    ============================================================ */
 
 (function () {
   'use strict';
 
-  var EXEC = [
+  var FALLBACK_EXEC = [
     {
       name: "Ahmad Raza",
       role: "President",
@@ -79,6 +80,8 @@
   var track = document.getElementById('ex-track');
   var rail = document.getElementById('ex-rail');
   var countEl = document.getElementById('ex-count');
+
+  var EXEC = FALLBACK_EXEC;
 
   var pad = function (n) { return n < 10 ? '0' + n : String(n); };
 
@@ -174,6 +177,21 @@
 
   window.addEventListener('resize', refresh);
 
-  render();
-  refresh();
+  function start() {
+    render();
+    refresh();
+  }
+
+  if (window.loadSiteData) {
+    window.loadSiteData().then(function (data) {
+      var list = (data.execBoard && data.execBoard.length) ? data.execBoard : FALLBACK_EXEC;
+      EXEC = list.slice();
+      start();
+    }).catch(function () {
+      EXEC = FALLBACK_EXEC.slice();
+      start();
+    });
+  } else {
+    start();
+  }
 })();

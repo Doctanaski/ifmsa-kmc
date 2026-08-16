@@ -93,6 +93,7 @@
       committees: d.committees || {},
       projects: d.projects || [],
       highlightsList: d.highlights || [],
+      execBoard: d.execBoard || [],
       site: DEFAULTS.site,
       hero: DEFAULTS.hero,
       about: DEFAULTS.about,
@@ -119,21 +120,26 @@
       client.from('committees').select('*').order('sort_order'),
       client.from('projects').select('*').order('sort_order'),
       client.from('site_settings').select('key, value'),
-      client.from('highlights').select('*').order('sort_order')
+      client.from('highlights').select('*').order('sort_order'),
+      client.from('exec_board').select('*').order('sort_order')
     ]).then(function (results) {
       var committeesRes = results[0];
       var projectsRes = results[1];
       var settingsRes = results[2];
       var highlightsRes = results[3];
+      var execRes = results[4];
 
       if (committeesRes.error) throw committeesRes.error;
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
 
-      /* the highlights table is optional — a missing table simply falls
-         back to the bundled list, never taking the whole site down */
+      /* the highlights / exec_board tables are optional — a missing table simply
+         falls back to the bundled list, never taking the whole site down */
       var highlights = (highlightsRes && highlightsRes.data) || [];
       if (highlightsRes && highlightsRes.error) highlights = [];
+
+      var execBoard = (execRes && execRes.data) || [];
+      if (execRes && execRes.error) execBoard = [];
 
       var committees = {};
       (committeesRes.data || []).forEach(function (r) {
@@ -159,6 +165,7 @@
         committees: committees,
         projects: projectsRes.data || [],
         highlightsList: highlights,
+        execBoard: execBoard,
         site: site,
         hero: hero,
         about: about,

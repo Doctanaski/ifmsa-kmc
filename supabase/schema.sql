@@ -48,6 +48,16 @@ create table if not exists public.highlights (
   sort_order int  not null default 0
 );
 
+-- ---------- executive board (Meet the Executive Board page) ----------
+create table if not exists public.exec_board (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  role       text not null,
+  photo      text,
+  quote      text,
+  sort_order int  not null default 0
+);
+
 -- ---------- site settings (key -> json value) ----------
 create table if not exists public.site_settings (
   key   text primary key,
@@ -64,6 +74,7 @@ create table if not exists public.admin_users (
 alter table public.committees    enable row level security;
 alter table public.projects      enable row level security;
 alter table public.highlights    enable row level security;
+alter table public.exec_board    enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.admin_users   enable row level security;
 
@@ -82,6 +93,7 @@ $$;
 create policy "public read committees"    on public.committees    for select using (true);
 create policy "public read projects"      on public.projects      for select using (true);
 create policy "public read highlights"    on public.highlights    for select using (true);
+create policy "public read exec_board"    on public.exec_board    for select using (true);
 create policy "public read site_settings" on public.site_settings for select using (true);
 
 -- only listed admins can write content
@@ -94,6 +106,10 @@ create policy "admin write projects"      on public.projects      for all to aut
   with check (public.is_admin());
 
 create policy "admin write highlights"    on public.highlights    for all to authenticated
+  using    (public.is_admin())
+  with check (public.is_admin());
+
+create policy "admin write exec_board"    on public.exec_board    for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
