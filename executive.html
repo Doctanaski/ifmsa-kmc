@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet the IFMSA KMC executive board — the students running the local council. One scroll per member: portrait, role and a word from them." />
+  <title>Meet the Executive Board | KMC × IFMSA Local Council</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="executive.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="ex-topbar">
+    <div class="ex-brand">
+      <a href="index.html" class="ex-brand-logo ex-logo-pk">
+        <img src="assets/ifmsa-pakistan-logo-light.png" alt="IFMSA-Pakistan logo" />
+      </a>
+      <span class="ex-brand-divider" aria-hidden="true"></span>
+      <a href="index.html" class="ex-brand-logo ex-logo-kmc">
+        <img src="assets/kmc-logo.png" alt="Khyber Medical College logo" />
+      </a>
+    </div>
+    <nav class="ex-nav" aria-label="Site navigation">
+      <a href="calendar.html" class="ex-nav-link ex-nav-btn">
+        <svg class="ex-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Calendar
+      </a>
+      <a href="/admin" class="ex-nav-link ex-nav-admin">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO BAND -->
+    <section class="ex-hero" aria-labelledby="ex-hero-title">
+      <div class="ex-hero-watermark" aria-hidden="true">
+        <img src="assets/ifmsa-pakistan-logo-new.png" alt="" />
+      </div>
+      <div class="ex-hero-inner">
+        <p class="ex-eyebrow">
+          <span class="ex-eyebrow-pill">IFMSA Pakistan</span>
+          <span class="ex-eyebrow-rest">KMC Local Council</span>
+        </p>
+        <h1 class="ex-hero-title" id="ex-hero-title">
+          Meet the <span class="ex-green">executive board.</span>
+        </h1>
+        <p class="ex-hero-sub">
+          Ten students. Six committees. One council. The people running IFMSA KMC this year — introduce yourself to each of them, one scroll at a time.
+        </p>
+        <div class="ex-hero-actions">
+          <a href="#board" class="ex-hero-cta" id="ex-scroll-cta">
+            Start the tour &#x2193;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE BOARD — scroll gallery -->
+    <section class="ex-section" id="board" aria-labelledby="ex-title">
+
+      <div class="ex-section-head">
+        <p class="ex-section-label">2026 &middot; Ten roles &middot; One council</p>
+        <h2 class="ex-section-title" id="ex-title">The board, one scroll at a time.</h2>
+        <p class="ex-section-sub">
+          Each slide is a member — their photo, their role, and a word in theirs. Scroll, use the arrows, or jump straight to a name on the rail.
+        </p>
+      </div>
+
+      <div class="ex-stage" id="ex-stage">
+        <div class="ex-track" id="ex-track"></div>
+
+        <aside class="ex-rail" id="ex-rail" aria-label="Jump to a board member"></aside>
+
+        <div class="ex-controls">
+          <button class="ex-nav-btn" id="ex-prev" type="button" aria-label="Previous member">&#8593;</button>
+          <span class="ex-count" id="ex-count" aria-live="polite">01 / 00</span>
+          <button class="ex-nav-btn" id="ex-next" type="button" aria-label="Next member">&#8595;</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CTA BAND -->
+    <section class="ex-cta-band" aria-labelledby="ex-cta-title">
+      <div class="ex-cta-inner">
+        <p class="ex-cta-label">Say hello</p>
+        <h2 class="ex-cta-title" id="ex-cta-title">The door is always open.</h2>
+        <p class="ex-cta-sub">
+          Every board member is also a fellow student. Walk up after an event, drop a message on the council group — we're easier to reach than you'd think.
+        </p>
+        <div class="ex-cta-actions">
+          <a href="join.html" class="ex-btn ex-btn-white">Join the council</a>
+          <a href="index.html" class="ex-btn ex-btn-ghost-white">&larr; Back to home</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="ex-footer">
+    <p>IFMSA &mdash; Khyber Medical College, Peshawar</p>
+    <p>Built by students, for the future of medicine.</p>
+  </footer>
+
+  <script src="executive.js"></script>
+</body>
+</html>

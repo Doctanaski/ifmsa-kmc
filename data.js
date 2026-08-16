@@ -43,7 +43,7 @@
       title: "Meet the Executive Board",
       body: "The heartbeat of the local council — the President, Vice-Presidents and Local Officers who run IFMSA KMC day to day, from national delegation to on-campus coordination.",
       btnText: "Meet the Board",
-      btnHref: "about.html",
+      btnHref: "executive.html",
       img1: "",
       img2: ""
     },
