@@ -90,6 +90,12 @@ as $$
 $$;
 
 -- public can read content (the public site needs it)
+drop policy if exists "public read committees"    on public.committees;
+drop policy if exists "public read projects"      on public.projects;
+drop policy if exists "public read highlights"    on public.highlights;
+drop policy if exists "public read exec_board"    on public.exec_board;
+drop policy if exists "public read site_settings" on public.site_settings;
+
 create policy "public read committees"    on public.committees    for select using (true);
 create policy "public read projects"      on public.projects      for select using (true);
 create policy "public read highlights"    on public.highlights    for select using (true);
@@ -97,6 +103,12 @@ create policy "public read exec_board"    on public.exec_board    for select usi
 create policy "public read site_settings" on public.site_settings for select using (true);
 
 -- only listed admins can write content
+drop policy if exists "admin write committees"    on public.committees;
+drop policy if exists "admin write projects"      on public.projects;
+drop policy if exists "admin write highlights"    on public.highlights;
+drop policy if exists "admin write exec_board"    on public.exec_board;
+drop policy if exists "admin write site_settings" on public.site_settings;
+
 create policy "admin write committees"    on public.committees    for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
@@ -118,5 +130,7 @@ create policy "admin write site_settings" on public.site_settings for all to aut
   with check (public.is_admin());
 
 -- admins can read the admin list
+drop policy if exists "admin read admin_users" on public.admin_users;
+
 create policy "admin read admin_users"    on public.admin_users   for select to authenticated
   using (public.is_admin());
