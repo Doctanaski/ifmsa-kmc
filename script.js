@@ -35,7 +35,7 @@
     activeIndex = i;
 
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
-    if (topbar) topbar.classList.toggle('is-hidden', i > 0);
+    if (topbar) topbar.classList.toggle('is-hidden', i > 0 && !isMobile.matches);
 
     const accent = getComputedStyle(panels[i]).getPropertyValue('--panel-accent').trim()
       || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
@@ -52,7 +52,8 @@
      a synchronous layout reflow on every scroll frame */
   let panelTops = [];
   const measurePanelTops = () => {
-    panelTops = panels.map((p) => p.getBoundingClientRect().top + stage.scrollTop);
+    const sc = isMobile.matches ? document.scrollingElement : stage;
+    panelTops = panels.map((p) => p.getBoundingClientRect().top + sc.scrollTop);
   };
   const panelTop = (i) => panelTops[i];
   const isSnapped = (i) => Math.abs(stage.scrollTop - panelTops[i]) < 4;
@@ -76,10 +77,11 @@
     const top = panelTop(index);
     activate(index);
 
-    if (Math.abs(stage.scrollTop - top) < 2) { stopAnim(); return; }
+    const sc = isMobile.matches ? document.scrollingElement : stage;
+    if (Math.abs(sc.scrollTop - top) < 2) { stopAnim(); return; }
 
     beginAnim();
-    stage.scrollTo({ top, behavior: 'smooth' });
+    sc.scrollTo({ top, behavior: 'smooth' });
   };
 
   const next = () => goTo(activeIndex + 1);
@@ -177,6 +179,7 @@
   /* ---------- wheel: free scroll on the home page, then one slide per gesture
      once the visitor reaches the committee area ---------- */
   stage.addEventListener('wheel', (e) => {
+    if (isMobile.matches) return;   /* phones scroll natively */
     const delta = e.deltaY;
     if (Math.abs(delta) < 8) return;
 
@@ -225,13 +228,14 @@
   let touchHero = false;
 
   stage.addEventListener('touchstart', (e) => {
+    if (isMobile.matches) return;   /* phones swipe the page natively */
     touchY = e.touches[0].clientY;
     const targetPanel = e.target.closest('.panel-carousel');
     touchCar = (!isMobile.matches && targetPanel) ? (carousels.get(targetPanel) || null) : null;
     touchHero = !!e.target.closest('.home');
   }, { passive: true });
   stage.addEventListener('touchmove', (e) => {
-    if (touchY === null) return;
+    if (isMobile.matches || touchY === null) return;
     if (touchHero) { touchY = null; return; }
     const dy = touchY - e.touches[0].clientY;
     if (Math.abs(dy) > 34) {
@@ -286,7 +290,7 @@
   /* hard ceiling on the home page: never let the scroll spill past the jump
      button into the committee slides (safe with momentum / touch / scrollbar) */
   stage.addEventListener('scroll', () => {
-    if (activeIndex !== 0) return;
+    if (isMobile.matches || activeIndex !== 0) return;
     updateCardParallax();
     const maxTop = homeMaxTop();
     if (stage.scrollTop > maxTop) stage.scrollTop = maxTop;

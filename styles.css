@@ -1100,8 +1100,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 @media (max-width: 640px) {
   html { -webkit-text-size-adjust: 100%; }
 
-  .stage { height: 100vh; height: 100svh; scroll-snap-type: y proximity; }
-  .panel { min-height: 100svh; scroll-snap-stop: normal; }
+  /* mobile: native page scroll — no inner scroll-lock stage or slide snapping */
+  body { overflow-x: hidden; overflow-y: auto; }
+  .stage { height: auto; overflow: visible; scroll-snap-type: none; }
+  .panel { min-height: 100svh; scroll-snap-align: none; scroll-snap-stop: normal; }
   .panel.home { height: auto; min-height: 100svh; overflow: visible; scroll-snap-align: none; }
 
   .panel {
