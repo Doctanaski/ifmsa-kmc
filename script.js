@@ -27,15 +27,12 @@
 
   const dots = Array.from(rail.querySelectorAll('button'));
 
-  const topbar = document.querySelector('.topbar');
-
   /* ---------- state ---------- */
   const activate = (i) => {
     i = Math.max(0, Math.min(panels.length - 1, i));
     activeIndex = i;
 
     panels.forEach((p, idx) => p.classList.toggle('is-active', idx === i));
-    if (topbar) topbar.classList.toggle('is-hidden', i > 0 && !isMobile.matches);
 
     const accent = getComputedStyle(panels[i]).getPropertyValue('--panel-accent').trim()
       || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
