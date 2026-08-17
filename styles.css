@@ -995,7 +995,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .brand-logo img { display: block; height: 28px; width: auto; }
 .brand-logo-pk img { height: 40px; max-width: 200px; object-fit: contain; }
 .brand-logo-kmc img { height: 34px; max-width: 220px; object-fit: contain; }
-.brand-logo-ifmsa-kmc img { height: 40px; max-width: 200px; object-fit: contain; }
+.brand-logo-ifmsa-kmc img { height: 60px; max-width: 200px; object-fit: contain; }
 
 .brand-divider {
   width: 1px; height: 26px;
@@ -1180,7 +1180,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .brand { gap: 0.6rem; }
   .brand-logo img { height: 24px; }
   .brand-logo-pk img { height: 32px; }
-  .brand-logo-ifmsa-kmc img { height: 32px; }
+  .brand-logo-ifmsa-kmc img { height: 48px; }
   .brand-divider { height: 22px; }
   #navbar { gap: 0.9rem; }
   .nav-link { font-size: 0.82rem; }
