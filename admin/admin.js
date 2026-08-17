@@ -1541,6 +1541,7 @@
 
       '<div class="card settings-section"><h3>Hero (homepage)</h3>' +
         '<div class="form-grid">' +
+          '<label class="full">Hero image URL (leave empty for default)<input type="text" id="h-img" value="' + esc(h.img || '') + '" placeholder="assets/ifmsa-pakistan-logo-light.png" /></label>' +
           '<label>Eyebrow pill<input type="text" id="h-pill" value="' + esc(h.eyebrowPill || '') + '" /></label>' +
           '<label>Eyebrow rest<input type="text" id="h-rest" value="' + esc(h.eyebrowRest || '') + '" /></label>' +
           '<label>Title line 1<input type="text" id="h-t1" value="' + esc(h.title1 || '') + '" /></label>' +
@@ -1698,6 +1699,7 @@
       {
         key: 'hero',
         value: {
+          img: val('h-img').trim(),
           eyebrowPill: val('h-pill').trim(), eyebrowRest: val('h-rest').trim(),
           title1: val('h-t1').trim(), title2: val('h-t2').trim(),
           sub: val('h-sub').trim(),

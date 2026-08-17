@@ -7,7 +7,7 @@
   <title>KMC × IFMSA | Khyber Medical College Local Council</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="projects.css" />
 </head>
@@ -49,37 +49,18 @@
 
     <!-- ============ 01 · HOME (+ hero) ============ -->
     <section class="panel home" data-slide="pak" data-index="01" data-title="Home" id="home">
-      <!-- Faint watermark background of IFMSA Pakistan latest logo -->
-      <div class="hero-watermark" aria-hidden="true">
-        <img src="assets/ifmsa-pakistan-logo-new.png" alt="" />
-      </div>
-
       <div class="home-wrap">
 
-        <div class="hero-top">
-          <div class="panel-inner">
-            <h1 class="hero-title" id="hero-title">Medical students.<br />Moving medicine forward.</h1>
+        <header class="hero-banner" id="hero-banner">
+          <div class="hero-banner-media" aria-hidden="true"></div>
+          <div class="hero-banner-copy">
+            <p class="hero-eyebrow" id="hero-eyebrow">IFMSA Pakistan · Local Council 2026</p>
+            <h1 class="hero-title" id="hero-title"><span>IFMSA</span> <span class="hero-title-accent">KMC</span></h1>
             <p class="hero-sub" id="hero-sub">
-              The <strong>Khyber Medical College</strong> local council of the International Federation of
-              Medical Students' Associations — six standing committees, one council.
+              Six standing committees, one student body — moving medicine forward.
             </p>
           </div>
-
-          <figure class="president">
-            <div class="pres-photo" role="img" aria-label="Placeholder portrait of the IFMSA KMC President">
-              <svg class="pres-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 20c0-3.8 3.6-6 8-6s8 2.2 8 6"></path>
-              </svg>
-              <span class="pres-placeholder">President · Placeholder</span>
-            </div>
-            <figcaption class="pres-message">
-              <span class="pres-label">A message from the President</span>
-              <blockquote class="pres-quote">“Welcome to the KMC council of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.”</blockquote>
-              <span class="pres-name">President — IFMSA KMC Local Council</span>
-            </figcaption>
-          </figure>
-        </div>
+        </header>
 
         <!-- Key statistics cards (inspired by IFMSA.org) -->
         <div class="hero-stat-cards" id="hero-stat-cards" role="region" aria-label="Key statistics">
@@ -139,6 +120,22 @@
             <div class="stat-label" id="stat-nmo-label">National Member Organizations</div>
           </div>
         </div>
+
+        <!-- President image & message (between the stat buttons and the info tabs) -->
+        <figure class="president" id="president">
+          <div class="pres-photo" role="img" aria-label="Placeholder portrait of the IFMSA KMC President">
+            <svg class="pres-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 20c0-3.8 3.6-6 8-6s8 2.2 8 6"></path>
+            </svg>
+            <span class="pres-placeholder">President · Placeholder</span>
+          </div>
+          <figcaption class="pres-message">
+            <span class="pres-label">A message from the President</span>
+            <blockquote class="pres-quote">“Welcome to the KMC council of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.”</blockquote>
+            <span class="pres-name">President — IFMSA KMC Local Council</span>
+          </figcaption>
+        </figure>
 
         <!-- Two Feature Cards — About Us & Join Us (inspired by IFMSA.org) -->
         <section class="feature-tabs-section" id="know">

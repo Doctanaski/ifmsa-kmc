@@ -189,10 +189,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   --panel-card-bg: #ffffff;
   --panel-card-border: rgba(30, 27, 82, 0.1);
 }
-.panel[data-slide="pak"] .hero-title,
 .panel[data-slide="pak"] .mini-num,
 .panel[data-slide="pak"] .know-title,
 .panel[data-slide="pak"] .tab-title { color: #1e1b52; }
+.panel[data-slide="pak"] .hero-banner .hero-title { color: #ffffff; }
 .panel[data-slide="pak"] .btn-primary {
   background: var(--pak-green);
   border: 2px solid #0d8312;
@@ -221,13 +221,13 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(30, 27, 82, 0.3);
 }
-.panel[data-slide="pak"] .pres-label,
+.panel[data-slide="pak"] .pres-label { color: var(--pak-green-soft); font-weight: 600; }
 .panel[data-slide="pak"] .pres-placeholder { color: var(--pak-green); font-weight: 600; }
-.panel[data-slide="pak"] .pres-quote { color: #1e293b; }
+.panel[data-slide="pak"] .pres-quote { color: #eef2f8; }
 .panel[data-slide="pak"] .pres-message {
-  border-color: rgba(30, 27, 82, 0.1);
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(30, 27, 82, 0.06);
+  border-color: var(--pak-green);
+  background: transparent;
+  box-shadow: none;
 }
 .panel[data-slide="pak"] .about-list strong { color: var(--pak-blue); }
 .panel[data-slide="pak"] .tab.is-active {
@@ -334,27 +334,88 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
     linear-gradient(175deg, #ffffff 0%, #f7f9fc 45%, #eef2f8 100%);
 }
 
-/* Faint watermark background of IFMSA Pakistan latest logo */
-.hero-watermark {
-  position: absolute;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(680px, 85vw);
-  max-height: 75vh;
-  opacity: 0.07;
-  pointer-events: none;
-  z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
+/* one giant full-bleed hero image with the headline floated over the blur */
+.hero-banner {
+  position: relative;
+  height: clamp(520px, 88vh, 820px);
+  min-height: 520px;
+  border-radius: 28px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 24px 64px -18px rgba(20, 16, 60, 0.4), 0 0 0 1px rgba(30, 27, 82, 0.08);
 }
-.hero-watermark img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: contrast(105%);
+
+.hero-banner-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("assets/ifmsa-pakistan-logo-light.png");
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(130% 90% at 50% 42%, rgba(14, 12, 46, 0.28) 0%, rgba(14, 12, 46, 0.55) 72%),
+    linear-gradient(180deg, rgba(10, 8, 32, 0.35) 0%, rgba(10, 8, 32, 0.55) 100%);
+}
+
+/* the headline sits on a frosted pane — the image blurs behind the text */
+.hero-banner-copy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(780px, 88%);
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 4rem);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(13, 17, 23, 0.38);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+  backdrop-filter: blur(10px) saturate(130%);
+  box-shadow: 0 30px 70px -18px rgba(6, 5, 22, 0.65);
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: clamp(0.68rem, 1.2vw, 0.85rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: "Bebas Neue", "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(3.4rem, 11vw, 9rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 0.92;
+  margin-bottom: 1.1rem;
+  color: #ffffff;
+  text-shadow: 0 8px 34px rgba(6, 5, 22, 0.55);
+}
+.hero-title-accent {
+  color: var(--pak-green-soft);
+  -webkit-text-stroke: 1px rgba(15, 156, 21, 0.55);
+}
+
+.hero-sub {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  max-width: 44ch;
+  margin: 0 auto;
+  text-shadow: 0 2px 18px rgba(6, 5, 22, 0.5);
 }
 
 .home-wrap {
@@ -362,32 +423,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   position: relative;
   z-index: 1;
 }
-
-.hero-top {
-  display: grid;
-  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
-}
-
-.hero-top .panel-inner { max-width: 62ch; }
-
-.hero-title {
-  font-size: clamp(2.1rem, 5vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.03;
-  margin-bottom: 1.1rem;
-  color: #1e1b52;
-}
-
-.hero-sub {
-  color: var(--fg-muted);
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
-  max-width: 56ch;
-  margin-bottom: 1.5rem;
-}
-.hero-sub strong { color: #1e1b52; font-weight: 600; }
 
 /* ---------- hero stat cards (inspired by IFMSA.org) ---------- */
 .hero-stat-cards {
@@ -553,30 +588,48 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 .btn-primary:hover { background: #79beff; border-color: #79beff; color: #04101f; }
 
-/* ---------- president card (home) ---------- */
+/* ---------- president card (home, between stat buttons & info tabs) ---------- */
 .president {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  align-items: center;
+  gap: clamp(1.6rem, 4vw, 3rem);
   width: 100%;
-  max-width: 420px;
-  margin-left: auto;
+  margin: clamp(3rem, 7vh, 5rem) 0 0;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  border-radius: 24px;
+  background: linear-gradient(150deg, #1e1b52 0%, #14123b 60%, #0e0c2e 100%);
+  border: 1px solid rgba(125, 121, 232, 0.28);
+  box-shadow: 0 24px 58px -16px rgba(30, 27, 82, 0.38);
+  position: relative;
+  overflow: hidden;
 }
+
+.president::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 120% at 90% 0%, rgba(15, 156, 21, 0.16), transparent 60%),
+    radial-gradient(80% 100% at 0% 100%, rgba(40, 36, 103, 0.35), transparent 62%);
+  pointer-events: none;
+}
+
+.president > * { position: relative; }
 
 .pres-photo {
   position: relative;
-  height: clamp(280px, 54vh, 440px);
+  height: clamp(240px, 40vh, 340px);
   aspect-ratio: 4 / 5;
   border-radius: 16px;
-  border: 1px solid rgba(30, 27, 82, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   background:
-    radial-gradient(120% 90% at 72% 0%, rgba(40, 36, 103, 0.2), transparent 62%),
-    linear-gradient(160deg, #1e1b52, #0e0c2e);
+    radial-gradient(120% 90% at 72% 0%, rgba(40, 36, 103, 0.28), transparent 62%),
+    linear-gradient(160deg, #262263, #0e0c2e);
   display: grid;
   place-items: center;
   overflow: hidden;
-  box-shadow: 0 20px 48px rgba(30, 27, 82, 0.14);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.32);
 }
 
 .pres-silhouette {
@@ -593,7 +646,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-size: 0.64rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(70, 199, 87, 0.9);
+  color: rgba(70, 199, 87, 0.92);
   background: rgba(9, 8, 30, 0.6);
   border: 1px solid rgba(125, 121, 232, 0.35);
   padding: 0.3rem 0.6rem;
@@ -601,10 +654,8 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .pres-message {
-  border: 1px solid rgba(125, 121, 232, 0.35);
-  border-radius: 12px;
-  background: rgba(22, 27, 34, 0.82);
-  padding: 1rem 1.15rem 1.1rem;
+  border-left: 3px solid var(--pak-green);
+  padding: 0.2rem 0 0.2rem clamp(1.2rem, 2.5vw, 1.8rem);
 }
 
 .pres-label {
@@ -612,20 +663,22 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--pak-green-soft);
 }
 
 .pres-quote {
-  margin: 0.55rem 0 0.7rem;
-  color: #e6edf3;
-  font-size: 0.95rem;
-  line-height: 1.55;
+  margin: 0.85rem 0 0.9rem;
+  color: #eef2f8;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  line-height: 1.5;
 }
 
 .pres-name {
   display: block;
-  color: var(--fg-muted);
-  font-size: 0.8rem;
+  color: rgba(236, 240, 247, 0.72);
+  font-size: 0.82rem;
   font-weight: 500;
 }
 
@@ -1052,11 +1105,12 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 /* ---------- mobile ---------- */
 @media (max-height: 700px) {
   .panel.home { padding-top: 4.5rem; padding-bottom: 2rem; }
-  .hero-title { font-size: clamp(1.8rem, 4.5vh + 1vw, 3rem); }
-  .hero-sub { margin-bottom: 1rem; }
+  .hero-banner { height: clamp(420px, 78vh, 620px); min-height: 420px; }
+  .hero-title { font-size: clamp(2.6rem, 8vw, 4.2rem); }
+  .hero-sub { font-size: clamp(1rem, 2vw, 1.3rem); }
   .hero-stat-cards { margin-top: 1.5rem; }
   .pres-photo { height: clamp(200px, 40vh, 320px); }
-  .pres-quote { font-size: 0.88rem; }
+  .pres-quote { font-size: 0.98rem; }
 }
 
 @media (max-height: 620px) {
@@ -1080,9 +1134,9 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
     padding: 6.5rem 1.5rem 3.5rem;
   }
   .rail { display: none; }
-  .hero-top { grid-template-columns: 1fr; gap: 2rem; }
-  .president { align-items: stretch; margin-left: 0; max-width: 100%; }
-  .pres-photo { width: 100%; height: clamp(220px, 34vh, 300px); aspect-ratio: auto; }
+  .president { grid-template-columns: 1fr; align-items: stretch; gap: 1.4rem; }
+  .pres-photo { width: 100%; height: clamp(240px, 40vh, 320px); aspect-ratio: auto; }
+  .pres-message { border-left: none; border-top: 3px solid var(--pak-green); padding: 1.1rem 0 0; }
   .col-meta { flex-direction: row; align-items: baseline; gap: 0.85rem; }
   .group-photo { display: none; }
   .slide-no { margin-right: auto; }
@@ -1133,15 +1187,19 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .btn-outline { padding: 0.36rem 0.8rem; }
 
   /* hero */
-  .hero-title { font-size: clamp(1.7rem, 8.5vw, 2.2rem); margin-bottom: 0.7rem; }
-  .hero-sub { font-size: 1rem; margin-bottom: 0.9rem; }
+  .hero-banner { height: auto; min-height: 420px; border-radius: 20px; }
+  .hero-banner-copy { width: 92%; padding: 2.2rem 1.3rem; }
+  .hero-eyebrow { font-size: 0.6rem; margin-bottom: 0.7rem; }
+  .hero-title { font-size: clamp(2.6rem, 14vw, 3.6rem); margin-bottom: 0.8rem; }
+  .hero-sub { font-size: 1.05rem; }
   .hero-stat-cards { grid-template-columns: 1fr; gap: 0.9rem; margin-top: 1.8rem; }
   .hero-stat-card { padding: 1.4rem 1rem; border-radius: 16px; }
   .stat-value { font-size: 1.45rem; }
   .btn { padding: 0.6rem 1.05rem; font-size: 0.92rem; }
-  .pres-photo { height: clamp(190px, 30vh, 250px); }
-  .pres-message { padding: 0.85rem 0.95rem; }
-  .pres-quote { font-size: 0.9rem; }
+  .president { margin-top: 2.5rem; padding: 1.3rem; border-radius: 20px; }
+  .pres-photo { height: clamp(200px, 34vh, 280px); }
+  .pres-message { padding: 0.2rem 0 0; }
+  .pres-quote { font-size: 1.02rem; }
 
   /* feature tab cards */
   .feature-tabs-section { margin-top: 2.8rem; }

@@ -18,9 +18,10 @@
     hero: {
       eyebrowPill: "IFMSA Pakistan",
       eyebrowRest: "Local Council 2026",
-      title1: "Medical students.",
-      title2: "Moving medicine forward.",
-      sub: "The Khyber Medical College local council of the International Federation of Medical Students' Associations — six standing committees, one council.",
+      title1: "IFMSA",
+      title2: "KMC",
+      sub: "Six standing committees, one student body — moving medicine forward.",
+      img: "",
       btn1Text: "Explore committees ↓",
       btn1Href: "#scope",
       btn2Text: "Join the council",
@@ -228,17 +229,20 @@
 
     if (siteData.hero) {
       var h = siteData.hero;
-      setText('hero-eyebrow-pill', h.eyebrowPill);
-      setText('hero-eyebrow-rest', h.eyebrowRest);
+      setText('hero-eyebrow', (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : ''));
       var ht = byId('hero-title');
       if (ht && h.title1 != null && h.title2 != null) {
-        ht.innerHTML = '<span>' + h.title1 + '</span><br /><span>' + h.title2 + '</span>';
+        ht.innerHTML = '<span>' + h.title1 + '</span> <span class="hero-title-accent">' + h.title2 + '</span>';
       }
       setText('hero-sub', h.sub);
       setText('hero-btn1', h.btn1Text);
       setText('hero-btn2', h.btn2Text);
       var hb1 = byId('hero-btn1-link'); if (hb1 && h.btn1Href != null) hb1.setAttribute('href', h.btn1Href);
       var hb2 = byId('hero-btn2-link'); if (hb2 && h.btn2Href != null) hb2.setAttribute('href', h.btn2Href);
+      var hbg = byId('hero-banner-media');
+      if (hbg && h.img) {
+        hbg.style.backgroundImage = 'url("' + String(h.img).replace(/"/g, '&quot;') + '")';
+      }
       var mini = byId('hero-mini');
       if (mini && h.mini1Num != null) {
         mini.innerHTML =
