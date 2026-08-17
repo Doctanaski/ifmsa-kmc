@@ -983,6 +983,13 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
 }
 
+/* topbar belongs to the first slide only */
+.topbar.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
 
 .brand-logo img { display: block; height: 28px; width: auto; }
