@@ -137,6 +137,165 @@
     return String(s || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
   };
 
+  /* ============ Supabase storage (image uploads) ============ */
+  var IMG_BUCKET = 'images';
+  var publicUrlFor = function (path) {
+    return sb.storage.from(IMG_BUCKET).getPublicUrl(path).data.publicUrl;
+  };
+
+  var uploadImage = function (file) {
+    var ext = (file.name.split('.').pop() || 'png').toLowerCase();
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'avif'].indexOf(ext) === -1) {
+      return Promise.reject(new Error('Only image files are supported (png, jpg, gif, webp, svg).'));
+    }
+    var stamp = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    var path = 'uploads/' + stamp + '-' + slugify(file.name.replace(/\.[^.]+$/, '')) + '.' + ext;
+    return sb.storage.from(IMG_BUCKET).upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || 'image/' + (ext === 'jpg' ? 'jpeg' : ext)
+    }).then(function (r) {
+      if (r.error) throw r.error;
+      return publicUrlFor(path);
+    });
+  };
+
+  var fireInput = function (input) {
+    if (!input) return;
+    ['input', 'change'].forEach(function (t) {
+      try { input.dispatchEvent(new Event(t, { bubbles: true })); } catch (e) { /* noop */ }
+    });
+  };
+
+  /* turn a URL text input into a picker that can also upload from disk */
+  var attachImageUpload = function (inputId, opts) {
+    opts = opts || {};
+    var input = el(inputId);
+    if (!input) return;
+
+    var holder = document.createElement('div');
+    holder.className = 'img-upload';
+
+    var preview = document.createElement('div');
+    preview.className = 'img-upload-preview';
+
+    var fileBtn = document.createElement('button');
+    fileBtn.type = 'button';
+    fileBtn.className = 'btn btn-small';
+    fileBtn.innerHTML = '&#128451; Upload from computer';
+    fileBtn.title = 'Upload an image to Supabase storage';
+
+    var status = document.createElement('span');
+    status.className = 'img-upload-status';
+
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.hidden = true;
+
+    holder.appendChild(preview);
+    holder.appendChild(fileBtn);
+    holder.appendChild(fileInput);
+    holder.appendChild(status);
+
+    /* put the widget right after the field, inside the same label */
+    var parent = input.parentNode;
+    parent.appendChild(holder);
+
+    var renderPreview = function () {
+      var v = (input.value || '').trim();
+      if (v) {
+        preview.innerHTML = '<img src="' + esc(v) + '" alt="" />';
+        preview.classList.add('has-img');
+      } else {
+        preview.innerHTML = '';
+        preview.classList.remove('has-img');
+      }
+    };
+    renderPreview();
+    input.addEventListener('input', renderPreview);
+    input.addEventListener('change', renderPreview);
+
+    fileBtn.addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function () {
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      status.textContent = 'Uploading…';
+      status.classList.remove('ok', 'err');
+      uploadImage(file).then(function (url) {
+        input.value = url;
+        status.textContent = 'Uploaded ✓';
+        status.classList.add('ok');
+        renderPreview();
+        fireInput(input);
+        if (opts.onUpload) opts.onUpload(url);
+      }).catch(function (err) {
+        status.textContent = (err && err.message) ? err.message : 'Upload failed';
+        status.classList.add('err');
+      }).then(function () {
+        fileInput.value = '';
+      });
+    });
+
+    if (opts.after) opts.after(holder);
+  };
+
+  /* add an "Add image" button for markdown-style textareas (![caption](url)) */
+  var attachMarkdownUpload = function (textareaId, opts) {
+    opts = opts || {};
+    var ta = el(textareaId);
+    if (!ta) return;
+
+    var holder = document.createElement('div');
+    holder.className = 'img-upload';
+
+    var fileBtn = document.createElement('button');
+    fileBtn.type = 'button';
+    fileBtn.className = 'btn btn-small';
+    fileBtn.innerHTML = '&#128451; Upload image &amp; insert';
+    fileBtn.title = 'Upload an image and insert it as a picture line';
+
+    var status = document.createElement('span');
+    status.className = 'img-upload-status';
+
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.hidden = true;
+
+    holder.appendChild(fileBtn);
+    holder.appendChild(fileInput);
+    holder.appendChild(status);
+
+    var parent = ta.parentNode;
+    parent.appendChild(holder);
+
+    fileBtn.addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function () {
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      status.textContent = 'Uploading…';
+      status.classList.remove('ok', 'err');
+      uploadImage(file).then(function (url) {
+        var cap = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var line = '![' + (cap || 'photo') + '](' + url + ')';
+        var cur = ta.value;
+        ta.value = (cur.length && cur.slice(-1) !== '\n' ? cur + '\n' : cur) + line + '\n';
+        status.textContent = 'Inserted ✓';
+        status.classList.add('ok');
+        fireInput(ta);
+        if (opts.onUpload) opts.onUpload(url);
+      }).catch(function (err) {
+        status.textContent = (err && err.message) ? err.message : 'Upload failed';
+        status.classList.add('err');
+      }).then(function () {
+        fileInput.value = '';
+      });
+    });
+
+    if (opts.after) opts.after(holder);
+  };
+
   /* ---------- project live preview (mirrors projects.js rendering) ---------- */
   var IMG_LINE = /^!\[([^\]]*)\]\(([^)]+)\)$/;
 
@@ -889,6 +1048,7 @@
       input.addEventListener('input', renderProjectPreview);
       input.addEventListener('change', renderProjectPreview);
     });
+    attachMarkdownUpload('f-about');
     renderProjectPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -968,13 +1128,15 @@
         '<label>Name<input type="text" id="c-name" value="' + esc(c.name) + '" required /></label>' +
         '<label>Colour<input type="text" id="c-color" value="' + esc(c.color) + '" placeholder="#0180C8" /></label>' +
         '<label>Accent<input type="text" id="c-accent" value="' + esc(c.accent) + '" placeholder="#0180C8" /></label>' +
-        '<label class="full">Logo path<input type="text" id="c-logo" value="' + esc(c.logo) + '" placeholder="assets/sc-SCOPE.png" /></label>' +
+        '<label class="full">Logo — upload or paste a URL<input type="text" id="c-logo" value="' + esc(c.logo) + '" placeholder="Leave blank to hide the logo" /></label>' +
       '</div>' +
       '<div class="form-actions">' +
         '<button class="btn" id="m-cancel">Cancel</button>' +
         '<button class="btn btn-primary" id="m-save">Save committee</button>' +
       '</div>'
     );
+
+    attachImageUpload('c-logo');
 
     el('m-save').addEventListener('click', function () {
       var row = {
@@ -1092,6 +1254,7 @@
       input.addEventListener('input', renderHighlightPreview);
       input.addEventListener('change', renderHighlightPreview);
     });
+    attachMarkdownUpload('f-about');
     renderHighlightPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -1194,7 +1357,7 @@
           '<div class="form-grid">' +
             '<label class="full">Name<input type="text" id="x-name" value="' + esc(m.name) + '" required /></label>' +
             '<label class="full">Role<input type="text" id="x-role" value="' + esc(m.role) + '" required placeholder="e.g. Local Officer — SCOPE" /></label>' +
-            '<label class="full">Photo URL<input type="text" id="x-photo" value="' + esc(m.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Photo — upload or paste a URL<input type="text" id="x-photo" value="' + esc(m.photo) + '" placeholder="Leave blank to show initials" /></label>' +
             '<label class="full">Quote<textarea id="x-quote">' + esc(m.quote) + '</textarea></label>' +
             '<label>Sort order<input type="number" id="x-sort" value="' + (m.sort_order || 0) + '" /></label>' +
           '</div>' +
@@ -1217,6 +1380,7 @@
       input.addEventListener('input', renderExecPreview);
       input.addEventListener('change', renderExecPreview);
     });
+    attachImageUpload('x-photo');
     renderExecPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -1309,7 +1473,7 @@
             '<label class="full">Location<input type="text" id="a-loc" value="' + esc(a.location) + '" placeholder="Peshawar, Pakistan" /></label>' +
             '<label class="full">Specialty<input type="text" id="a-specialty" value="' + esc(a.specialty) + '" placeholder="e.g. Cardiology" /></label>' +
             '<label class="full">Committees<input type="text" id="a-committees" value="' + esc(a.committees) + '" placeholder="SCOPE, SCORE" /></label>' +
-            '<label class="full">Photo URL<input type="text" id="a-photo" value="' + esc(a.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Photo — upload or paste a URL<input type="text" id="a-photo" value="' + esc(a.photo) + '" placeholder="Leave blank to show initials" /></label>' +
             '<label class="full">Quote (card)<textarea id="a-quote">' + esc(a.quote) + '</textarea></label>' +
             '<label class="full">Story — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="a-story">' + esc((a.story || []).join('\n')) + '</textarea></label>' +
             '<label>LinkedIn URL<input type="text" id="a-linkedin" value="' + esc((a.links && a.links.linkedin) || '') + '" /></label>' +
@@ -1337,6 +1501,8 @@
       input.addEventListener('input', renderAlumniPreview);
       input.addEventListener('change', renderAlumniPreview);
     });
+    attachImageUpload('a-photo');
+    attachMarkdownUpload('a-story');
     renderAlumniPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -1468,6 +1634,7 @@
       input.addEventListener('input', renderAwardsPreview);
       input.addEventListener('change', renderAwardsPreview);
     });
+    attachMarkdownUpload('w-about');
     renderAwardsPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -1541,7 +1708,7 @@
 
       '<div class="card settings-section"><h3>Hero (homepage)</h3>' +
         '<div class="form-grid">' +
-          '<label class="full">Hero image URL (leave empty for default)<input type="text" id="h-img" value="' + esc(h.img || '') + '" placeholder="assets/ifmsa-pakistan-logo-light.png" /></label>' +
+          '<label class="full">Hero image — upload or paste a URL (leave empty for default)<input type="text" id="h-img" value="' + esc(h.img || '') + '" placeholder="assets/ifmsa-pakistan-logo-light.png" /></label>' +
           '<label>Eyebrow pill<input type="text" id="h-pill" value="' + esc(h.eyebrowPill || '') + '" /></label>' +
           '<label>Eyebrow rest<input type="text" id="h-rest" value="' + esc(h.eyebrowRest || '') + '" /></label>' +
           '<label>Title line 1<input type="text" id="h-t1" value="' + esc(h.title1 || '') + '" /></label>' +
@@ -1562,6 +1729,7 @@
           '<div class="form-actions"><button class="btn btn-primary" id="settings-save">Save settings</button></div>' +
         '</div></div>';
 
+    attachImageUpload('h-img');
     el('settings-save').addEventListener('click', saveSettings);
   }
 
@@ -1571,8 +1739,8 @@
       '<label class="full">Body text<textarea id="' + bodyId + '">' + esc(data.body || '') + '</textarea></label>' +
       '<label>Button text<input type="text" id="' + btnTextId + '" value="' + esc(data.btnText || '') + '" /></label>' +
       '<label>Button href<input type="text" id="' + btnHrefId + '" value="' + esc(data.btnHref || '') + '" /></label>' +
-      '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="' + img1Id + '" value="' + esc(data.img1 || '') + '" /></label>' +
-      '<label class="full">Card image 2 URL<input type="text" id="' + img2Id + '" value="' + esc(data.img2 || '') + '" /></label>';
+      '<label class="full">Card image 1 — upload or paste a URL (leave empty for default)<input type="text" id="' + img1Id + '" value="' + esc(data.img1 || '') + '" /></label>' +
+      '<label class="full">Card image 2 — upload or paste a URL<input type="text" id="' + img2Id + '" value="' + esc(data.img2 || '') + '" /></label>';
   }
 
   function renderCards() {
@@ -1600,8 +1768,8 @@
           '<label>Button 1 href<input type="text" id="j-btn1h" value="' + esc(j.btn1Href || '') + '" /></label>' +
           '<label>Button 2 text<input type="text" id="j-btn2t" value="' + esc(j.btn2Text || '') + '" /></label>' +
           '<label>Button 2 href<input type="text" id="j-btn2h" value="' + esc(j.btn2Href || '') + '" /></label>' +
-          '<label class="full">Card image 1 URL (leave empty for default)<input type="text" id="j-img1" value="' + esc(j.img1 || '') + '" /></label>' +
-          '<label class="full">Card image 2 URL<input type="text" id="j-img2" value="' + esc(j.img2 || '') + '" /></label>' +
+          '<label class="full">Card image 1 — upload or paste a URL (leave empty for default)<input type="text" id="j-img1" value="' + esc(j.img1 || '') + '" /></label>' +
+          '<label class="full">Card image 2 — upload or paste a URL<input type="text" id="j-img2" value="' + esc(j.img2 || '') + '" /></label>' +
         '</div></div>' +
 
       '<div class="card settings-section"><h3>Meet the Executive Board tab (homepage)</h3>' +
@@ -1627,6 +1795,11 @@
       '</div>';
 
     el('cards-save').addEventListener('click', saveCards);
+
+    ['a-img1', 'a-img2', 'j-img1', 'j-img2', 'x-img1', 'x-img2',
+     'hl-img1', 'hl-img2', 'al-img1', 'al-img2', 'aw-img1', 'aw-img2'].forEach(function (id) {
+      attachImageUpload(id);
+    });
   }
 
   function saveCards() {

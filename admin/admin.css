@@ -212,6 +212,41 @@ input:focus, select:focus, textarea:focus {
 .form-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1.5rem; }
 .form-actions .spacer { margin-right: auto; }
 
+/* ---------- image upload (Supabase storage) ---------- */
+.img-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.45rem;
+  flex-wrap: wrap;
+}
+.img-upload-preview {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.img-upload-preview.has-img { border-color: var(--border); }
+.img-upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.img-upload-status {
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+  font-family: var(--mono);
+}
+.img-upload-status.ok { color: var(--green); }
+.img-upload-status.err { color: var(--red); }
+
 /* ---------- project live preview (mirrors projects.css) ---------- */
 .proj-preview {
   --proj-bg: var(--bg);

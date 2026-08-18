@@ -7,6 +7,38 @@
 
 create extension if not exists "pgcrypto";
 
+-- ---------- storage bucket for uploaded images ----------
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('images', 'images', true, 10485760, array['image/png','image/jpeg','image/gif','image/webp','image/svg+xml','image/avif'])
+on conflict (id) do update
+  set public = true,
+      file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
+
+-- public can read any object in the images bucket
+drop policy if exists "public read images" on storage.objects;
+
+create policy "public read images" on storage.objects
+  for select using (bucket_id = 'images');
+
+-- only listed admins can upload / update / delete images
+drop policy if exists "admin upload images" on storage.objects;
+drop policy if exists "admin update images" on storage.objects;
+drop policy if exists "admin delete images" on storage.objects;
+
+create policy "admin upload images" on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'images' and public.is_admin());
+
+create policy "admin update images" on storage.objects
+  for update to authenticated
+  using (bucket_id = 'images' and public.is_admin())
+  with check (bucket_id = 'images' and public.is_admin());
+
+create policy "admin delete images" on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'images' and public.is_admin());
+
 -- ---------- committees ----------
 create table if not exists public.committees (
   slug       text primary key,
