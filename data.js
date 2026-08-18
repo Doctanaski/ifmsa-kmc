@@ -82,6 +82,12 @@
       btn2Href: "mailto:president.kmclc.ifmsapakistan@gmail.com",
       img1: "",
       img2: ""
+    },
+    president: {
+      label: "A message from the President",
+      quote: "Welcome to the KMC council of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.",
+      name: "President — IFMSA KMC Local Council",
+      img: ""
     }
   };
 
@@ -104,7 +110,8 @@
       highlights: DEFAULTS.highlights,
       alumni: DEFAULTS.alumni,
       awards: DEFAULTS.awards,
-      join: DEFAULTS.join
+      join: DEFAULTS.join,
+      president: DEFAULTS.president
     };
   }
 
@@ -172,6 +179,7 @@
       var alumni = merge(DEFAULTS.alumni, settings.alumni);
       var awards = merge(DEFAULTS.awards, settings.awards);
       var join = merge(DEFAULTS.join, settings.join);
+      var president = merge(DEFAULTS.president, settings.president);
 
       return {
         year: site.year || DEFAULTS.site.year,
@@ -188,7 +196,8 @@
         highlights: highlights,
         alumni: alumni,
         awards: awards,
-        join: join
+        join: join,
+        president: president
       };
     });
   }
@@ -311,6 +320,33 @@
       var s = siteData.site;
       setText('site-foot-1', s.footer1);
       setText('site-foot-2', s.footer2);
+    }
+
+    if (siteData.president) {
+      var p = siteData.president;
+      setText('pres-label', p.label);
+      setText('pres-quote', p.quote);
+      setText('pres-name', p.name);
+      var ph = byId('pres-photo');
+      if (ph) {
+        if (p.img) {
+          ph.classList.add('has-image');
+          ph.style.backgroundImage = 'url("' + String(p.img).replace(/"/g, '&quot;') + '")';
+          ph.style.backgroundSize = 'cover';
+          ph.style.backgroundPosition = 'center';
+          var sil = ph.querySelector('.pres-silhouette');
+          var phl = ph.querySelector('.pres-placeholder');
+          if (sil) sil.style.display = 'none';
+          if (phl) phl.style.display = 'none';
+        } else {
+          ph.classList.remove('has-image');
+          ph.style.backgroundImage = '';
+          var sil2 = ph.querySelector('.pres-silhouette');
+          var phl2 = ph.querySelector('.pres-placeholder');
+          if (sil2) sil2.style.display = '';
+          if (phl2) phl2.style.display = '';
+        }
+      }
     }
   };
 })();

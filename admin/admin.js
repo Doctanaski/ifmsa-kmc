@@ -1697,6 +1697,7 @@
     var pane = el('tab-settings');
     var s = state.settings.site || {};
     var h = state.settings.hero || {};
+    var p = state.settings.president || {};
 
     pane.innerHTML =
       '<div class="card settings-section"><h3>Site</h3>' +
@@ -1726,10 +1727,19 @@
           '<label>Stat 3 label<input type="text" id="h-m3l" value="' + esc(h.mini3Label || '') + '" /></label>' +
           '<label>Stat 4 number<input type="text" id="h-m4n" value="' + esc(h.estNum || '') + '" /></label>' +
           '<label>Stat 4 label<input type="text" id="h-m4l" value="' + esc(h.estLabel || '') + '" /></label>' +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>President (homepage)</h3>' +
+        '<div class="form-grid">' +
+          '<label class="full">Portrait — upload or paste a URL (leave empty for the silhouette placeholder)<input type="text" id="p-img" value="' + esc(p.img || '') + '" placeholder="assets/president.jpg" /></label>' +
+          '<label class="full">Label (above the quote)<input type="text" id="p-label" value="' + esc(p.label || '') + '" placeholder="A message from the President" /></label>' +
+          '<label class="full">Message / quote<textarea id="p-quote">' + esc(p.quote || '') + '</textarea></label>' +
+          '<label class="full">Name<input type="text" id="p-name" value="' + esc(p.name || '') + '" placeholder="President — IFMSA KMC Local Council" /></label>' +
           '<div class="form-actions"><button class="btn btn-primary" id="settings-save">Save settings</button></div>' +
         '</div></div>';
 
     attachImageUpload('h-img');
+    attachImageUpload('p-img');
     el('settings-save').addEventListener('click', saveSettings);
   }
 
@@ -1882,6 +1892,15 @@
           mini2Num: val('h-m2n').trim(), mini2Label: val('h-m2l').trim(),
           mini3Num: val('h-m3n').trim(), mini3Label: val('h-m3l').trim(),
           estNum: val('h-m4n').trim(), estLabel: val('h-m4l').trim()
+        }
+      },
+      {
+        key: 'president',
+        value: {
+          img: val('p-img').trim(),
+          label: val('p-label').trim(),
+          quote: val('p-quote').trim(),
+          name: val('p-name').trim()
         }
       }
     ];
