@@ -167,7 +167,19 @@
     });
   };
 
-  /* turn a URL text input into a picker that can also upload from disk */
+  /* ---------- picture framing ----------
+     The framing tool stores a focal point as a #fp=x,y fragment on the
+     image URL (x / y in percent). Renderers turn it into object-position
+     or background-position so the crop matches what was framed here. */
+  var FP_RE = /#fp=([\d.]+),([\d.]+)/;
+  var clampPct = function (n) { return Math.min(100, Math.max(0, n)); };
+  var imgFramePos = function (url) {
+    var m = String(url || '').match(FP_RE);
+    return m ? m[1] + '% ' + m[2] + '%' : '';
+  };
+
+  /* turn a URL text input into a picker that can also upload from disk,
+     with a draggable focal-point control for how the picture is framed */
   var attachImageUpload = function (inputId, opts) {
     opts = opts || {};
     var input = el(inputId);
@@ -185,6 +197,12 @@
     fileBtn.innerHTML = '&#128451; Upload from computer';
     fileBtn.title = 'Upload an image to Supabase storage';
 
+    var frameBtn = document.createElement('button');
+    frameBtn.type = 'button';
+    frameBtn.className = 'btn btn-small';
+    frameBtn.innerHTML = '&#9986; Framing';
+    frameBtn.title = 'Adjust what stays centred when the picture is cropped';
+
     var status = document.createElement('span');
     status.className = 'img-upload-status';
 
@@ -193,28 +211,120 @@
     fileInput.accept = 'image/*';
     fileInput.hidden = true;
 
+    var framePanel = document.createElement('div');
+    framePanel.className = 'img-frame-panel';
+    framePanel.hidden = true;
+    framePanel.innerHTML =
+      '<div class="img-frame-hint">Drag on the picture to pick the focal point &mdash; what stays in view when it is cropped.</div>' +
+      '<div class="img-frame-stage"><img alt="" draggable="false" /><span class="img-frame-dot"></span></div>' +
+      '<div class="img-frame-actions">' +
+        '<button type="button" class="btn btn-small img-frame-reset">Reset to centre</button>' +
+        '<span class="img-frame-val"></span>' +
+      '</div>';
+
     holder.appendChild(preview);
     holder.appendChild(fileBtn);
+    holder.appendChild(frameBtn);
     holder.appendChild(fileInput);
     holder.appendChild(status);
+    holder.appendChild(framePanel);
 
     /* put the widget right after the field, inside the same label */
     var parent = input.parentNode;
     parent.appendChild(holder);
 
+    var stage = framePanel.querySelector('.img-frame-stage');
+    var stageImg = stage.querySelector('img');
+    var dot = framePanel.querySelector('.img-frame-dot');
+    var valLabel = framePanel.querySelector('.img-frame-val');
+
+    var frame = null;   /* {x, y} percentages, null = centred (default) */
+
+    var syncFrameUi = function () {
+      var f = frame || { x: 50, y: 50 };
+      dot.style.left = f.x + '%';
+      dot.style.top = f.y + '%';
+      stageImg.style.objectPosition = f.x + '% ' + f.y + '%';
+      valLabel.textContent = frame
+        ? 'Focal point ' + Math.round(f.x) + '% \u00b7 ' + Math.round(f.y) + '%'
+        : 'Centred (default)';
+    };
+
+    var readValue = function () {
+      var m = (input.value || '').match(FP_RE);
+      frame = m ? { x: clampPct(parseFloat(m[1])), y: clampPct(parseFloat(m[2])) } : null;
+    };
+
+    var writeValue = function () {
+      var base = (input.value || '').replace(/#fp=[\d.,]+/, '').trim();
+      input.value = base + (frame ? '#fp=' + frame.x + ',' + frame.y : '');
+      fireInput(input);
+    };
+
     var renderPreview = function () {
       var v = (input.value || '').trim();
+      readValue();
       if (v) {
-        preview.innerHTML = '<img src="' + esc(v) + '" alt="" />';
+        var pos = imgFramePos(v);
+        preview.innerHTML = '<img src="' + esc(v) + '" alt=""' + (pos ? ' style="object-position:' + pos + '"' : '') + ' />';
         preview.classList.add('has-img');
+        stageImg.src = v;
+        frameBtn.disabled = false;
       } else {
         preview.innerHTML = '';
         preview.classList.remove('has-img');
+        stageImg.removeAttribute('src');
+        frameBtn.disabled = true;
+        framePanel.hidden = true;
       }
+      syncFrameUi();
     };
     renderPreview();
     input.addEventListener('input', renderPreview);
     input.addEventListener('change', renderPreview);
+
+    /* --- framing: drag on the stage to set the focal point --- */
+    var setFromEvent = function (e) {
+      var r = stage.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      frame = {
+        x: Math.round(clampPct(((e.clientX - r.left) / r.width) * 100) * 10) / 10,
+        y: Math.round(clampPct(((e.clientY - r.top) / r.height) * 100) * 10) / 10
+      };
+      syncFrameUi();
+    };
+
+    var dragging = false;
+    stage.addEventListener('pointerdown', function (e) {
+      if (!stageImg.src) return;
+      dragging = true;
+      try { stage.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+      setFromEvent(e);
+      e.preventDefault();
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (dragging) setFromEvent(e);
+    });
+    var endDrag = function (e) {
+      if (!dragging) return;
+      dragging = false;
+      try {
+        if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+      } catch (err) { /* noop */ }
+      writeValue();
+    };
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+
+    frameBtn.addEventListener('click', function () {
+      framePanel.hidden = !framePanel.hidden;
+    });
+
+    framePanel.querySelector('.img-frame-reset').addEventListener('click', function () {
+      frame = null;
+      syncFrameUi();
+      writeValue();
+    });
 
     fileBtn.addEventListener('click', function () { fileInput.click(); });
     fileInput.addEventListener('change', function () {
@@ -531,8 +641,9 @@
     var name = val('x-name');
     var role = val('x-role');
     var quote = val('x-quote');
+    var pos = imgFramePos(p);
     var photo = p
-      ? '<div class="ex-pv-photo"><img src="' + esc(p) + '" alt="Portrait of ' + esc(name) + '" loading="lazy" decoding="async" /></div>'
+      ? '<div class="ex-pv-photo"><img src="' + esc(p) + '" alt="Portrait of ' + esc(name) + '"' + (pos ? ' style="object-position:' + pos + '"' : '') + ' loading="lazy" decoding="async" /></div>'
       : '<div class="ex-pv-photo ex-pv-photo--avatar"><span class="ex-pv-avatar">' + esc(exInitials(name)) + '</span></div>';
 
     /* use the actual saved object's values so the table-side preview stays correct */
@@ -580,13 +691,15 @@
 
   function alMedia(a, size) {
     var cls = size === 'feat' ? 'al-pv-avatar al-pv-avatar--feat' : 'al-pv-avatar';
+    var pos = imgFramePos(a.photo);
     return a.photo
-      ? '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '" loading="lazy" decoding="async" />'
+      ? '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '"' + (pos ? ' style="object-position:' + pos + '"' : '') + ' loading="lazy" decoding="async" />'
       : '<div class="' + cls + '"><span>' + esc(alInitials(a.name)) + '</span></div>';
   }
 
   function alCard(a) {
     var t = alTrack(a.track);
+    var hasStory = splitBlocks(a.story).paras.length > 0;
     return (
       '<article class="al-pv-card" style="--al-pv-accent:' + t.color + '">' +
         '<div class="al-pv-media">' + alMedia(a) +
@@ -603,7 +716,7 @@
           (a.quote ? '<p class="al-pv-quote">' + esc(a.quote) + '</p>' : '') +
           '<div class="al-pv-foot">' +
             (a.committees ? '<span class="al-pv-com">' + esc(a.committees) + '</span>' : '') +
-            '<span class="al-pv-open">Read story &#8594;</span>' +
+            (hasStory ? '<span class="al-pv-open">Read story &#8594;</span>' : '') +
           '</div>' +
         '</div>' +
       '</article>'
@@ -612,6 +725,7 @@
 
   function alFeatured(a) {
     var t = alTrack(a.track);
+    var hasStory = splitBlocks(a.story).paras.length > 0;
     return (
       '<article class="al-pv-feat" style="--al-pv-accent:' + t.color + '">' +
         '<div class="al-pv-feat-media">' + alMedia(a, 'feat') + '</div>' +
@@ -620,7 +734,7 @@
           '<h4 class="al-pv-feat-name">' + (a.name ? esc(a.name) : '<em>Untitled alumnus</em>') + '</h4>' +
           '<p class="al-pv-feat-role">' + esc(a.role_now) + '</p>' +
           '<p class="al-pv-feat-quote">' + esc(a.quote) + '</p>' +
-          '<span class="al-pv-open">Read their story &#8594;</span>' +
+          (hasStory ? '<span class="al-pv-open">Read their story &#8594;</span>' : '') +
         '</div>' +
       '</article>'
     );
@@ -628,11 +742,9 @@
 
   function alStory(a) {
     var blocks = splitBlocks(a.story);
-    var hero = blocks.images[0] || {};
     var t = alTrack(a.track);
     return (
       '<div class="al-pv-story">' +
-        '<div class="al-pv-story-hero">' + (hero.src ? '<img src="' + esc(hero.src) + '" alt="' + esc(hero.alt) + '" loading="lazy" decoding="async" />' : '<div class="al-pv-avatar al-pv-avatar--story"><span>' + esc(alInitials(a.name)) + '</span></div>') + '</div>' +
         '<div class="al-pv-story-body">' +
           '<h4 class="al-pv-story-name">' + (a.name ? esc(a.name) : '<em>Untitled alumnus</em>') + '</h4>' +
           '<p class="al-pv-story-role">' + esc(a.role_now) + '</p>' +
@@ -1475,7 +1587,7 @@
             '<label class="full">Committees<input type="text" id="a-committees" value="' + esc(a.committees) + '" placeholder="SCOPE, SCORE" /></label>' +
             '<label class="full">Photo — upload or paste a URL<input type="text" id="a-photo" value="' + esc(a.photo) + '" placeholder="Leave blank to show initials" /></label>' +
             '<label class="full">Quote (card)<textarea id="a-quote">' + esc(a.quote) + '</textarea></label>' +
-            '<label class="full">Story — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="a-story">' + esc((a.story || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">Story (optional) — one paragraph per line<textarea id="a-story">' + esc((a.story || []).join('\n')) + '</textarea></label>' +
             '<label>LinkedIn URL<input type="text" id="a-linkedin" value="' + esc((a.links && a.links.linkedin) || '') + '" /></label>' +
             '<label>Twitter URL<input type="text" id="a-twitter" value="' + esc((a.links && a.links.twitter) || '') + '" /></label>' +
             '<label class="full">Email<input type="text" id="a-email" value="' + esc((a.links && a.links.email) || '') + '" /></label>' +
@@ -1502,7 +1614,6 @@
       input.addEventListener('change', renderAlumniPreview);
     });
     attachImageUpload('a-photo');
-    attachMarkdownUpload('a-story');
     renderAlumniPreview();
 
     el('m-save').addEventListener('click', function () {

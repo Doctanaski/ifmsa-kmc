@@ -56,10 +56,15 @@
     return { paras: paras.join(''), images: images };
   };
 
-  var coverHtml = function (src, alt) {
-    return src
-      ? '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" />'
-      : '';
+  /* a story counts only when it has at least one text paragraph */
+  var hasStory = function (a) {
+    return splitBlocks(a.story).paras.length > 0;
+  };
+
+  /* focal point stored by the admin framing tool as #fp=x,y on the URL */
+  var posAttr = function (url) {
+    var m = String(url || '').match(/#fp=([\d.]+),([\d.]+)/);
+    return m ? ' style="object-position:' + m[1] + '% ' + m[2] + '%"' : '';
   };
 
   var pinIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>';
@@ -96,7 +101,7 @@
   };
 
   var mediaHtml = function (a) {
-    if (a.photo) return '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '" loading="lazy" decoding="async" />';
+    if (a.photo) return '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '"' + posAttr(a.photo) + ' loading="lazy" decoding="async" />';
     return '<div class="al-card-avatar"><span>' + esc(initials(a.name)) + '</span></div>';
   };
 
@@ -112,7 +117,9 @@
     return (
       '<article class="al-feat-card" data-name="' + esc(a.name) + '" style="--al-accent:' + esc(t.color) + '">' +
         '<div class="al-feat-media">' +
-          (a.photo ? coverHtml(a.photo, 'Portrait of ' + a.name) : '<div class="al-feat-avatar"><span>' + esc(initials(a.name)) + '</span></div>') +
+          (a.photo
+            ? '<img src="' + esc(a.photo) + '" alt="Portrait of ' + esc(a.name) + '"' + posAttr(a.photo) + ' loading="lazy" decoding="async" />'
+            : '<div class="al-feat-avatar"><span>' + esc(initials(a.name)) + '</span></div>') +
         '</div>' +
         '<div class="al-feat-body">' +
           '<div class="al-feat-kicker">' + trackPill(a) + (a.cohort ? '<span class="al-track-pill">' + esc(a.cohort) + '</span>' : '') + '</div>' +
@@ -120,7 +127,7 @@
           '<p class="al-feat-role">' + esc(a.role_now) + '</p>' +
           locHtml(a) +
           (a.quote ? '<p class="al-feat-quote">' + esc(a.quote) + '</p>' : '') +
-          '<span class="al-feat-more">Read their story &#8594;</span>' +
+          (hasStory(a) ? '<span class="al-feat-more">Read their story &#8594;</span>' : '') +
         '</div>' +
       '</article>'
     );
@@ -146,7 +153,7 @@
           (a.quote ? '<p class="al-card-quote">' + esc(a.quote) + '</p>' : '') +
           '<div class="al-card-footer">' +
             (a.committees ? '<span class="al-card-committees">' + esc(a.committees) + '</span>' : '') +
-            '<span class="al-card-open">Read story &#8594;</span>' +
+            (hasStory(a) ? '<span class="al-card-open">Read story &#8594;</span>' : '') +
           '</div>' +
         '</div>' +
       '</article>'
@@ -157,8 +164,6 @@
   function openModal(a) {
     var t = trackOf(a);
     var blocks = splitBlocks(a.story);
-    var hero = blocks.images[0] || {};
-    var gallery = blocks.images.slice(1);
 
     var pills = [];
     pills.push('<span class="al-meta-pill al-meta-pill--track"><i></i>' + esc(t.label) + '</span>');
@@ -173,32 +178,16 @@
     if (links.twitter) linkBtns.push(linkHtml('Twitter', 'https://twitter.com/', links.twitter));
     if (links.email) linkBtns.push(linkHtml('Email', 'mailto:', links.email));
 
-    var galleryHtml = gallery.length
-      ? '<div class="al-modal-gallery" aria-label="Image gallery">' +
-          gallery.map(function (g) {
-            return '<figure class="al-modal-g-img">' +
-              '<img src="' + esc(g.src) + '" alt="' + esc(g.alt) + '" loading="lazy" decoding="async" />' +
-              (g.alt ? '<figcaption>' + esc(g.alt) + '</figcaption>' : '') +
-            '</figure>';
-          }).join('') +
-        '</div>'
-      : '';
-
     els.modalRoot.innerHTML =
       '<div class="al-modal-back">' +
         '<div class="al-modal" style="--al-accent:' + esc(t.color) + '" role="dialog" aria-modal="true" aria-labelledby="al-modal-name">' +
           '<button class="al-modal-close" id="al-modal-close" type="button" aria-label="Close">&#215;</button>' +
-          '<div class="al-modal-hero">' +
-            (hero.src ? coverHtml(hero.src, hero.alt)
-                      : '<div class="al-modal-avatar"><span>' + esc(initials(a.name)) + '</span></div>') +
-          '</div>' +
           '<div class="al-modal-body">' +
             '<div class="al-modal-kicker">' + trackPill(a) + '</div>' +
             '<h2 class="al-modal-name" id="al-modal-name">' + esc(a.name) + '</h2>' +
             '<p class="al-modal-role">' + esc(a.role_now) + '</p>' +
             '<div class="al-modal-meta">' + pills.join('') + '</div>' +
             '<div class="al-modal-prose">' + blocks.paras + '</div>' +
-            galleryHtml +
             (linkBtns.length ? '<div class="al-modal-links">' + linkBtns.join('') + '</div>' : '') +
           '</div>' +
         '</div>' +
@@ -243,7 +232,7 @@
     els.featured.querySelectorAll('.al-feat-card').forEach(function (card) {
       card.addEventListener('click', function () {
         var a = findByName(card.getAttribute('data-name'));
-        if (a) openModal(a);
+        if (a && hasStory(a)) openModal(a);
       });
     });
   }
@@ -268,7 +257,7 @@
       card.style.animationDelay = Math.min(i * 0.06, 0.4) + 's';
       card.addEventListener('click', function () {
         var a = findByName(card.getAttribute('data-name'));
-        if (a) openModal(a);
+        if (a && hasStory(a)) openModal(a);
       });
     });
   }

@@ -220,6 +220,13 @@
     });
   };
 
+  /* focal point stored by the admin framing tool as #fp=x,y on the URL */
+  var imgFramePos = function (url) {
+    var m = String(url || '').match(/#fp=([\d.]+),([\d.]+)/);
+    return m ? m[1] + '% ' + m[2] + '%' : '';
+  };
+  window.imgFramePos = imgFramePos;
+
   /* ---------- overwrite hero / join / footer text ---------- */
   window.applySiteSettings = function (siteData) {
     if (!siteData) return;
@@ -233,6 +240,7 @@
       var els = document.querySelectorAll('.' + cls);
       for (var i = 0; i < els.length; i++) {
         els[i].style.backgroundImage = 'url("' + String(url).replace(/"/g, '&quot;') + '")';
+        els[i].style.backgroundPosition = imgFramePos(url);
       }
     };
 
@@ -251,6 +259,7 @@
       var hbg = byId('hero-banner-media');
       if (hbg && h.img) {
         hbg.style.backgroundImage = 'url("' + String(h.img).replace(/"/g, '&quot;') + '")';
+        hbg.style.backgroundPosition = imgFramePos(h.img);
       }
       var mini = byId('hero-mini');
       if (mini && h.mini1Num != null) {
@@ -333,7 +342,7 @@
           ph.classList.add('has-image');
           ph.style.backgroundImage = 'url("' + String(p.img).replace(/"/g, '&quot;') + '")';
           ph.style.backgroundSize = 'cover';
-          ph.style.backgroundPosition = 'center';
+          ph.style.backgroundPosition = imgFramePos(p.img) || 'center';
           var sil = ph.querySelector('.pres-silhouette');
           var phl = ph.querySelector('.pres-placeholder');
           if (sil) sil.style.display = 'none';

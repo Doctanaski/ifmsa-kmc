@@ -97,9 +97,15 @@
       .slice(0, 2).join('');
   };
 
+  /* focal point stored by the admin framing tool as #fp=x,y on the URL */
+  var posAttr = function (url) {
+    var m = String(url || '').match(/#fp=([\d.]+),([\d.]+)/);
+    return m ? ' style="object-position:' + m[1] + '% ' + m[2] + '%"' : '';
+  };
+
   function slideHtml(m, i) {
     var photo = m.photo
-      ? '<div class="ex-photo"><img src="' + esc(m.photo) + '" alt="Portrait of ' + esc(m.name) + '" loading="lazy" decoding="async" /></div>'
+      ? '<div class="ex-photo"><img src="' + esc(m.photo) + '" alt="Portrait of ' + esc(m.name) + '"' + posAttr(m.photo) + ' loading="lazy" decoding="async" /></div>'
       : '<div class="ex-photo ex-photo--avatar"><span class="ex-avatar">' + esc(initials(m.name)) + '</span></div>';
 
     return (

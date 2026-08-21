@@ -247,6 +247,63 @@ input:focus, select:focus, textarea:focus {
 .img-upload-status.ok { color: var(--green); }
 .img-upload-status.err { color: var(--red); }
 
+/* ---------- picture framing (focal point picker) ---------- */
+.img-frame-panel {
+  flex-basis: 100%;
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.15rem;
+  padding: 0.6rem;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+}
+.img-frame-panel[hidden] { display: none; }
+.img-frame-hint {
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+}
+.img-frame-stage {
+  position: relative;
+  height: 180px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: crosshair;
+  touch-action: none;
+}
+.img-frame-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.img-frame-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+.img-frame-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.img-frame-val {
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+  font-family: var(--mono);
+}
+
 /* ---------- project live preview (mirrors projects.css) ---------- */
 .proj-preview {
   --proj-bg: var(--bg);
