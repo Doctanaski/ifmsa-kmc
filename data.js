@@ -19,7 +19,9 @@
       eyebrowPill: "IFMSA Pakistan",
       eyebrowRest: "Local Council 2026",
       title1: "IFMSA",
+      title1Color: "",
       title2: "KMC",
+      title2Color: "",
       sub: "Six standing committees, one student body — moving medicine forward.",
       img: "",
       btn1Text: "Explore committees ↓",
@@ -249,7 +251,9 @@
       setText('hero-eyebrow', (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : ''));
       var ht = byId('hero-title');
       if (ht && h.title1 != null && h.title2 != null) {
-        ht.innerHTML = '<span>' + h.title1 + '</span> <span class="hero-title-accent">' + h.title2 + '</span>';
+        var t1Style = h.title1Color ? 'color:' + h.title1Color + ';' : '';
+        var t2Style = h.title2Color ? 'color:' + h.title2Color + ';-webkit-text-stroke:0 transparent;' : '';
+        ht.innerHTML = '<span style="' + t1Style + '">' + h.title1 + '</span> <span class="hero-title-accent" style="' + t2Style + '">' + h.title2 + '</span>';
       }
       setText('hero-sub', h.sub);
       setText('hero-btn1', h.btn1Text);

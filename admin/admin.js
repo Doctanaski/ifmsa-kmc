@@ -1824,8 +1824,18 @@
           '<label>Eyebrow pill<input type="text" id="h-pill" value="' + esc(h.eyebrowPill || '') + '" /></label>' +
           '<label>Eyebrow rest<input type="text" id="h-rest" value="' + esc(h.eyebrowRest || '') + '" /></label>' +
           '<label>Title line 1<input type="text" id="h-t1" value="' + esc(h.title1 || '') + '" /></label>' +
+          '<label>Title line 1 colour<input type="color" id="h-t1c" value="' + esc(h.title1Color || '#ffffff') + '" /></label>' +
           '<label>Title line 2<input type="text" id="h-t2" value="' + esc(h.title2 || '') + '" /></label>' +
+          '<label>Title line 2 colour<input type="color" id="h-t2c" value="' + esc(h.title2Color || '#4ade80') + '" /></label>' +
           '<label class="full">Sub text<textarea id="h-sub">' + esc(h.sub || '') + '</textarea></label>' +
+          '<div class="full hero-preview" id="hero-preview" style="background:#1a1a2e;border-radius:12px;padding:2rem 1.5rem;text-align:center;margin-top:.5rem;">' +
+            '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' + esc((h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : '')) + '</div>' +
+            '<div style="font-family:Bebas Neue,Arial Narrow,Arial,sans-serif;font-size:3.2rem;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+              '<span style="color:' + esc(h.title1Color || '#ffffff') + ';">' + esc(h.title1 || 'IFMSA') + '</span> ' +
+              '<span style="color:' + esc(h.title2Color || '#4ade80') + ';">' + esc(h.title2 || 'KMC') + '</span>' +
+            '</div>' +
+            '<div style="font-family:Cormorant Garamond,Georgia,serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.92);margin-top:.5rem;">' + esc(h.sub || '') + '</div>' +
+          '</div>' +
           '<label>Button 1 text<input type="text" id="h-btn1t" value="' + esc(h.btn1Text || '') + '" /></label>' +
           '<label>Button 1 href<input type="text" id="h-btn1h" value="' + esc(h.btn1Href || '') + '" /></label>' +
           '<label>Button 2 text<input type="text" id="h-btn2t" value="' + esc(h.btn2Text || '') + '" /></label>' +
@@ -1852,6 +1862,34 @@
     attachImageUpload('h-img');
     attachImageUpload('p-img');
     el('settings-save').addEventListener('click', saveSettings);
+
+    var previewIds = ['h-pill', 'h-rest', 'h-t1', 'h-t1c', 'h-t2', 'h-t2c', 'h-sub'];
+    var updatePreview = function () {
+      var pill = val('h-pill');
+      var rest = val('h-rest');
+      var t1 = val('h-t1') || 'IFMSA';
+      var t1c = val('h-t1c') || '#ffffff';
+      var t2 = val('h-t2') || 'KMC';
+      var t2c = val('h-t2c') || '#4ade80';
+      var sub = val('h-sub');
+      var pv = el('hero-preview');
+      if (!pv) return;
+      pv.innerHTML =
+        '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' +
+          esc(pill) + (rest ? ' · ' + esc(rest) : '') +
+        '</div>' +
+        '<div style="font-family:Bebas Neue,Arial Narrow,Arial,sans-serif;font-size:3.2rem;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+          '<span style="color:' + esc(t1c) + ';">' + esc(t1) + '</span> ' +
+          '<span style="color:' + esc(t2c) + ';">' + esc(t2) + '</span>' +
+        '</div>' +
+        '<div style="font-family:Cormorant Garamond,Georgia,serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.92);margin-top:.5rem;">' +
+          esc(sub) +
+        '</div>';
+    };
+    previewIds.forEach(function (id) {
+      var node = el(id);
+      if (node) node.addEventListener('input', updatePreview);
+    });
   }
 
   /* ============ feature cards (About / Join / Exec / Highlights / Alumni / Awards) ============ */
@@ -1995,7 +2033,8 @@
         value: {
           img: val('h-img').trim(),
           eyebrowPill: val('h-pill').trim(), eyebrowRest: val('h-rest').trim(),
-          title1: val('h-t1').trim(), title2: val('h-t2').trim(),
+          title1: val('h-t1').trim(), title1Color: val('h-t1c').trim(),
+          title2: val('h-t2').trim(), title2Color: val('h-t2c').trim(),
           sub: val('h-sub').trim(),
           btn1Text: val('h-btn1t').trim(), btn1Href: val('h-btn1h').trim(),
           btn2Text: val('h-btn2t').trim(), btn2Href: val('h-btn2h').trim(),
