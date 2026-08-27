@@ -360,9 +360,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(130% 90% at 50% 42%, rgba(14, 12, 46, 0.28) 0%, rgba(14, 12, 46, 0.55) 72%),
-    linear-gradient(180deg, rgba(10, 8, 32, 0.35) 0%, rgba(10, 8, 32, 0.55) 100%);
 }
 
 /* the headline sits on a frosted pane — the image blurs behind the text */
