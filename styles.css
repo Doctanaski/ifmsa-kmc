@@ -128,6 +128,28 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   box-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
 }
 
+.sc-about-btn {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.45rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--sc-col, var(--accent));
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.sc-about-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
 .lead { color: var(--fg-muted); font-size: clamp(1rem, 1.5vw, 1.2rem); }
 
 /* committee group-picture placeholder */
