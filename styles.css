@@ -419,8 +419,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .hero-title-accent {
-  color: var(--pak-green-soft);
-  -webkit-text-stroke: 1px rgba(15, 156, 21, 0.55);
 }
 
 .hero-sub {
