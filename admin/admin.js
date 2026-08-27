@@ -1830,7 +1830,8 @@
           '<label class="full">Sub text<textarea id="h-sub">' + esc(h.sub || '') + '</textarea></label>' +
           '<div class="full hero-preview" id="hero-preview" style="background:#1a1a2e;border-radius:12px;padding:2rem 1.5rem;text-align:center;margin-top:.5rem;">' +
             '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' + esc((h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : '')) + '</div>' +
-            '<div style="font-family:Bebas Neue,Arial Narrow,Arial,sans-serif;font-size:3.2rem;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+            '<div style="display:inline-block;position:relative;font-family:Montserrat,Arial Narrow,Arial,sans-serif;font-size:3.2rem;font-weight:800;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+              '<span style="position:absolute;inset:-.15em -.4em;border-radius:8px;background:rgba(13,17,23,.45);backdrop-filter:blur(8px) saturate(120%);z-index:-1;"></span>' +
               '<span style="color:' + esc(h.title1Color || '#ffffff') + ';">' + esc(h.title1 || 'IFMSA') + '</span> ' +
               '<span style="color:' + esc(h.title2Color || '#4ade80') + ';">' + esc(h.title2 || 'KMC') + '</span>' +
             '</div>' +
@@ -1878,7 +1879,8 @@
         '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' +
           esc(pill) + (rest ? ' · ' + esc(rest) : '') +
         '</div>' +
-        '<div style="font-family:Bebas Neue,Arial Narrow,Arial,sans-serif;font-size:3.2rem;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+        '<div style="display:inline-block;position:relative;font-family:Montserrat,Arial Narrow,Arial,sans-serif;font-size:3.2rem;font-weight:800;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
+          '<span style="position:absolute;inset:-.15em -.4em;border-radius:8px;background:rgba(13,17,23,.45);backdrop-filter:blur(8px) saturate(120%);z-index:-1;"></span>' +
           '<span style="color:' + esc(t1c) + ';">' + esc(t1) + '</span> ' +
           '<span style="color:' + esc(t2c) + ';">' + esc(t2) + '</span>' +
         '</div>' +
