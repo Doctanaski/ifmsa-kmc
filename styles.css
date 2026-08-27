@@ -345,6 +345,11 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   box-shadow: 0 24px 64px -18px rgba(20, 16, 60, 0.4), 0 0 0 1px rgba(30, 27, 82, 0.08);
 }
 
+.hero-banner.is-pending .hero-banner-copy,
+.hero-banner.is-pending .hero-banner-media {
+  visibility: hidden;
+}
+
 .hero-banner-media {
   position: absolute;
   inset: 0;

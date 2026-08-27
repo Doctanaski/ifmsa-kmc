@@ -391,6 +391,7 @@ const activate = (i) => {
   /* ---------- load live data (falls back to IFMSA_DATA) ---------- */
   window.loadSiteData().then((siteData) => {
     window.applySiteSettings(siteData);
+    document.getElementById('hero-banner').classList.remove('is-pending');
     buildCarousels(siteData);
     measurePanelTops();
     animateStats();
