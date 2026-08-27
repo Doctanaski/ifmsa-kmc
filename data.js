@@ -19,9 +19,7 @@
       eyebrowPill: "IFMSA Pakistan",
       eyebrowRest: "Local Council 2026",
       title1: "IFMSA",
-      title1Color: "",
       title2: "KMC",
-      title2Color: "",
       sub: "Six standing committees, one student body — moving medicine forward.",
       img: "",
       btn1Text: "Explore committees ↓",
@@ -229,6 +227,17 @@
   };
   window.imgFramePos = imgFramePos;
 
+  /* parse {color}word{/} and {#hex}word{/} inline colour tags */
+  var parseColorTags = function (text) {
+    return String(text || '')
+      .replace(/\{(#?[a-zA-Z0-9(),. %]+)\}([\s\S]*?)\{\//g, function (_, colour, inner) {
+        var c = colour.trim();
+        if (!c) return inner;
+        return '<span style="color:' + c.replace(/"/g, '') + ';">' + inner + '</span>';
+      });
+  };
+  window.parseColorTags = parseColorTags;
+
   /* ---------- overwrite hero / join / footer text ---------- */
   window.applySiteSettings = function (siteData) {
     if (!siteData) return;
@@ -251,9 +260,7 @@
       setText('hero-eyebrow', (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : ''));
       var ht = byId('hero-title');
       if (ht && h.title1 != null && h.title2 != null) {
-        var t1Style = h.title1Color ? 'color:' + h.title1Color + ';' : '';
-        var t2Style = h.title2Color ? 'color:' + h.title2Color + ';-webkit-text-stroke:0 transparent;' : '';
-        ht.innerHTML = '<span style="' + t1Style + '">' + h.title1 + '</span> <span class="hero-title-accent" style="' + t2Style + '">' + h.title2 + '</span>';
+        ht.innerHTML = '<span>' + parseColorTags(h.title1) + '</span> <span class="hero-title-accent">' + parseColorTags(h.title2) + '</span>';
       }
       setText('hero-sub', h.sub);
       setText('hero-btn1', h.btn1Text);
