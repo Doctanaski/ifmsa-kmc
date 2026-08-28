@@ -129,25 +129,37 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .sc-about-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   margin-top: 0.6rem;
-  padding: 0.45rem 1.1rem;
+  padding: 0.55rem 1.3rem;
   font-family: var(--mono);
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #fff;
   background: var(--sc-col, var(--accent));
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.sc-about-btn::after {
+  content: "\2192";
+  font-size: 1em;
+  transition: transform 0.2s;
 }
 .sc-about-btn:hover {
-  opacity: 0.85;
-  transform: translateY(-1px);
+  background: var(--sc-col, var(--accent));
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+.sc-about-btn:hover::after {
+  transform: translateX(3px);
 }
 
 .lead { color: var(--fg-muted); font-size: clamp(1rem, 1.5vw, 1.2rem); }
