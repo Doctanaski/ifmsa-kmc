@@ -32,7 +32,7 @@
   --scora-col:   #B2222A;   /* SCORA  — red        */
   --scoph-col:   #F47D3C;   /* SCOPH  — orange     */
   --scorp-col:   #5F913F;   /* SCORP  — green      */
-  --scom-col:    #0969da;   /* SCOME  — blue       */
+  --scom-col:    #e6edf3;   /* SCOME  — white      */
   --mono:  "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
   --sans:  "Montserrat", "Helvetica Neue", Helvetica, Arial, -apple-system, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -147,6 +147,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.panel[data-slide="scom"] .sc-about-btn {
+  color: #0d1117;
+  border-color: rgba(13, 17, 23, 0.3);
 }
 .sc-about-btn::after {
   content: "\2192";
@@ -282,8 +286,11 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   --panel-card-border: rgba(255, 255, 255, 0.28);
 }
 .panel[data-slide="scom"] {
-  --panel-card-bg: rgba(13, 17, 23, 0.72);
-  --panel-card-border: rgba(255, 255, 255, 0.28);
+  --panel-fg: #0d1117;
+  --panel-fg-muted: rgba(13, 17, 23, 0.78);
+  --panel-fg-faint: rgba(13, 17, 23, 0.6);
+  --panel-card-bg: rgba(255, 255, 255, 0.6);
+  --panel-card-border: rgba(13, 17, 23, 0.35);
 }
 
 /* wire the slide foreground into the tokens used below */
