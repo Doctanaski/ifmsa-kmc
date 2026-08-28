@@ -388,7 +388,7 @@ const activate = (i) => {
 
 
 
-  /* ---------- load live data (falls back to IFMSA_DATA) ---------- */
+  /* ---------- load live data from Supabase ---------- */
   window.loadSiteData().then((siteData) => {
     window.applySiteSettings(siteData);
     document.getElementById('hero-banner').classList.remove('is-pending');

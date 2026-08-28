@@ -13,75 +13,12 @@
 (function () {
   'use strict';
 
-  var FALLBACK_EXEC = [
-    {
-      name: "Ahmad Raza",
-      role: "President",
-      photo: "",
-      quote: "A local council works when every member feels they built it. My job is to make sure no one here is just watching."
-    },
-    {
-      name: "Fatima Noor",
-      role: "Vice-President",
-      photo: "",
-      quote: "I joined IFMSA for one project and stayed for the people. Everything on this board starts with saying yes to a student somewhere."
-    },
-    {
-      name: "Hamza Malik",
-      role: "Secretary General",
-      photo: "",
-      quote: "Behind every great event is paperwork no one sees. I keep the council honest, organised, and always one step ahead."
-    },
-    {
-      name: "Zainab Akhtar",
-      role: "Treasurer & Finance Officer",
-      photo: "",
-      quote: "Good ideas deserve good budgets. I make sure every rupee we raise goes back into projects our members actually feel."
-    },
-    {
-      name: "Bilal Shah",
-      role: "Local Officer — SCOPE",
-      photo: "",
-      quote: "Exchanges taught me that medicine is a conversation, not a classroom. I want every KMC student to have a seat in it."
-    },
-    {
-      name: "Ayesha Kanwal",
-      role: "Local Officer — SCOME",
-      photo: "",
-      quote: "We learn medicine best when we teach each other. SCOME is where the lecture hall becomes the classroom."
-    },
-    {
-      name: "Usman Tariq",
-      role: "Local Officer — SCORA",
-      photo: "",
-      quote: "Health is a right, including sexual and reproductive health. Advocacy here starts with honest conversations on campus."
-    },
-    {
-      name: "Mahnoor Khan",
-      role: "Local Officer — SCOPH",
-      photo: "",
-      quote: "Public health is the silent backbone of good medicine. Our campaigns turn knowledge into care for the people around us."
-    },
-    {
-      name: "Hassan Qureshi",
-      role: "Local Officer — SCORP",
-      photo: "",
-      quote: "Human rights and peace are not sidelines in health — they are its foundation. We stand where patients cannot."
-    },
-    {
-      name: "Iqra Yousaf",
-      role: "Local Officer — SCORE",
-      photo: "",
-      quote: "Research is how medicine grows. SCORE is how students get their first taste of asking a question worth answering."
-    }
-  ];
-
   var stage = document.getElementById('ex-stage');
   var track = document.getElementById('ex-track');
   var rail = document.getElementById('ex-rail');
   var countEl = document.getElementById('ex-count');
 
-  var EXEC = FALLBACK_EXEC;
+  var EXEC = [];
 
   var pad = function (n) { return n < 10 ? '0' + n : String(n); };
 
@@ -190,11 +127,11 @@
 
   if (window.loadSiteData) {
     window.loadSiteData().then(function (data) {
-      var list = (data.execBoard && data.execBoard.length) ? data.execBoard : FALLBACK_EXEC;
+      var list = (data.execBoard && data.execBoard.length) ? data.execBoard : [];
       EXEC = list.slice();
       start();
     }).catch(function () {
-      EXEC = FALLBACK_EXEC.slice();
+      EXEC = [];
       start();
     });
   } else {

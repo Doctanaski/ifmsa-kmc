@@ -1,8 +1,7 @@
 /* ============================================================
    IFMSA · Khyber Medical College
    Project detail page. Reads ?id= from the URL, looks it up in
-   the loaded site data (Supabase, falling back to IFMSA_DATA)
-   and renders the full project page.
+   the loaded site data (Supabase) and renders the full project page.
    ============================================================ */
 
 (function () {

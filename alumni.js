@@ -327,7 +327,7 @@
     window.applySiteSettings(data);
     var list = (data.alumniList && data.alumniList.length)
       ? data.alumniList
-      : ((window.IFMSA_DATA && window.IFMSA_DATA.alumni) || []);
+      : [];
     state.list = list.slice();
 
     renderStats();

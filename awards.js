@@ -432,7 +432,7 @@
     window.applySiteSettings(data);
     var list = (data.awardsList && data.awardsList.length)
       ? data.awardsList
-      : ((window.IFMSA_DATA && window.IFMSA_DATA.awards) || []);
+      : [];
     state.list = list.slice();
 
     /* keep featured entries at the top of the Hall of Fame, in order */

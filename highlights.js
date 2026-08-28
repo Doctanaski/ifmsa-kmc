@@ -287,7 +287,7 @@
     state.committees = data.committees || {};
     var list = (data.highlightsList && data.highlightsList.length)
       ? data.highlightsList
-      : ((window.IFMSA_DATA && window.IFMSA_DATA.highlights) || []);
+      : [];
     state.list = list.slice();
 
     /* prefer a featured moment in the spotlight, otherwise the newest of each */
