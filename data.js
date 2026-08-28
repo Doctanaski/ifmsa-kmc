@@ -1,7 +1,6 @@
 /* ============================================================
    IFMSA KMC — central data loader.
-   Tries Supabase first; if it is not configured or the fetch
-   fails, falls back to the bundled projects-data.js.
+   Loads all data from Supabase. No hardcoded fallbacks.
    Also exposes applySiteSettings() to overwrite the hero / join
    / footer text on the static pages.
    ============================================================ */
@@ -9,111 +8,7 @@
 (function () {
   'use strict';
 
-  var DEFAULTS = {
-    site: {
-      year: "2026",
-      footer1: "IFMSA — Khyber Medical College, Peshawar",
-      footer2: "Built by students, for the future of medicine."
-    },
-    hero: {
-      eyebrowPill: "IFMSA Pakistan",
-      eyebrowRest: "Local Council 2026",
-      title1: "IFMSA",
-      title2: "KMC",
-      sub: "Six standing committees, one student body — moving medicine forward.",
-      img: "",
-      btn1Text: "Explore committees ↓",
-      btn1Href: "#scope",
-      btn2Text: "Join the council",
-      btn2Href: "#join",
-      mini1Num: "6", mini1Label: "Standing committees",
-      mini2Num: "1.5M+", mini2Label: "Members Worldwide",
-      mini3Num: "123", mini3Label: "Countries & territories",
-      estNum: "Est. 1951", estLabel: "Shaping Global Health Leaders Since 1951"
-    },
-    about: {
-      eyebrow: "Know more about us",
-      title: "One student body, every medical student's opportunity.",
-      body: "The Khyber Medical College Local Council is part of IFMSA-Pakistan, the sole national member organisation of the International Federation of Medical Students' Associations in Pakistan. Through six standing committees we act on medical education, professional and research exchanges, public health, human rights and peace, and sexual & reproductive health — right here in Peshawar.",
-      btnText: "Join Us",
-      btnHref: "#card-join",
-      img1: "",
-      img2: ""
-    },
-    exec: {
-      title: "Meet the Executive Board",
-      body: "The heartbeat of the local council — the President, Vice-Presidents and Local Officers who run IFMSA KMC day to day, from national delegation to on-campus coordination.",
-      btnText: "Meet the Board",
-      btnHref: "executive.html",
-      img1: "",
-      img2: ""
-    },
-    highlights: {
-      title: "Highlights",
-      body: "Standout moments, campaigns and wins from across the council — the sessions, exchanges and drives that make KMC members proud.",
-      btnText: "See Highlights",
-      btnHref: "highlights.html",
-      img1: "",
-      img2: ""
-    },
-    alumni: {
-      title: "Alumni",
-      body: "The KMC alumni network — doctors and leaders around the world who grew up in IFMSA here in Peshawar and still give back.",
-      btnText: "Alumni Stories",
-      btnHref: "alumni.html",
-      img1: "",
-      img2: ""
-    },
-    awards: {
-      title: "Achievements & Awards",
-      body: "The recognitions our members, projects and committees have earned — nationally and on the international IFMSA stage.",
-      btnText: "Our Awards",
-      btnHref: "awards.html",
-      img1: "",
-      img2: ""
-    },
-    join: {
-      eyebrow: "Ready when you are",
-      title: "One scroll can change a student's path.",
-      sub: "Membership is open to every KMC student. Come to an intro session, meet your Local Officer, and pick anywhere to start.",
-      btn1Text: "About Us",
-      btn1Href: "#card-about",
-      btn2Text: "Contact the council",
-      btn2Href: "mailto:president.kmclc.ifmsapakistan@gmail.com",
-      img1: "",
-      img2: ""
-    },
-    president: {
-      label: "A message from the President",
-      quote: "Welcome to the KMC council of IFMSA — where medical students from across Khyber Medical College come together to advance global health, starting locally.",
-      name: "President — IFMSA KMC Local Council",
-      img: ""
-    }
-  };
-
   var memo = null;
-
-  function normalizeStatic() {
-    var d = window.IFMSA_DATA || {};
-    return {
-      year: d.year || DEFAULTS.site.year,
-      committees: d.committees || {},
-      projects: d.projects || [],
-      highlightsList: d.highlights || [],
-      execBoard: d.execBoard || [],
-      alumniList: d.alumni || [],
-      awardsList: d.awards || [],
-      site: DEFAULTS.site,
-      hero: DEFAULTS.hero,
-      about: DEFAULTS.about,
-      exec: DEFAULTS.exec,
-      highlights: DEFAULTS.highlights,
-      alumni: DEFAULTS.alumni,
-      awards: DEFAULTS.awards,
-      join: DEFAULTS.join,
-      president: DEFAULTS.president
-    };
-  }
 
   function fetchSupabase() {
     var cfg = window.SUPABASE_CONFIG;
@@ -146,9 +41,6 @@
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
 
-      /* the highlights / exec_board / alumni / awards tables are optional — a
-         missing table simply falls back to the bundled list, never taking the
-         whole site down */
       var highlights = (highlightsRes && highlightsRes.data) || [];
       if (highlightsRes && highlightsRes.error) highlights = [];
 
@@ -171,18 +63,18 @@
         settings[r.key] = r.value;
       });
 
-      var site = merge(DEFAULTS.site, settings.site);
-      var hero = merge(DEFAULTS.hero, settings.hero);
-      var about = merge(DEFAULTS.about, settings.about);
-      var exec = merge(DEFAULTS.exec, settings.exec);
-      var highlights = merge(DEFAULTS.highlights, settings.highlights);
-      var alumni = merge(DEFAULTS.alumni, settings.alumni);
-      var awards = merge(DEFAULTS.awards, settings.awards);
-      var join = merge(DEFAULTS.join, settings.join);
-      var president = merge(DEFAULTS.president, settings.president);
+      var site = settings.site || {};
+      var hero = settings.hero || {};
+      var about = settings.about || {};
+      var exec = settings.exec || {};
+      var highlightsSettings = settings.highlights || {};
+      var alumniSettings = settings.alumni || {};
+      var awardsSettings = settings.awards || {};
+      var join = settings.join || {};
+      var president = settings.president || {};
 
       return {
-        year: site.year || DEFAULTS.site.year,
+        year: site.year || '',
         committees: committees,
         projects: projectsRes.data || [],
         highlightsList: highlights,
@@ -193,20 +85,13 @@
         hero: hero,
         about: about,
         exec: exec,
-        highlights: highlights,
-        alumni: alumni,
-        awards: awards,
+        highlights: highlightsSettings,
+        alumni: alumniSettings,
+        awards: awardsSettings,
         join: join,
         president: president
       };
     });
-  }
-
-  function merge(base, extra) {
-    var out = {};
-    Object.keys(base).forEach(function (k) { out[k] = base[k]; });
-    if (extra) Object.keys(extra).forEach(function (k) { out[k] = extra[k]; });
-    return out;
   }
 
   window.loadSiteData = function () {
@@ -215,7 +100,24 @@
       memo = d;
       return d;
     }).catch(function () {
-      memo = normalizeStatic();
+      memo = {
+        year: '',
+        committees: {},
+        projects: [],
+        highlightsList: [],
+        execBoard: [],
+        alumniList: [],
+        awardsList: [],
+        site: {},
+        hero: {},
+        about: {},
+        exec: {},
+        highlights: {},
+        alumni: {},
+        awards: {},
+        join: {},
+        president: {}
+      };
       return memo;
     });
   };
