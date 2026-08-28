@@ -32,7 +32,7 @@
   --scora-col:   #B2222A;   /* SCORA  — red        */
   --scoph-col:   #F47D3C;   /* SCOPH  — orange     */
   --scorp-col:   #5F913F;   /* SCORP  — green      */
-  --scom-col:    #e6edf3;   /* SCOME  — white      */
+  --scom-col:    #0969da;   /* SCOME  — blue       */
   --mono:  "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
   --sans:  "Montserrat", "Helvetica Neue", Helvetica, Arial, -apple-system, "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -69,7 +69,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   scroll-snap-align: start;
   scroll-snap-stop: normal;
   display: grid;
-  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
   padding: 6rem calc(clamp(3.5rem, 8vw, 8rem) + 1.5rem) 4rem clamp(1.5rem, 8vw, 8rem);
@@ -145,6 +145,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .sc-about-btn::after {
@@ -156,7 +157,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   background: var(--sc-col, var(--accent));
   border-color: rgba(255, 255, 255, 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 .sc-about-btn:hover::after {
   transform: translateX(3px);
@@ -281,11 +282,8 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   --panel-card-border: rgba(255, 255, 255, 0.28);
 }
 .panel[data-slide="scom"] {
-  --panel-fg: #0d1117;
-  --panel-fg-muted: rgba(13, 17, 23, 0.78);
-  --panel-fg-faint: rgba(13, 17, 23, 0.6);
-  --panel-card-bg: rgba(255, 255, 255, 0.6);
-  --panel-card-border: rgba(13, 17, 23, 0.35);
+  --panel-card-bg: rgba(13, 17, 23, 0.72);
+  --panel-card-border: rgba(255, 255, 255, 0.28);
 }
 
 /* wire the slide foreground into the tokens used below */
