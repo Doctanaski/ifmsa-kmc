@@ -45,6 +45,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+input[type="date"],
 select,
 textarea {
   width: 100%;
@@ -62,6 +63,41 @@ input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+}
+
+/* ---------- date picker styling (dark theme) ---------- */
+input[type="date"] {
+  position: relative;
+  cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7) brightness(1.4);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+input[type="date"]::-moz-calendar-picker-indicator {
+  filter: invert(0.7) brightness(1.4);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+input[type="date"]::-moz-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+.date-range {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+.date-range-sep {
+  color: var(--fg-faint);
+  font-size: 0.85rem;
+  padding-top: 0.3rem;
 }
 
 .btn {

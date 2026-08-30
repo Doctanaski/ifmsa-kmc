@@ -59,7 +59,9 @@ create table if not exists public.projects (
   title      text not null,
   type       text,
   status     text,
-  timeframe  text,
+  start_date text,                        -- ISO date: YYYY-MM-DD
+  end_date   text,                        -- ISO date: YYYY-MM-DD
+  timeframe  text,                        -- auto-generated from dates, kept for backward compat
   theme      text,
   summary    text,
   about      jsonb not null default '[]'::jsonb,
@@ -219,4 +221,10 @@ create policy "admin write site_settings" on public.site_settings for all to aut
 drop policy if exists "admin read admin_users" on public.admin_users;
 
 create policy "admin read admin_users"    on public.admin_users   for select to authenticated
-  using (public.is_admin());
+  using    (public.is_admin());
+
+-- ============================================================
+-- MIGRATION: Add date columns to projects (run if table already exists)
+-- ============================================================
+-- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS start_date text;
+-- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS end_date text;

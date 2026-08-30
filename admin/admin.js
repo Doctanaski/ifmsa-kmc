@@ -415,6 +415,51 @@
     if (opts.after) opts.after(holder);
   };
 
+  /* ---------- date helpers for projects ---------- */
+  var MONTH_NAMES_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MONTH_NAMES_FULL = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function parseDate(str) {
+    if (!str) return null;
+    var parts = String(str).split('-');
+    if (parts.length !== 3) return null;
+    return new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  }
+
+  function formatDateShort(d) {
+    if (!d) return '';
+    return MONTH_NAMES_SHORT[d.getMonth()] + ' ' + d.getDate();
+  }
+
+  function formatDateFull(d) {
+    if (!d) return '';
+    return MONTH_NAMES_FULL[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
+
+  function formatDateMonthYear(d) {
+    if (!d) return '';
+    return MONTH_NAMES_FULL[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function generateTimeframe(startDate, endDate) {
+    var sd = parseDate(startDate);
+    var ed = parseDate(endDate);
+    if (!sd && !ed) return '';
+    if (sd && !ed) return formatDateMonthYear(sd);
+    if (!sd && ed) return formatDateMonthYear(ed);
+    /* both dates present */
+    if (sd.getTime() === ed.getTime()) return formatDateFull(sd);
+    if (sd.getMonth() === ed.getMonth() && sd.getFullYear() === ed.getFullYear()) {
+      return MONTH_NAMES_FULL[sd.getMonth()] + ' ' + sd.getDate() + ' – ' + ed.getDate() + ', ' + sd.getFullYear();
+    }
+    if (sd.getFullYear() === ed.getFullYear()) {
+      return MONTH_NAMES_SHORT[sd.getMonth()] + ' – ' + MONTH_NAMES_SHORT[ed.getMonth()] + ' ' + sd.getFullYear();
+    }
+    return MONTH_NAMES_SHORT[sd.getMonth()] + ' ' + sd.getFullYear() + ' – ' + MONTH_NAMES_SHORT[ed.getMonth()] + ' ' + ed.getFullYear();
+  }
+
   /* ---------- project live preview (mirrors projects.js rendering) ---------- */
   var IMG_LINE = /^!\[([^\]]*)\]\(([^)]+)\)$/;
 
@@ -475,6 +520,9 @@
     if (!pre) return;
     var com = {};
     state.committees.forEach(function (c) { if (c.slug === val('f-committee')) com = c; });
+    var sd = parseDate(val('f-start-date'));
+    var ed = parseDate(val('f-end-date'));
+    var dateDisplay = sd || ed ? (sd ? formatDateShort(sd) : '') + (sd && ed ? ' – ' : '') + (ed ? formatDateShort(ed) : '') : '';
     var row = {
       title: val('f-title').trim(),
       type: val('f-type').trim(),
@@ -498,7 +546,7 @@
           '<div class="proj-pills">' +
             (row.type ? '<span class="pill">' + esc(row.type) + '</span>' : '') +
             (row.status ? '<span class="pill pill-live">' + esc(row.status) + '</span>' : '') +
-            (row.timeframe ? '<span class="pill">' + esc(row.timeframe) + '</span>' : '') +
+            (dateDisplay ? '<span class="pill">&#128197; ' + esc(dateDisplay) + '</span>' : '') +
             (row.theme ? '<span class="pill">' + esc(row.theme) + '</span>' : '') +
           '</div>' +
           (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
@@ -1129,7 +1177,7 @@
   function projectModal(p) {
     p = p || {
       id: '', committee: (state.committees[0] || {}).slug || '',
-      title: '', type: '', status: 'Planned', timeframe: '', theme: '',
+      title: '', type: '', status: 'Planned', start_date: '', end_date: '', timeframe: '', theme: '',
       summary: '', about: [], goals: [], sort_order: state.projects.length
     };
     openModal(
@@ -1142,7 +1190,12 @@
             '<label>Sort order<input type="number" id="f-sort" value="' + (p.sort_order || 0) + '" /></label>' +
             '<label>Type<input type="text" id="f-type" value="' + esc(p.type) + '" /></label>' +
             '<label>Status<select id="f-status">' + statusOptions(p.status || '') + '</select></label>' +
-            '<label class="full">Timeframe<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" /></label>' +
+            '<label class="full">Date range<div class="date-range">' +
+              '<label style="margin:0">Start date<input type="date" id="f-start-date" value="' + esc(p.start_date || '') + '" /></label>' +
+              '<span class="date-range-sep">to</span>' +
+              '<label style="margin:0">End date<input type="date" id="f-end-date" value="' + esc(p.end_date || '') + '" /></label>' +
+            '</div></label>' +
+            '<label class="full">Timeframe (auto-generated)<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" readonly style="opacity:0.7;cursor:not-allowed" /></label>' +
             '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
             '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
             '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
@@ -1162,24 +1215,43 @@
       'modal--wide'
     );
 
-    ['f-title', 'f-committee', 'f-type', 'f-status', 'f-timeframe', 'f-theme',
+    ['f-title', 'f-committee', 'f-type', 'f-status', 'f-start-date', 'f-end-date', 'f-theme',
      'f-summary', 'f-about', 'f-goals'].forEach(function (id) {
       var input = el(id);
       if (!input) return;
       input.addEventListener('input', renderProjectPreview);
       input.addEventListener('change', renderProjectPreview);
     });
+
+    var updateAutoTimeframe = function () {
+      var sd = val('f-start-date');
+      var ed = val('f-end-date');
+      var tf = generateTimeframe(sd, ed);
+      var tfInput = el('f-timeframe');
+      if (tfInput) tfInput.value = tf;
+      renderProjectPreview();
+    };
+    var startDate = el('f-start-date');
+    var endDate = el('f-end-date');
+    if (startDate) startDate.addEventListener('change', updateAutoTimeframe);
+    if (endDate) endDate.addEventListener('change', updateAutoTimeframe);
+    updateAutoTimeframe();
+
     attachMarkdownUpload('f-about');
     renderProjectPreview();
 
     el('m-save').addEventListener('click', function () {
+      var startDate = val('f-start-date').trim() || null;
+      var endDate = val('f-end-date').trim() || null;
       var row = {
         id: val('f-id').trim(),
         committee: val('f-committee'),
         title: val('f-title').trim(),
         type: val('f-type').trim() || null,
         status: val('f-status').trim() || null,
-        timeframe: val('f-timeframe').trim() || null,
+        start_date: startDate,
+        end_date: endDate,
+        timeframe: generateTimeframe(startDate, endDate) || null,
         theme: val('f-theme').trim() || null,
         summary: val('f-summary').trim() || null,
         about: splitLines(val('f-about')),
