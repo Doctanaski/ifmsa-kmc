@@ -1,0 +1,594 @@
+/* ============================================================
+   IFMSA KMC — SCOME About page styles
+   Blue primary (#0969da), white bg, navy text
+   ============================================================ */
+
+/* ---------- tokens ---------- */
+:root {
+  --sme-blue:       #0969da;
+  --sme-blue-2:     #0753b0;
+  --sme-blue-soft:  #4a9eff;
+  --sme-navy:       #1e1b52;
+  --sme-navy-2:     #14123b;
+  --sme-green:      #0f9c15;
+  --sme-green-soft: #46c757;
+  --sme-bg:         #ffffff;
+  --sme-bg-2:       #f7f9fc;
+  --sme-bg-3:       #eef1f8;
+  --sme-fg:         #1e1b52;
+  --sme-fg-muted:   #4b5563;
+  --sme-fg-faint:   #64748b;
+  --sme-border:     rgba(30,27,82,0.1);
+  --sme-sans:       "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sme-mono:       "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --sme-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sme-sans);
+  background: var(--sme-bg);
+  color: var(--sme-fg);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; }
+ul { list-style: none; }
+strong { font-weight: 700; }
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.sme-topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.85rem clamp(1.5rem, 6vw, 6rem);
+  background: var(--sme-navy-2);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 30px rgba(10,8,32,0.25);
+}
+
+.sme-brand { display: flex; align-items: center; gap: 1rem; }
+.sme-brand-logo img { display: block; height: auto; }
+.sme-logo-pk img  { height: 38px; max-width: 190px; object-fit: contain; }
+.sme-logo-kmc img { height: 32px; max-width: 200px; object-fit: contain; }
+.sme-logo-ifmsa-kmc img { height: 57px; max-width: 200px; object-fit: contain; }
+.sme-brand-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.2); }
+
+.sme-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.sme-nav-link {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.sme-nav-link:hover { color: #fff; }
+.sme-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sme-nav-btn:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+}
+.sme-nav-icon {
+  width: 15px;
+  height: 15px;
+}
+.sme-nav-active {
+  color: var(--sme-green-soft);
+  border-bottom: 2px solid var(--sme-green-soft);
+  padding-bottom: 2px;
+}
+.sme-nav-admin {
+  opacity: 0.6;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sme-nav-admin:hover { opacity: 1; color: #fff; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.sme-hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(6rem, 14vh, 10rem) clamp(1.5rem, 8vw, 8rem) clamp(4rem, 8vh, 6rem);
+  background: var(--sme-bg);
+  overflow: hidden;
+}
+
+.sme-hero-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: clamp(2rem, 8vw, 8rem);
+  pointer-events: none;
+  z-index: 0;
+}
+.sme-hero-watermark img {
+  width: clamp(220px, 38vw, 520px);
+  height: auto;
+  opacity: 0.045;
+  filter: saturate(0);
+  user-select: none;
+}
+
+.sme-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sme-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.sme-eyebrow-pill {
+  background: var(--sme-blue);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.75rem;
+  border-radius: 100px;
+}
+.sme-eyebrow-rest {
+  font-family: var(--sme-mono);
+  font-size: 0.78rem;
+  color: var(--sme-fg-faint);
+  letter-spacing: 0.04em;
+}
+
+.sme-hero-title {
+  font-size: clamp(2.4rem, 6vw + 0.5rem, 4.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--sme-navy);
+  margin-bottom: 1.2rem;
+}
+
+.sme-hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--sme-fg-muted);
+  max-width: 62ch;
+  margin: 0 auto 2.2rem;
+  line-height: 1.7;
+}
+
+.sme-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--sme-blue);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.85rem 1.8rem;
+  border-radius: 100px;
+  transition: background 0.2s var(--sme-ease), transform 0.2s var(--sme-ease), box-shadow 0.2s var(--sme-ease);
+  box-shadow: 0 4px 20px rgba(9,105,218,0.18);
+}
+.sme-hero-cta:hover {
+  background: var(--sme-blue-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(9,105,218,0.28);
+}
+
+/* ============================================================
+   SECTION SHARED
+   ============================================================ */
+.sme-section {
+  padding: clamp(4rem, 8vh, 6rem) clamp(1.5rem, 8vw, 8rem);
+}
+
+.sme-section-head {
+  max-width: 720px;
+  margin: 0 auto clamp(2.8rem, 6vh, 4.5rem);
+  text-align: center;
+}
+
+.sme-section-label {
+  font-family: var(--sme-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sme-green);
+  margin-bottom: 0.6rem;
+}
+.sme-section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--sme-navy);
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+.sme-section-sub {
+  color: var(--sme-fg-muted);
+  font-size: 1.05rem;
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.sme-section-sub strong { color: var(--sme-navy); }
+
+/* ============================================================
+   WHAT WE DO — feature cards
+   ============================================================ */
+.sme-what {
+  background: var(--sme-bg);
+}
+
+.sme-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.sme-feature {
+  background: var(--sme-bg-2);
+  border: 1px solid var(--sme-border);
+  border-radius: 20px;
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  transition: box-shadow 0.35s var(--sme-ease), transform 0.35s var(--sme-ease), border-color 0.35s var(--sme-ease);
+}
+.sme-feature:hover {
+  box-shadow: 0 12px 36px rgba(30,27,82,0.1);
+  transform: translateY(-4px);
+  border-color: rgba(9,105,218,0.25);
+}
+
+.sme-feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--sme-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+.sme-feature-icon svg { width: 26px; height: 26px; }
+
+.sme-feature-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--sme-navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.sme-feature-body {
+  color: var(--sme-fg-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.sme-feature-body strong { color: var(--sme-navy); }
+
+/* ============================================================
+   FOCUS AREAS — numbered cards
+   ============================================================ */
+.sme-focus {
+  background: var(--sme-bg-2);
+  border-top: 1px solid var(--sme-border);
+  border-bottom: 1px solid var(--sme-border);
+}
+
+.sme-focus-grid {
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sme-focus-card {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  background: linear-gradient(135deg, var(--sme-navy) 0%, var(--sme-navy-2) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-left: 4px solid var(--sme-blue);
+  border-radius: 16px;
+  padding: clamp(1.3rem, 2.5vw, 1.8rem) clamp(1.3rem, 3vw, 2rem);
+  box-shadow: 0 8px 28px rgba(30,27,82,0.18);
+  transition: box-shadow 0.35s var(--sme-ease), transform 0.35s var(--sme-ease), border-color 0.35s var(--sme-ease);
+}
+.sme-focus-card:hover {
+  box-shadow: 0 14px 40px rgba(30,27,82,0.28);
+  transform: translateX(4px);
+  border-left-color: var(--sme-blue-soft);
+}
+
+.sme-focus-num {
+  font-family: var(--sme-mono);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: rgba(74,158,255,0.35);
+  line-height: 1;
+  padding-top: 0.1rem;
+}
+
+.sme-focus-title {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.45rem;
+}
+
+.sme-focus-copy {
+  color: rgba(255,255,255,0.82);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.sme-focus-copy strong { color: #fff; }
+
+/* ============================================================
+   CTA BAND — blue gradient
+   ============================================================ */
+.sme-cta {
+  background: linear-gradient(135deg, var(--sme-blue) 0%, var(--sme-blue-2) 100%);
+  padding: clamp(4.5rem, 10vh, 7rem) clamp(1.5rem, 8vw, 8rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.sme-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 90% 50%, rgba(255,255,255,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.sme-cta-inner {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sme-cta-label {
+  font-family: var(--sme-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 0.75rem;
+}
+
+.sme-cta-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+
+.sme-cta-sub {
+  color: rgba(255,255,255,0.88);
+  font-size: 1.05rem;
+  line-height: 1.68;
+  max-width: 58ch;
+  margin: 0 auto 2.2rem;
+}
+.sme-cta-sub strong { color: #fff; }
+
+.sme-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.sme-contact {
+  background: var(--sme-bg);
+}
+
+.sme-contact-card {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--sme-bg-2);
+  border: 1px solid var(--sme-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(30,27,82,0.05);
+  transition: box-shadow 0.35s var(--sme-ease), transform 0.35s var(--sme-ease);
+}
+.sme-contact-card:hover {
+  box-shadow: 0 12px 36px rgba(30,27,82,0.1);
+  transform: translateY(-4px);
+}
+
+.sme-contact-accent {
+  height: 4px;
+  background: linear-gradient(90deg, var(--sme-blue), var(--sme-blue-soft));
+}
+
+.sme-contact-inner {
+  padding: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.sme-contact-role {
+  font-family: var(--sme-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sme-green);
+  margin-bottom: 0.5rem;
+}
+
+.sme-contact-name {
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  color: var(--sme-navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.sme-contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--sme-blue);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.sme-contact-email:hover {
+  color: var(--sme-blue-2);
+}
+.sme-contact-email svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SHARED BUTTONS
+   ============================================================ */
+.sme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sme-sans);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.75rem 1.6rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.2s var(--sme-ease), transform 0.2s var(--sme-ease),
+              box-shadow 0.2s var(--sme-ease), color 0.2s var(--sme-ease);
+}
+
+.sme-btn-white {
+  background: #fff;
+  color: var(--sme-blue);
+  border: 2px solid #fff;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
+.sme-btn-white:hover {
+  background: var(--sme-bg-3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+}
+
+.sme-btn-ghost-white {
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  border: 2px solid rgba(255,255,255,0.35);
+}
+.sme-btn-ghost-white:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-color: rgba(255,255,255,0.65);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   SCROLL REVEAL (generic)
+   ============================================================ */
+.sme-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s var(--sme-ease), transform 0.6s var(--sme-ease);
+}
+.sme-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.sme-footer {
+  background: linear-gradient(180deg, var(--sme-navy-2), #0b0929);
+  padding: 2.8rem clamp(1.5rem, 8vw, 8rem);
+  text-align: center;
+  color: rgba(255,255,255,0.42);
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .sme-feature-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .sme-logo-kmc { display: none; }
+  .sme-nav { gap: 0.9rem; }
+  .sme-nav-link { font-size: 0.82rem; }
+
+  .sme-hero { min-height: 75vh; }
+  .sme-hero-watermark img { opacity: 0.03; width: 80vw; }
+
+  .sme-focus-card { grid-template-columns: 1fr; gap: 0.6rem; }
+  .sme-focus-num { font-size: 1.4rem; }
+
+  .sme-cta-actions { flex-direction: column; }
+  .sme-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 820px) {
+  .sme-topbar { padding: 0.7rem 1.2rem; gap: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .sme-reveal { opacity: 1; transform: none; }
+}
