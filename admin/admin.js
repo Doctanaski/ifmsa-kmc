@@ -1213,13 +1213,14 @@
     pane.innerHTML =
       '<div class="toolbar"><div></div><button class="btn btn-primary" id="com-new">+ New committee</button></div>' +
       '<table class="table">' +
-        '<thead><tr><th>Acronym</th><th>Name</th><th>Colour</th><th>Logo</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<thead><tr><th>Acronym</th><th>Name</th><th>Colour</th><th>Logo</th><th>Group Photo</th><th class="actions-cell">Actions</th></tr></thead>' +
         '<tbody>' + state.committees.map(function (c) {
           return '<tr>' +
             '<td><strong>' + esc(c.acronym) + '</strong></td>' +
             '<td>' + esc(c.name) + '</td>' +
             '<td><span class="color-chip" style="background:' + esc(c.color || '#fff') + '"></span>' + esc(c.color || '') + '</td>' +
-            '<td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(c.logo || '') + '</td>' +
+            '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(c.logo || '') + '</td>' +
+            '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(c.group_photo || '—') + '</td>' +
             '<td class="actions-cell">' +
               '<button class="btn btn-small" data-edit="' + esc(c.slug) + '">Edit</button> ' +
               '<button class="btn btn-small btn-danger" data-del="' + esc(c.slug) + '">Delete</button>' +
@@ -1239,7 +1240,7 @@
   }
 
   function committeeModal(c) {
-    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', sort_order: state.committees.length };
+    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', group_photo: '', members: '', sort_order: state.committees.length };
     openModal(
       '<h2>' + (c.slug ? 'Edit committee' : 'New committee') + '</h2>' +
       '<div class="form-grid">' +
@@ -1250,6 +1251,8 @@
         '<label>Colour<input type="text" id="c-color" value="' + esc(c.color) + '" placeholder="#0180C8" /></label>' +
         '<label>Accent<input type="text" id="c-accent" value="' + esc(c.accent) + '" placeholder="#0180C8" /></label>' +
         '<label class="full">Logo — upload or paste a URL<input type="text" id="c-logo" value="' + esc(c.logo) + '" placeholder="Leave blank to hide the logo" /></label>' +
+        '<label class="full">Group photo — upload or paste a URL<input type="text" id="c-group-photo" value="' + esc(c.group_photo || '') + '" placeholder="Photo of the committee members" /></label>' +
+        '<label class="full">Members — one name per line (displayed under the group photo)<textarea id="c-members" placeholder="John Doe\nJane Smith\n...">' + esc(c.members || '') + '</textarea></label>' +
       '</div>' +
       '<div class="form-actions">' +
         '<button class="btn" id="m-cancel">Cancel</button>' +
@@ -1258,6 +1261,7 @@
     );
 
     attachImageUpload('c-logo');
+    attachImageUpload('c-group-photo');
 
     el('m-save').addEventListener('click', function () {
       var row = {
@@ -1267,6 +1271,8 @@
         color: val('c-color').trim() || null,
         accent: val('c-accent').trim() || null,
         logo: val('c-logo').trim() || null,
+        group_photo: val('c-group-photo').trim() || null,
+        members: val('c-members').trim() || null,
         sort_order: parseInt(val('c-sort'), 10) || 0
       };
       if (!row.slug || !row.acronym || !row.name) { alert('Slug, acronym and name are required.'); return; }

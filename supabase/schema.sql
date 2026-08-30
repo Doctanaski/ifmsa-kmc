@@ -41,13 +41,15 @@ create policy "admin delete images" on storage.objects
 
 -- ---------- committees ----------
 create table if not exists public.committees (
-  slug       text primary key,
-  acronym    text not null,
-  name       text not null,
-  color      text,
-  accent     text,
-  logo       text,
-  sort_order int  not null default 0
+  slug         text primary key,
+  acronym      text not null,
+  name         text not null,
+  color        text,
+  accent       text,
+  logo         text,
+  group_photo  text,
+  members      text,
+  sort_order   int  not null default 0
 );
 
 -- ---------- projects ----------

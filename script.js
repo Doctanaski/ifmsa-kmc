@@ -393,7 +393,41 @@ const activate = (i) => {
     window.applySiteSettings(siteData);
     document.getElementById('hero-banner').classList.remove('is-pending');
     buildCarousels(siteData);
+    applyCommitteeMeta(siteData);
     measurePanelTops();
     animateStats();
   });
+
+  /* ---------- apply group photos & members from committees data ---------- */
+  function applyCommitteeMeta(data) {
+    if (!data.committees) return;
+    document.querySelectorAll('.panel-carousel').forEach((panel) => {
+      const slug = panel.dataset.committee;
+      const com = data.committees[slug];
+      if (!com) return;
+
+      /* group photo */
+      const ph = panel.querySelector('.group-photo-ph');
+      if (ph && com.group_photo) {
+        const pos = window.imgFramePos ? window.imgFramePos(com.group_photo) : '';
+        ph.style.backgroundImage = 'url("' + String(com.group_photo).replace(/"/g, '&quot;') + '")';
+        ph.style.backgroundSize = 'cover';
+        if (pos) ph.style.backgroundPosition = pos;
+        const icon = ph.querySelector('.group-photo-icon');
+        if (icon) icon.style.display = 'none';
+      }
+
+      /* members list */
+      const cap = panel.querySelector('.group-photo-cap');
+      if (cap && com.members) {
+        const names = com.members.split('\n').map((n) => n.trim()).filter(Boolean);
+        if (names.length) {
+          cap.innerHTML = '<span class="group-photo-members-title">Members</span>' +
+            '<ul class="group-photo-members-list">' +
+            names.map((n) => '<li>' + n.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>').join('') +
+            '</ul>';
+        }
+      }
+    });
+  }
 })();

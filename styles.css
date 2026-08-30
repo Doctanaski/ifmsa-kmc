@@ -207,6 +207,48 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   color: var(--panel-fg-faint);
 }
 
+.group-photo-members-title {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--panel-accent, var(--accent));
+  margin-bottom: 0.4rem;
+}
+
+.group-photo-members-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.6rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  font-family: var(--sans);
+}
+
+.group-photo-members-list li {
+  position: relative;
+  padding-left: 0;
+}
+
+.group-photo-members-list li::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--panel-accent, var(--accent));
+  opacity: 0.5;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
 /* per-slide colours */
 .panel[data-slide="scope"]  { --panel-accent: var(--scope-col); --panel-fill: var(--scope-col); }
 .panel[data-slide="scom"]   { --panel-accent: var(--scom-col);  --panel-fill: var(--scom-col); }
