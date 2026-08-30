@@ -175,7 +175,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 1.5rem;
-  max-width: 340px;
+  width: 100%;
 }
 
 .group-photo-ph {
