@@ -201,7 +201,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .group-photo-cap {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.86rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--panel-fg-faint);
@@ -210,7 +210,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .group-photo-members-title {
   display: block;
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: 0.81rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -227,7 +227,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   gap: 0.3rem 0.6rem;
   text-transform: none;
   letter-spacing: normal;
-  font-size: 0.72rem;
+  font-size: 0.94rem;
   color: var(--fg-muted);
   font-family: var(--sans);
 }
@@ -240,8 +240,8 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .group-photo-members-list li::before {
   content: "";
   display: inline-block;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--panel-accent, var(--accent));
   opacity: 0.5;
