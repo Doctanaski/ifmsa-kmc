@@ -127,7 +127,8 @@ create table if not exists public.awards (
   about      jsonb not null default '[]'::jsonb, -- paragraphs + ![caption](url) image lines
   medal      text,                        -- gold | silver | bronze
   featured   boolean not null default false,
-  sort_order int  not null default 0
+  sort_order int  not null default 0,
+  frame_style jsonb  -- image framing: { aspect, radius, border, shadow }
 );
 
 -- ---------- site settings (key -> json value) ----------

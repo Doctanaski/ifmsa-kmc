@@ -861,11 +861,31 @@
       : '<div class="' + cls + '"><span>' + esc(alInitials(a.awardee || a.title)) + '</span></div>';
   };
 
+  function awFrameStyles(fs) {
+    if (!fs) return '';
+    var s = [];
+    if (fs.aspect) s.push('aspect-ratio:' + fs.aspect);
+    if (fs.radius === 'none') s.push('border-radius:0');
+    else if (fs.radius === 'sm') s.push('border-radius:6px');
+    else if (fs.radius === 'md') s.push('border-radius:12px');
+    else if (fs.radius === 'lg') s.push('border-radius:20px');
+    else if (fs.radius === 'xl') s.push('border-radius:28px');
+    else if (fs.radius === 'full') s.push('border-radius:9999px');
+    if (fs.border === 'none') s.push('border:0');
+    else if (fs.border === 'thin') s.push('border:1px solid rgba(30,27,82,0.12)');
+    else if (fs.border === 'thick') s.push('border:3px solid rgba(30,27,82,0.18)');
+    if (fs.shadow === 'none') s.push('box-shadow:none');
+    else if (fs.shadow === 'sm') s.push('box-shadow:0 4px 12px -4px rgba(30,27,82,0.12)');
+    else if (fs.shadow === 'md') s.push('box-shadow:0 12px 28px -8px rgba(30,27,82,0.22)');
+    else if (fs.shadow === 'lg') s.push('box-shadow:0 20px 44px -10px rgba(30,27,82,0.32)');
+    return s.length ? ' style="' + esc(s.join(';')) + '"' : '';
+  }
+
   function awGenericCard(a) {
     var c = awCatOf(a.category);
     return (
       '<article class="aw-pv-card" style="--aw-pv-cat:' + c.color + '">' +
-        '<div class="aw-pv-media">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-media"' + awFrameStyles(a.frame_style) + '>' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
         '<div class="aw-pv-body">' +
           awKicker(a) +
           '<h4 class="aw-pv-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
@@ -881,7 +901,7 @@
     var c = awCatOf(a.category);
     return (
       '<article class="aw-pv-card" style="--aw-pv-cat:' + c.color + '">' +
-        '<div class="aw-pv-media aw-pv-media--person">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-media aw-pv-media--person"' + awFrameStyles(a.frame_style) + '>' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
         '<div class="aw-pv-body">' +
           awKicker(a) +
           '<h4 class="aw-pv-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
@@ -919,7 +939,7 @@
     var c = awCatOf(a.category);
     return (
       '<article class="aw-pv-pod" style="--aw-pv-cat:' + c.color + '">' +
-        '<div class="aw-pv-pod-media">' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
+        '<div class="aw-pv-pod-media"' + awFrameStyles(a.frame_style) + '>' + awCover(a, 'aw-pv-avatar') + awMedalBadge(a, 'aw-pv-medal') + '</div>' +
         '<div class="aw-pv-pod-body">' +
           '<span class="aw-pv-pill"><i></i>' + esc(c.label) + '</span>' +
           '<h4 class="aw-pv-pod-title">' + (a.title ? esc(a.title) : '<em>Untitled award</em>') + '</h4>' +
@@ -947,7 +967,13 @@
       summary: val('w-summary').trim(),
       about: splitLines(val('w-about')),
       medal: val('w-medal'),
-      featured: el('w-featured') ? el('w-featured').checked : false
+      featured: el('w-featured') ? el('w-featured').checked : false,
+      frame_style: {
+        aspect: val('w-frame-aspect'),
+        radius: val('w-frame-radius'),
+        border: val('w-frame-border'),
+        shadow: val('w-frame-shadow')
+      }
     };
     var card = a.category === 'research' ? awPaper(a) : (a.category === 'officer' ? awPersonCard(a) : awGenericCard(a));
     pre.innerHTML =
@@ -1786,11 +1812,14 @@
   }
 
   function awardsModal(a) {
+    var defaultFrame = { aspect: '', radius: '', border: '', shadow: '' };
     a = a || {
       id: '', category: 'project', title: '', awardee: '', role: '', year: '',
       location: '', source: '', link: '', summary: '', about: [],
-      medal: '', featured: false, sort_order: state.awards.length
+      medal: '', featured: false, sort_order: state.awards.length,
+      frame_style: null
     };
+    var fs = a.frame_style || defaultFrame;
 
     openModal(
       '<h2>' + (a.id ? 'Edit award' : 'New award') + '</h2>' +
@@ -1810,6 +1839,38 @@
             '<label class="full check"><input type="checkbox" id="w-featured"' + (a.featured ? ' checked' : '') + ' /> Feature in the Hall of Fame</label>' +
             '<label class="full">Summary<textarea id="w-summary">' + esc(a.summary) + '</textarea></label>' +
             '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="w-about">' + esc((a.about || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">Image Framing<div class="frame-opts">' +
+              '<div class="frame-opt"><span class="frame-opt-label">Aspect ratio</span><select id="w-frame-aspect">' +
+                '<option value="">Default</option>' +
+                '<option value="16/9"' + (fs.aspect === '16/9' ? ' selected' : '') + '>16:9</option>' +
+                '<option value="4/3"' + (fs.aspect === '4/3' ? ' selected' : '') + '>4:3</option>' +
+                '<option value="1/1"' + (fs.aspect === '1/1' ? ' selected' : '') + '>1:1 (square)</option>' +
+                '<option value="3/2"' + (fs.aspect === '3/2' ? ' selected' : '') + '>3:2</option>' +
+                '<option value="2/3"' + (fs.aspect === '2/3' ? ' selected' : '') + '>2:3 (portrait)</option>' +
+              '</select></div>' +
+              '<div class="frame-opt"><span class="frame-opt-label">Corners</span><select id="w-frame-radius">' +
+                '<option value="">Default</option>' +
+                '<option value="none"' + (fs.radius === 'none' ? ' selected' : '') + '>None (sharp)</option>' +
+                '<option value="sm"' + (fs.radius === 'sm' ? ' selected' : '') + '>Small</option>' +
+                '<option value="md"' + (fs.radius === 'md' ? ' selected' : '') + '>Medium</option>' +
+                '<option value="lg"' + (fs.radius === 'lg' ? ' selected' : '') + '>Large</option>' +
+                '<option value="xl"' + (fs.radius === 'xl' ? ' selected' : '') + '>Rounded</option>' +
+                '<option value="full"' + (fs.radius === 'full' ? ' selected' : '') + '>Pill / circle</option>' +
+              '</select></div>' +
+              '<div class="frame-opt"><span class="frame-opt-label">Border</span><select id="w-frame-border">' +
+                '<option value="">Default</option>' +
+                '<option value="none"' + (fs.border === 'none' ? ' selected' : '') + '>None</option>' +
+                '<option value="thin"' + (fs.border === 'thin' ? ' selected' : '') + '>Thin</option>' +
+                '<option value="thick"' + (fs.border === 'thick' ? ' selected' : '') + '>Thick</option>' +
+              '</select></div>' +
+              '<div class="frame-opt"><span class="frame-opt-label">Shadow</span><select id="w-frame-shadow">' +
+                '<option value="">Default</option>' +
+                '<option value="none"' + (fs.shadow === 'none' ? ' selected' : '') + '>None</option>' +
+                '<option value="sm"' + (fs.shadow === 'sm' ? ' selected' : '') + '>Subtle</option>' +
+                '<option value="md"' + (fs.shadow === 'md' ? ' selected' : '') + '>Medium</option>' +
+                '<option value="lg"' + (fs.shadow === 'lg' ? ' selected' : '') + '>Strong</option>' +
+              '</select></div>' +
+            '</div></label>' +
             '<label class="full">ID (leave blank to auto-generate)<input type="text" id="w-id" value="' + esc(a.id) + '" placeholder="e.g. aw-2026-officer-of-year" /></label>' +
           '</div>' +
           '<div class="form-actions">' +
@@ -1826,7 +1887,8 @@
     );
 
     ['w-title', 'w-cat', 'w-medal', 'w-year', 'w-awardee', 'w-role', 'w-loc',
-     'w-source', 'w-link', 'w-summary', 'w-about', 'w-featured'].forEach(function (id) {
+     'w-source', 'w-link', 'w-summary', 'w-about', 'w-featured',
+     'w-frame-aspect', 'w-frame-radius', 'w-frame-border', 'w-frame-shadow'].forEach(function (id) {
       var input = el(id);
       if (!input) return;
       input.addEventListener('input', renderAwardsPreview);
@@ -1836,6 +1898,13 @@
     renderAwardsPreview();
 
     el('m-save').addEventListener('click', function () {
+      var frameStyle = {
+        aspect: val('w-frame-aspect'),
+        radius: val('w-frame-radius'),
+        border: val('w-frame-border'),
+        shadow: val('w-frame-shadow')
+      };
+      var hasFrame = frameStyle.aspect || frameStyle.radius || frameStyle.border || frameStyle.shadow;
       var row = {
         category: val('w-cat'),
         medal: val('w-medal') || null,
@@ -1849,7 +1918,8 @@
         summary: val('w-summary').trim() || null,
         about: splitLines(val('w-about')),
         featured: !!el('w-featured').checked,
-        sort_order: parseInt(val('w-sort'), 10) || 0
+        sort_order: parseInt(val('w-sort'), 10) || 0,
+        frame_style: hasFrame ? frameStyle : null
       };
       if (!row.title) { alert('Title is required.'); return; }
       if (!val('w-id').trim()) {

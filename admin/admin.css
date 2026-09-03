@@ -283,7 +283,32 @@ input[type="date"]::-moz-calendar-picker-indicator:hover {
 .img-upload-status.ok { color: var(--green); }
 .img-upload-status.err { color: var(--red); }
 
-/* ---------- picture framing (focal point picker) ---------- */
+/* ---------- image framing options ---------- */
+.frame-opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+.frame-opt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.frame-opt-label {
+  font-size: 0.7rem;
+  color: var(--fg-faint);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.frame-opt select {
+  margin-top: 0;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.82rem;
+}
+
+/* ---------- image framing (focal point picker) ---------- */
 .img-frame-panel {
   flex-basis: 100%;
   display: grid;

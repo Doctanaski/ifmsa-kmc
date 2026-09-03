@@ -114,6 +114,26 @@
     return a.source ? '<span class="aw-card-source">' + esc(a.source) + '</span>' : '';
   };
 
+  var frameStyles = function (fs) {
+    if (!fs) return '';
+    var s = [];
+    if (fs.aspect) s.push('aspect-ratio:' + fs.aspect);
+    if (fs.radius === 'none') s.push('border-radius:0');
+    else if (fs.radius === 'sm') s.push('border-radius:6px');
+    else if (fs.radius === 'md') s.push('border-radius:12px');
+    else if (fs.radius === 'lg') s.push('border-radius:20px');
+    else if (fs.radius === 'xl') s.push('border-radius:28px');
+    else if (fs.radius === 'full') s.push('border-radius:9999px');
+    if (fs.border === 'none') s.push('border:0');
+    else if (fs.border === 'thin') s.push('border:1px solid rgba(30,27,82,0.12)');
+    else if (fs.border === 'thick') s.push('border:3px solid rgba(30,27,82,0.18)');
+    if (fs.shadow === 'none') s.push('box-shadow:none');
+    else if (fs.shadow === 'sm') s.push('box-shadow:0 4px 12px -4px rgba(30,27,82,0.12)');
+    else if (fs.shadow === 'md') s.push('box-shadow:0 12px 28px -8px rgba(30,27,82,0.22)');
+    else if (fs.shadow === 'lg') s.push('box-shadow:0 20px 44px -10px rgba(30,27,82,0.32)');
+    return s.length ? ' style="' + esc(s.join(';')) + '"' : '';
+  };
+
   var openTag = function (a) {
     return '<span class="aw-card-open">' + (catKey(a) === 'research' ? 'Read the paper &#8594;' : 'View recognition &#8594;') + '</span>';
   };
@@ -129,7 +149,7 @@
 
     return (
       '<article class="aw-card" data-id="' + esc(a.id) + '" style="--aw-cat:' + esc(c.color) + '">' +
-        '<div class="aw-card-media">' + media +
+        '<div class="aw-card-media"' + frameStyles(a.frame_style) + '>' + media +
           medalBadge(a, 'aw-card-medal') +
           '<span class="aw-card-motif">' + c.icon + '</span>' +
         '</div>' +
@@ -155,7 +175,7 @@
 
     return (
       '<article class="aw-card" data-id="' + esc(a.id) + '" style="--aw-cat:' + esc(c.color) + '">' +
-        '<div class="aw-person-media">' + media +
+        '<div class="aw-person-media"' + frameStyles(a.frame_style) + '>' + media +
           medalBadge(a, 'aw-card-medal') +
         '</div>' +
         '<div class="aw-card-body">' +
@@ -204,7 +224,7 @@
 
     return (
       '<article class="aw-pod" data-id="' + esc(a.id) + '" style="--aw-cat:' + esc(c.color) + '">' +
-        '<div class="aw-pod-media">' + media + medalBadge(a, 'aw-pod-medal') + '</div>' +
+        '<div class="aw-pod-media"' + frameStyles(a.frame_style) + '>' + media + medalBadge(a, 'aw-pod-medal') + '</div>' +
         '<div class="aw-pod-body">' +
           '<div class="aw-pod-kicker">' + catBadge(a) + '</div>' +
           '<h3 class="aw-pod-title">' + esc(a.title) + '</h3>' +
@@ -227,7 +247,7 @@
 
     return (
       '<article class="aw-pod-mini" data-id="' + esc(a.id) + '" style="--aw-cat:' + esc(c.color) + '">' +
-        '<div class="aw-pod-mini-media">' + media + '</div>' +
+        '<div class="aw-pod-mini-media"' + frameStyles(a.frame_style) + '>' + media + '</div>' +
         '<div class="aw-pod-mini-body">' +
           '<div class="aw-pod-mini-kicker">' + catBadge(a) + medalBadge(a, 'aw-card-medal') + '</div>' +
           '<h4 class="aw-pod-mini-title">' + esc(a.title) + '</h4>' +
