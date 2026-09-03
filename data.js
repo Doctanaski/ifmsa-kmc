@@ -237,6 +237,9 @@
     applyCard('highlights', 'highlights-title', 'highlights-body', 'highlights-btn1', 'highlights-btn1-link', 'bg-highlights-1', 'bg-highlights-2');
     applyCard('alumni', 'alumni-title', 'alumni-body', 'alumni-btn1', 'alumni-btn1-link', 'bg-alumni-1', 'bg-alumni-2');
     applyCard('awards', 'awards-title', 'awards-body', 'awards-btn1', 'awards-btn1-link', 'bg-awards-1', 'bg-awards-2');
+    applyCard('electives', 'electives-title', 'electives-body', 'electives-btn1', 'electives-btn1-link', 'bg-electives-1', 'bg-electives-2');
+    applyCard('projecthope', 'projecthope-title', 'projecthope-body', 'projecthope-btn1', 'projecthope-btn1-link', 'bg-projecthope-1', 'bg-projecthope-2');
+    applyCard('pubsd', 'pubsd-title', 'pubsd-body', 'pubsd-btn1', 'pubsd-btn1-link', 'bg-pubsd-1', 'bg-pubsd-2');
 
     if (siteData.site) {
       var s = siteData.site;

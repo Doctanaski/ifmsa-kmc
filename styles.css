@@ -944,6 +944,51 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
     linear-gradient(160deg, #141232 0%, #2a1f3c 100%);
 }
 
+.bg-electives-1 {
+  background-color: #1b2240;
+  background-image:
+    radial-gradient(100% 100% at 80% 20%, rgba(109, 40, 217, 0.4), transparent 60%),
+    radial-gradient(90% 90% at 20% 80%, rgba(1, 128, 200, 0.32), transparent 70%),
+    linear-gradient(145deg, #1c1a4f 0%, #1a2044 50%, #0d1c33 100%);
+}
+
+.bg-electives-2 {
+  background-color: #191e3a;
+  background-image:
+    radial-gradient(90% 90% at 75% 75%, rgba(139, 92, 246, 0.35), transparent 60%),
+    linear-gradient(160deg, #151a32 0%, #1e2848 100%);
+}
+
+.bg-projecthope-1 {
+  background-color: #1e193e;
+  background-image:
+    radial-gradient(100% 100% at 20% 20%, rgba(219, 39, 119, 0.38), transparent 60%),
+    radial-gradient(90% 90% at 80% 80%, rgba(15, 156, 21, 0.3), transparent 70%),
+    linear-gradient(145deg, #241b46 0%, #2a1535 50%, #0d1c33 100%);
+}
+
+.bg-projecthope-2 {
+  background-color: #211b42;
+  background-image:
+    radial-gradient(90% 90% at 25% 25%, rgba(236, 72, 153, 0.32), transparent 60%),
+    linear-gradient(160deg, #191436 0%, #2d1a40 100%);
+}
+
+.bg-pubsd-1 {
+  background-color: #18264a;
+  background-image:
+    radial-gradient(100% 100% at 80% 20%, rgba(13, 148, 136, 0.4), transparent 60%),
+    radial-gradient(90% 90% at 20% 80%, rgba(1, 128, 200, 0.35), transparent 70%),
+    linear-gradient(145deg, #1c1a4f 0%, #0e2e38 50%, #0d1c33 100%);
+}
+
+.bg-pubsd-2 {
+  background-color: #162035;
+  background-image:
+    radial-gradient(90% 90% at 75% 75%, rgba(20, 184, 166, 0.35), transparent 60%),
+    linear-gradient(160deg, #10192e 0%, #1a3040 100%);
+}
+
 /* dark gradient overlay */
 .card-overlay {
   position: absolute;

@@ -2065,6 +2065,9 @@
     var h = state.settings.highlights || {};
     var al = state.settings.alumni || {};
     var aw = state.settings.awards || {};
+    var elc = state.settings.electives || {};
+    var ph = state.settings.projecthope || {};
+    var ps = state.settings.pubsd || {};
 
     pane.innerHTML =
       '<div class="card settings-section"><h3>About tab (homepage)</h3>' +
@@ -2104,6 +2107,21 @@
       '<div class="card settings-section"><h3>Achievements &amp; Awards tab (homepage)</h3>' +
         '<div class="form-grid">' +
           cardFields('awards', 'aw-title', 'aw-body', 'aw-btn1t', 'aw-btn1h', 'aw-img1', 'aw-img2', null, aw) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Elective Diaries tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('electives', 'el-title', 'el-body', 'el-btn1t', 'el-btn1h', 'el-img1', 'el-img2', null, elc) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>Project Hope tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('projecthope', 'ph-title', 'ph-body', 'ph-btn1t', 'ph-btn1h', 'ph-img1', 'ph-img2', null, ph) +
+        '</div></div>' +
+
+      '<div class="card settings-section"><h3>PubSD tab (homepage)</h3>' +
+        '<div class="form-grid">' +
+          cardFields('pubsd', 'ps-title', 'ps-body', 'ps-btn1t', 'ps-btn1h', 'ps-img1', 'ps-img2', null, ps) +
         '</div>' +
         '<div class="form-actions"><button class="btn btn-primary" id="cards-save">Save feature cards</button></div>' +
       '</div>';
@@ -2111,7 +2129,8 @@
     el('cards-save').addEventListener('click', saveCards);
 
     ['a-img1', 'a-img2', 'j-img1', 'j-img2', 'x-img1', 'x-img2',
-     'hl-img1', 'hl-img2', 'al-img1', 'al-img2', 'aw-img1', 'aw-img2'].forEach(function (id) {
+     'hl-img1', 'hl-img2', 'al-img1', 'al-img2', 'aw-img1', 'aw-img2',
+     'el-img1', 'el-img2', 'ph-img1', 'ph-img2', 'ps-img1', 'ps-img2'].forEach(function (id) {
       attachImageUpload(id);
     });
   }
@@ -2167,6 +2186,30 @@
           title: val('aw-title').trim(), body: val('aw-body').trim(),
           btnText: val('aw-btn1t').trim(), btnHref: val('aw-btn1h').trim(),
           img1: val('aw-img1').trim(), img2: val('aw-img2').trim()
+        }
+      },
+      {
+        key: 'electives',
+        value: {
+          title: val('el-title').trim(), body: val('el-body').trim(),
+          btnText: val('el-btn1t').trim(), btnHref: val('el-btn1h').trim(),
+          img1: val('el-img1').trim(), img2: val('el-img2').trim()
+        }
+      },
+      {
+        key: 'projecthope',
+        value: {
+          title: val('ph-title').trim(), body: val('ph-body').trim(),
+          btnText: val('ph-btn1t').trim(), btnHref: val('ph-btn1h').trim(),
+          img1: val('ph-img1').trim(), img2: val('ph-img2').trim()
+        }
+      },
+      {
+        key: 'pubsd',
+        value: {
+          title: val('ps-title').trim(), body: val('ps-body').trim(),
+          btnText: val('ps-btn1t').trim(), btnHref: val('ps-btn1h').trim(),
+          img1: val('ps-img1').trim(), img2: val('ps-img2').trim()
         }
       }
     ];
