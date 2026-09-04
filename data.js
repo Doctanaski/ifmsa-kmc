@@ -77,6 +77,9 @@
       var awardsSettings = settings.awards || {};
       var join = settings.join || {};
       var president = settings.president || {};
+      var electives = settings.electives || {};
+      var projecthope = settings.projecthope || {};
+      var pubsd = settings.pubsd || {};
 
       return {
         year: site.year || '',
@@ -95,7 +98,10 @@
         alumni: alumniSettings,
         awards: awardsSettings,
         join: join,
-        president: president
+        president: president,
+        electives: electives,
+        projecthope: projecthope,
+        pubsd: pubsd
       };
     });
   }
@@ -123,7 +129,10 @@
         alumni: {},
         awards: {},
         join: {},
-        president: {}
+        president: {},
+        electives: {},
+        projecthope: {},
+        pubsd: {}
       };
       return memo;
     });
