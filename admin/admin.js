@@ -1230,6 +1230,7 @@
             '<label class="full">Timeframe (auto-generated)<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" readonly style="opacity:0.7;cursor:not-allowed" /></label>' +
             '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
             '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
+            '<label class="full">Thumbnail image (for project cards in the slider)<input type="text" id="f-thumbnail" value="' + esc(p.thumbnail || '') + '" placeholder="Upload or paste image URL" /></label>' +
             '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
             '<label class="full">Goals — one per line<textarea id="f-goals">' + esc((p.goals || []).join('\n')) + '</textarea></label>' +
             '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(p.id) + '" placeholder="e.g. scope-2026-summer-exchange" /></label>' +
@@ -1248,7 +1249,7 @@
     );
 
     ['f-title', 'f-committee', 'f-type', 'f-status', 'f-start-date', 'f-end-date', 'f-theme',
-     'f-summary', 'f-about', 'f-goals'].forEach(function (id) {
+     'f-summary', 'f-thumbnail', 'f-about', 'f-goals'].forEach(function (id) {
       var input = el(id);
       if (!input) return;
       input.addEventListener('input', renderProjectPreview);
@@ -1270,6 +1271,7 @@
     updateAutoTimeframe();
 
     attachMarkdownUpload('f-about');
+    attachImageUpload('f-thumbnail');
     renderProjectPreview();
 
     el('m-save').addEventListener('click', function () {
@@ -1286,6 +1288,7 @@
         timeframe: generateTimeframe(startDate, endDate) || null,
         theme: val('f-theme').trim() || null,
         summary: val('f-summary').trim() || null,
+        thumbnail: val('f-thumbnail').trim() || null,
         about: splitLines(val('f-about')),
         goals: splitLines(val('f-goals')),
         sort_order: parseInt(val('f-sort'), 10) || 0

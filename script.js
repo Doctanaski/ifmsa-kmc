@@ -126,9 +126,15 @@ const activate = (i) => {
     track.innerHTML = items.map((p, i) => {
       const no = String(i + 1).padStart(2, '0');
       const tag = tagOf(p.status);
+      const thumb = p.thumbnail
+        ? '<img class="car-thumb" src="' + p.thumbnail.split('#')[0] + '" alt=""' +
+          (window.imgFramePos ? ' style="object-position:' + window.imgFramePos(p.thumbnail) + '"' : '') +
+          ' loading="lazy" decoding="async" />'
+        : '';
       return (
         '<article class="car-card">' +
           '<div class="car-bg" aria-hidden="true">' +
+            thumb +
             '<span class="car-bg-blob"></span>' +
             '<span class="car-bg-ring"></span>' +
             '<span class="car-bg-word">' + (com.acronym || 'IFMSA') + '</span>' +

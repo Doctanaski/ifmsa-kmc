@@ -66,6 +66,7 @@ create table if not exists public.projects (
   timeframe  text,                        -- auto-generated from dates, kept for backward compat
   theme      text,
   summary    text,
+  thumbnail  text,                        -- URL to thumbnail image for carousel cards
   about      jsonb not null default '[]'::jsonb,
   goals      jsonb not null default '[]'::jsonb,
   sort_order int  not null default 0
@@ -250,6 +251,11 @@ create policy "admin read admin_users"    on public.admin_users   for select to 
 -- ============================================================
 -- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS start_date text;
 -- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS end_date text;
+
+-- ============================================================
+-- MIGRATION: Add thumbnail column to projects (run if table already exists)
+-- ============================================================
+-- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS thumbnail text;
 
 -- ============================================================
 -- MIGRATION: Add committee_members table (run if table doesn't exist)
