@@ -27,6 +27,7 @@
       client.from('site_settings').select('key, value'),
       client.from('highlights').select('*').order('sort_order'),
       client.from('exec_board').select('*').order('sort_order'),
+      client.from('committee_members').select('*').order('sort_order'),
       client.from('alumni').select('*').order('sort_order'),
       client.from('awards').select('*').order('sort_order')
     ]).then(function (results) {
@@ -35,8 +36,9 @@
       var settingsRes = results[2];
       var highlightsRes = results[3];
       var execRes = results[4];
-      var alumniRes = results[5];
-      var awardsRes = results[6];
+      var committeeMembersRes = results[5];
+      var alumniRes = results[6];
+      var awardsRes = results[7];
       if (committeesRes.error) throw committeesRes.error;
       if (projectsRes.error) throw projectsRes.error;
       if (settingsRes.error) throw settingsRes.error;
@@ -46,6 +48,9 @@
 
       var execBoard = (execRes && execRes.data) || [];
       if (execRes && execRes.error) execBoard = [];
+
+      var committeeMembers = (committeeMembersRes && committeeMembersRes.data) || [];
+      if (committeeMembersRes && committeeMembersRes.error) committeeMembers = [];
 
       var alumniList = (alumniRes && alumniRes.data) || [];
       if (alumniRes && alumniRes.error) alumniList = [];
@@ -79,6 +84,7 @@
         projects: projectsRes.data || [],
         highlightsList: highlights,
         execBoard: execBoard,
+        committeeMembers: committeeMembers,
         alumniList: alumniList,
         awardsList: awardsList,
         site: site,
@@ -106,6 +112,7 @@
         projects: [],
         highlightsList: [],
         execBoard: [],
+        committeeMembers: [],
         alumniList: [],
         awardsList: [],
         site: {},

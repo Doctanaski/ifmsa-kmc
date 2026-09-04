@@ -35,6 +35,7 @@
     projects: [],
     highlights: [],
     execBoard: [],
+    committeeMembers: [],
     alumni: [],
     awards: [],
     settings: { site: {}, hero: {}, about: {}, join: {}, exec: {}, highlights: {}, alumni: {}, awards: {} },
@@ -1072,6 +1073,7 @@
         '<button data-tab="committees">Committees</button>' +
         '<button data-tab="highlights">Highlights</button>' +
         '<button data-tab="executive">Executive Board</button>' +
+        '<button data-tab="comm-members">Committee Members</button>' +
         '<button data-tab="alumni">Alumni</button>' +
         '<button data-tab="awards">Awards</button>' +
         '<button data-tab="settings">Settings</button>' +
@@ -1081,6 +1083,7 @@
       '<main id="tab-committees" class="tab-pane" hidden></main>' +
       '<main id="tab-highlights" class="tab-pane" hidden></main>' +
       '<main id="tab-executive" class="tab-pane" hidden></main>' +
+      '<main id="tab-comm-members" class="tab-pane" hidden></main>' +
       '<main id="tab-alumni" class="tab-pane" hidden></main>' +
       '<main id="tab-awards" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
@@ -1094,7 +1097,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'highlights', 'executive', 'alumni', 'awards', 'settings', 'cards'].forEach(function (t) {
+        ['projects', 'committees', 'highlights', 'executive', 'comm-members', 'alumni', 'awards', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -1109,6 +1112,7 @@
       sb.from('site_settings').select('key, value'),
       sb.from('highlights').select('*').order('sort_order'),
       sb.from('exec_board').select('*').order('sort_order'),
+      sb.from('committee_members').select('*').order('sort_order'),
       sb.from('alumni').select('*').order('sort_order'),
       sb.from('awards').select('*').order('sort_order')
     ]).then(function (rs) {
@@ -1121,8 +1125,9 @@
       (rs[2].data || []).forEach(function (s) { state.settings[s.key] = s.value || {}; });
       state.highlights = rs[3].data || [];
       state.execBoard = rs[4].data || [];
-      state.alumni = rs[5].data || [];
-      state.awards = rs[6].data || [];
+      state.committeeMembers = rs[5].data || [];
+      state.alumni = rs[6].data || [];
+      state.awards = rs[7].data || [];
     });
   }
 
@@ -1139,6 +1144,7 @@
     else if (state.tab === 'committees') renderCommittees();
     else if (state.tab === 'highlights') renderHighlights();
     else if (state.tab === 'executive') renderExecutive();
+    else if (state.tab === 'comm-members') renderCommitteeMembers();
     else if (state.tab === 'alumni') renderAlumni();
     else if (state.tab === 'awards') renderAwards();
     else if (state.tab === 'cards') renderCards();
@@ -1631,6 +1637,136 @@
     sb.from('exec_board').delete().eq('id', id).then(function (r) {
       if (r.error) { alert(r.error.message); return; }
       loadData().then(renderExecutive);
+    });
+  }
+
+  /* ============ committee members (carousel on about pages) ============ */
+  function renderCommitteeMembers() {
+    var pane = el('tab-comm-members');
+
+    var rows = state.committeeMembers.slice().sort(function (a, b) {
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
+
+    var comBySlug = {};
+    state.committees.forEach(function (c) { comBySlug[c.slug] = c; });
+
+    pane.innerHTML =
+      '<div class="toolbar">' +
+        '<div></div>' +
+        '<button class="btn btn-primary" id="cm-new">+ Add member</button>' +
+      '</div>' +
+      '<div class="count">' + rows.length + ' committee member' + (rows.length === 1 ? '' : 's') + '</div>' +
+      '<table class="table">' +
+        '<thead><tr><th>Name</th><th>Role</th><th>Committee</th><th>Photo</th><th class="actions-cell">Actions</th></tr></thead>' +
+        '<tbody>' + rows.map(function (m) {
+          var com = comBySlug[m.committee] || {};
+          return '<tr>' +
+            '<td><strong>' + esc(m.name) + '</strong></td>' +
+            '<td>' + esc(m.role) + '</td>' +
+            '<td>' + esc(com.acronym || m.committee) + '</td>' +
+            '<td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(m.photo || '—') + '</td>' +
+            '<td class="actions-cell">' +
+              '<button class="btn btn-small" data-edit="' + esc(m.id) + '">Edit</button> ' +
+              '<button class="btn btn-small btn-danger" data-del="' + esc(m.id) + '">Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        (rows.length ? '' : '<tr><td colspan="5" class="empty">No committee members yet.</td></tr>') +
+        '</tbody>' +
+      '</table>';
+
+    el('cm-new').addEventListener('click', function () { committeeMemberModal(null); });
+    pane.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        committeeMemberModal(state.committeeMembers.find(function (m) { return m.id === b.getAttribute('data-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delCommitteeMember(b.getAttribute('data-del')); });
+    });
+  }
+
+  function committeeMemberModal(m) {
+    m = m || { id: '', committee: 'scope', name: '', role: '', photo: '', quote: '', sort_order: state.committeeMembers.length };
+
+    openModal(
+      '<h2>' + (m.id ? 'Edit committee member' : 'Add committee member') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Committee<select id="cm-committee">' + committeeOptions(m.committee) + '</select></label>' +
+            '<label class="full">Name<input type="text" id="cm-name" value="' + esc(m.name) + '" required /></label>' +
+            '<label class="full">Role<input type="text" id="cm-role" value="' + esc(m.role) + '" required placeholder="e.g. Member" /></label>' +
+            '<label class="full">Photo — upload or paste a URL<input type="text" id="cm-photo" value="' + esc(m.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Quote<textarea id="cm-quote">' + esc(m.quote) + '</textarea></label>' +
+            '<label>Sort order<input type="number" id="cm-sort" value="' + (m.sort_order || 0) + '" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save member</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="cm-preview" id="cm-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['cm-committee', 'cm-name', 'cm-role', 'cm-photo', 'cm-quote'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderCommitteeMemberPreview);
+      input.addEventListener('change', renderCommitteeMemberPreview);
+    });
+    attachImageUpload('cm-photo');
+    renderCommitteeMemberPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        committee: val('cm-committee'),
+        name: val('cm-name').trim(),
+        role: val('cm-role').trim(),
+        photo: val('cm-photo').trim() || null,
+        quote: val('cm-quote').trim() || null,
+        sort_order: parseInt(val('cm-sort'), 10) || 0
+      };
+      if (!row.name || !row.role) { alert('Name and role are required.'); return; }
+      if (m.id) row.id = m.id;
+      sb.from('committee_members').upsert(row).then(function (r) {
+        if (r.error) { alert(r.error.message); return; }
+        closeModal();
+        loadData().then(renderCommitteeMembers);
+      });
+    });
+  }
+
+  function renderCommitteeMemberPreview() {
+    var pre = el('cm-preview');
+    if (!pre) return;
+    var name = val('cm-name');
+    var role = val('cm-role');
+    var quote = val('cm-quote');
+    var photo = val('cm-photo');
+    var initials = (name || '').split(/\s+/).filter(Boolean).map(function (w) { return w.charAt(0).toUpperCase(); }).slice(0, 2).join('');
+    var photoHtml = photo
+      ? '<img src="' + esc(photo) + '" alt="Portrait" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />'
+      : '<span style="font-size:1.6rem;font-weight:800;color:#fff;">' + esc(initials) + '</span>';
+    pre.innerHTML =
+      '<div style="flex:0 0 220px;background:#fff;border:1px solid rgba(30,27,82,0.1);border-radius:20px;padding:1.5rem;text-align:center;">' +
+        '<div style="width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;overflow:hidden;background:linear-gradient(135deg,#0180C8,#006aa8);display:flex;align-items:center;justify-content:center;">' + photoHtml + '</div>' +
+        '<div style="font-size:0.95rem;font-weight:800;color:#1e1b52;margin-bottom:0.2rem;">' + esc(name || 'Name') + '</div>' +
+        '<div style="font-family:JetBrains Mono,monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:#0180C8;margin-bottom:0.5rem;">' + esc(role || 'Role') + '</div>' +
+        (quote ? '<div style="color:#4b5563;font-size:0.82rem;line-height:1.6;font-style:italic;">&ldquo;' + esc(quote) + '&rdquo;</div>' : '') +
+      '</div>';
+  }
+
+  function delCommitteeMember(id) {
+    if (!confirm('Remove this committee member?')) return;
+    sb.from('committee_members').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderCommitteeMembers);
     });
   }
 

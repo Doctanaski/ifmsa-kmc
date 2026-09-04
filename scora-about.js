@@ -54,6 +54,30 @@
       if (typeof window.applySiteSettings === 'function') {
         window.applySiteSettings(data);
       }
+
+      /* Load committee members */
+      if (data.committeeMembers) {
+        var track = document.getElementById('sra-members-track');
+        if (track) {
+          var members = data.committeeMembers.filter(function (m) { return m.committee === 'scora'; });
+          if (!members.length) {
+            track.innerHTML = '<p class="sra-members-empty">No members added yet.</p>';
+          } else {
+            track.innerHTML = members.map(function (m) {
+              var initials = (m.name || '').split(/\s+/).filter(Boolean).map(function (w) { return w.charAt(0).toUpperCase(); }).slice(0, 2).join('');
+              var photo = m.photo
+                ? '<img src="' + m.photo.replace(/"/g, '&quot;') + '" alt="Portrait of ' + (m.name || '').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async" />'
+                : '<span class="sra-member-initials">' + initials + '</span>';
+              return '<article class="sra-member-card">' +
+                '<div class="sra-member-photo">' + photo + '</div>' +
+                '<h3 class="sra-member-name">' + (m.name || '') + '</h3>' +
+                '<p class="sra-member-role">' + (m.role || '') + '</p>' +
+                (m.quote ? '<p class="sra-member-quote">&ldquo;' + m.quote + '&rdquo;</p>' : '') +
+              '</article>';
+            }).join('');
+          }
+        }
+      }
     });
   }
 

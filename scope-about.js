@@ -41,4 +41,30 @@
     });
   }
 
+  /* ─── Load members from Supabase ────────────────────────── */
+  if (typeof window.loadSiteData === 'function') {
+    window.loadSiteData().then(function (data) {
+      if (!data || !data.committeeMembers) return;
+      var track = document.getElementById('scp-members-track');
+      if (!track) return;
+      var members = data.committeeMembers.filter(function (m) { return m.committee === 'scope'; });
+      if (!members.length) {
+        track.innerHTML = '<p class="scp-members-empty">No members added yet.</p>';
+        return;
+      }
+      track.innerHTML = members.map(function (m) {
+        var initials = (m.name || '').split(/\s+/).filter(Boolean).map(function (w) { return w.charAt(0).toUpperCase(); }).slice(0, 2).join('');
+        var photo = m.photo
+          ? '<img src="' + m.photo.replace(/"/g, '&quot;') + '" alt="Portrait of ' + (m.name || '').replace(/"/g, '&quot;') + '" loading="lazy" decoding="async" />'
+          : '<span class="scp-member-initials">' + initials + '</span>';
+        return '<article class="scp-member-card">' +
+          '<div class="scp-member-photo">' + photo + '</div>' +
+          '<h3 class="scp-member-name">' + (m.name || '') + '</h3>' +
+          '<p class="scp-member-role">' + (m.role || '') + '</p>' +
+          (m.quote ? '<p class="scp-member-quote">&ldquo;' + m.quote + '&rdquo;</p>' : '') +
+        '</article>';
+      }).join('');
+    }).catch(function () {});
+  }
+
 })();

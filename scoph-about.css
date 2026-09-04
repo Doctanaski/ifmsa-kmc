@@ -549,6 +549,111 @@ strong { font-weight: 700; }
 }
 
 /* ============================================================
+   MEMBERS CAROUSEL
+   ============================================================ */
+.sph-members {
+  background: var(--sph-bg-2);
+  border-top: 1px solid var(--sph-border);
+  border-bottom: 1px solid var(--sph-border);
+}
+
+.sph-members-carousel {
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(244,125,60,0.3) transparent;
+  padding-bottom: 1rem;
+}
+
+.sph-members-carousel::-webkit-scrollbar { height: 6px; }
+.sph-members-carousel::-webkit-scrollbar-track { background: transparent; }
+.sph-members-carousel::-webkit-scrollbar-thumb { background: rgba(244,125,60,0.3); border-radius: 3px; }
+
+.sph-members-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.sph-member-card {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+  background: var(--sph-bg);
+  border: 1px solid var(--sph-border);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: box-shadow 0.35s var(--sph-ease), transform 0.35s var(--sph-ease), border-color 0.35s var(--sph-ease);
+}
+
+.sph-member-card:hover {
+  box-shadow: 0 12px 36px rgba(30,27,82,0.1);
+  transform: translateY(-4px);
+  border-color: rgba(244,125,60,0.25);
+}
+
+.sph-member-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 1.2rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--sph-orange) 0%, var(--sph-orange-2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sph-member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sph-member-initials {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.sph-member-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--sph-fg);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.sph-member-role {
+  font-family: var(--sph-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sph-orange);
+  margin-bottom: 0.6rem;
+}
+
+.sph-member-quote {
+  color: var(--sph-fg-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.sph-members-empty {
+  text-align: center;
+  color: var(--sph-fg-faint);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {

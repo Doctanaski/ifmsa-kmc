@@ -94,6 +94,17 @@ create table if not exists public.exec_board (
   sort_order int  not null default 0
 );
 
+-- ---------- committee_members (carousel on each committee about page) ----------
+create table if not exists public.committee_members (
+  id         uuid primary key default gen_random_uuid(),
+  committee  text not null references public.committees (slug) on delete cascade,
+  name       text not null,
+  role       text not null,
+  photo      text,
+  quote      text,
+  sort_order int  not null default 0
+);
+
 -- ---------- alumni (Where they are now page) ----------
 create table if not exists public.alumni (
   id         uuid primary key default gen_random_uuid(),
@@ -144,14 +155,15 @@ create table if not exists public.admin_users (
 );
 
 -- ---------- row level security ----------
-alter table public.committees    enable row level security;
-alter table public.projects      enable row level security;
-alter table public.highlights    enable row level security;
-alter table public.exec_board    enable row level security;
-alter table public.alumni        enable row level security;
-alter table public.awards        enable row level security;
-alter table public.site_settings enable row level security;
-alter table public.admin_users   enable row level security;
+alter table public.committees          enable row level security;
+alter table public.projects            enable row level security;
+alter table public.highlights          enable row level security;
+alter table public.exec_board          enable row level security;
+alter table public.committee_members   enable row level security;
+alter table public.alumni              enable row level security;
+alter table public.awards              enable row level security;
+alter table public.site_settings       enable row level security;
+alter table public.admin_users         enable row level security;
 
 -- security definer helper so admin checks don't trigger RLS recursion
 create or replace function public.is_admin()
@@ -165,56 +177,63 @@ as $$
 $$;
 
 -- public can read content (the public site needs it)
-drop policy if exists "public read committees"    on public.committees;
-drop policy if exists "public read projects"      on public.projects;
-drop policy if exists "public read highlights"    on public.highlights;
-drop policy if exists "public read exec_board"    on public.exec_board;
-drop policy if exists "public read alumni"        on public.alumni;
-drop policy if exists "public read awards"        on public.awards;
-drop policy if exists "public read site_settings" on public.site_settings;
+drop policy if exists "public read committees"          on public.committees;
+drop policy if exists "public read projects"            on public.projects;
+drop policy if exists "public read highlights"          on public.highlights;
+drop policy if exists "public read exec_board"          on public.exec_board;
+drop policy if exists "public read committee_members"   on public.committee_members;
+drop policy if exists "public read alumni"              on public.alumni;
+drop policy if exists "public read awards"              on public.awards;
+drop policy if exists "public read site_settings"       on public.site_settings;
 
-create policy "public read committees"    on public.committees    for select using (true);
-create policy "public read projects"      on public.projects      for select using (true);
-create policy "public read highlights"    on public.highlights    for select using (true);
-create policy "public read exec_board"    on public.exec_board    for select using (true);
-create policy "public read alumni"        on public.alumni        for select using (true);
-create policy "public read awards"        on public.awards        for select using (true);
-create policy "public read site_settings" on public.site_settings for select using (true);
+create policy "public read committees"          on public.committees          for select using (true);
+create policy "public read projects"            on public.projects            for select using (true);
+create policy "public read highlights"          on public.highlights          for select using (true);
+create policy "public read exec_board"          on public.exec_board          for select using (true);
+create policy "public read committee_members"   on public.committee_members   for select using (true);
+create policy "public read alumni"              on public.alumni              for select using (true);
+create policy "public read awards"              on public.awards              for select using (true);
+create policy "public read site_settings"       on public.site_settings       for select using (true);
 
 -- only listed admins can write content
-drop policy if exists "admin write committees"    on public.committees;
-drop policy if exists "admin write projects"      on public.projects;
-drop policy if exists "admin write highlights"    on public.highlights;
-drop policy if exists "admin write exec_board"    on public.exec_board;
-drop policy if exists "admin write alumni"        on public.alumni;
-drop policy if exists "admin write awards"        on public.awards;
-drop policy if exists "admin write site_settings" on public.site_settings;
+drop policy if exists "admin write committees"          on public.committees;
+drop policy if exists "admin write projects"            on public.projects;
+drop policy if exists "admin write highlights"          on public.highlights;
+drop policy if exists "admin write exec_board"          on public.exec_board;
+drop policy if exists "admin write committee_members"   on public.committee_members;
+drop policy if exists "admin write alumni"              on public.alumni;
+drop policy if exists "admin write awards"              on public.awards;
+drop policy if exists "admin write site_settings"       on public.site_settings;
 
-create policy "admin write committees"    on public.committees    for all to authenticated
+create policy "admin write committees"          on public.committees          for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write projects"      on public.projects      for all to authenticated
+create policy "admin write projects"            on public.projects            for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write highlights"    on public.highlights    for all to authenticated
+create policy "admin write highlights"          on public.highlights          for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write exec_board"    on public.exec_board    for all to authenticated
+create policy "admin write exec_board"          on public.exec_board          for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write alumni"        on public.alumni        for all to authenticated
+create policy "admin write committee_members"   on public.committee_members   for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write awards"        on public.awards        for all to authenticated
+create policy "admin write alumni"              on public.alumni              for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
-create policy "admin write site_settings" on public.site_settings for all to authenticated
+create policy "admin write awards"              on public.awards              for all to authenticated
+  using    (public.is_admin())
+  with check (public.is_admin());
+
+create policy "admin write site_settings"       on public.site_settings       for all to authenticated
   using    (public.is_admin())
   with check (public.is_admin());
 
@@ -229,3 +248,19 @@ create policy "admin read admin_users"    on public.admin_users   for select to 
 -- ============================================================
 -- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS start_date text;
 -- ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS end_date text;
+
+-- ============================================================
+-- MIGRATION: Add committee_members table (run if table doesn't exist)
+-- ============================================================
+-- CREATE TABLE IF NOT EXISTS public.committee_members (
+--   id         uuid primary key default gen_random_uuid(),
+--   committee  text not null references public.committees (slug) on delete cascade,
+--   name       text not null,
+--   role       text not null,
+--   photo      text,
+--   quote      text,
+--   sort_order int  not null default 0
+-- );
+-- ALTER TABLE public.committee_members ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "public read committee_members" ON public.committee_members FOR SELECT USING (true);
+-- CREATE POLICY "admin write committee_members" ON public.committee_members FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());

@@ -563,6 +563,111 @@ strong { font-weight: 700; }
 }
 
 /* ============================================================
+   MEMBERS CAROUSEL
+   ============================================================ */
+.sre-members {
+  background: var(--sre-bg-2);
+  border-top: 1px solid var(--sre-border);
+  border-bottom: 1px solid var(--sre-border);
+}
+
+.sre-members-carousel {
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(47,74,155,0.3) transparent;
+  padding-bottom: 1rem;
+}
+
+.sre-members-carousel::-webkit-scrollbar { height: 6px; }
+.sre-members-carousel::-webkit-scrollbar-track { background: transparent; }
+.sre-members-carousel::-webkit-scrollbar-thumb { background: rgba(47,74,155,0.3); border-radius: 3px; }
+
+.sre-members-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.sre-member-card {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+  background: var(--sre-bg);
+  border: 1px solid var(--sre-border);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: box-shadow 0.35s var(--sre-ease), transform 0.35s var(--sre-ease), border-color 0.35s var(--sre-ease);
+}
+
+.sre-member-card:hover {
+  box-shadow: 0 12px 36px rgba(30,27,82,0.1);
+  transform: translateY(-4px);
+  border-color: rgba(47,74,155,0.25);
+}
+
+.sre-member-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 1.2rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--sre-blue) 0%, var(--sre-blue-2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sre-member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sre-member-initials {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.sre-member-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--sre-fg);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.sre-member-role {
+  font-family: var(--sre-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sre-blue);
+  margin-bottom: 0.6rem;
+}
+
+.sre-member-quote {
+  color: var(--sre-fg-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.sre-members-empty {
+  text-align: center;
+  color: var(--sre-fg-faint);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
