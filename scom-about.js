@@ -44,6 +44,18 @@
         window.applySiteSettings(siteData);
       }
 
+      /* Populate Local Officer contact card from committee record */
+      if (siteData && siteData.committees && siteData.committees.scom) {
+        var c = siteData.committees.scom;
+        var nameEl = document.getElementById('sme-officer-name');
+        var emailEl = document.getElementById('sme-officer-email');
+        if (nameEl && c.officer_name) nameEl.textContent = c.officer_name;
+        if (emailEl && c.officer_email) {
+          emailEl.textContent = c.officer_email;
+          emailEl.setAttribute('href', 'mailto:' + c.officer_email);
+        }
+      }
+
       /* Load committee members */
       if (siteData && siteData.committeeMembers) {
         var track = document.getElementById('sme-members-track');

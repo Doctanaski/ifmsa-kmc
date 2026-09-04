@@ -44,6 +44,15 @@
           var eyebrowRest = document.querySelector('.srp-eyebrow-rest');
           if (eyebrowRest) eyebrowRest.textContent = sc.name;
         }
+
+        /* Populate Local Officer contact card */
+        var nameEl = document.getElementById('srp-officer-name');
+        var emailEl = document.getElementById('srp-officer-email');
+        if (nameEl && sc.officer_name) nameEl.textContent = sc.officer_name;
+        if (emailEl && sc.officer_email) {
+          emailEl.textContent = sc.officer_email;
+          emailEl.setAttribute('href', 'mailto:' + sc.officer_email);
+        }
       }
 
       /* Load committee members */

@@ -3,14 +3,16 @@
 -- Run AFTER schema.sql in the Supabase SQL Editor.
 -- ============================================================
 
-insert into public.committees (slug, acronym, name, color, accent, logo, sort_order) values
-('scope', 'SCOPE', 'Professional Exchange', '#0180C8', '#0180C8', 'assets/sc-SCOPE.png', 0),
-('scom', 'SCOME', 'Medical Education', '#e6edf3', '#0969da', 'assets/sc-SCOME.png', 1),
-('scora', 'SCORA', 'Sexual & Reproductive Health', '#B2222A', '#B2222A', 'assets/sc-SCORA.png', 2),
-('scoph', 'SCOPH', 'Public Health', '#F47D3C', '#F47D3C', 'assets/sc-SCOPH.png', 3),
-('scorp', 'SCORP', 'Human Rights & Peace', '#5F913F', '#5F913F', 'assets/sc-SCORP.png', 4),
-('score', 'SCORE', 'Research Exchange', '#2F4A9B', '#2F4A9B', 'assets/sc-SCORE.png', 5)
-on conflict (slug) do nothing;
+insert into public.committees (slug, acronym, name, color, accent, logo, sort_order, officer_name, officer_email) values
+('scope', 'SCOPE', 'Professional Exchange', '#0180C8', '#0180C8', 'assets/sc-SCOPE.png', 0, 'Bilal Shah', 'president.kmclc.ifmsapakistan@gmail.com'),
+('scom', 'SCOME', 'Medical Education', '#e6edf3', '#0969da', 'assets/sc-SCOME.png', 1, 'Ayesha Kanwal', 'president.kmclc.ifmsapakistan@gmail.com'),
+('scora', 'SCORA', 'Sexual & Reproductive Health', '#B2222A', '#B2222A', 'assets/sc-SCORA.png', 2, 'Usman Tariq', 'president.kmclc.ifmsapakistan@gmail.com'),
+('scoph', 'SCOPH', 'Public Health', '#F47D3C', '#F47D3C', 'assets/sc-SCOPH.png', 3, 'Mahnoor Khan', 'president.kmclc.ifmsapakistan@gmail.com'),
+('scorp', 'SCORP', 'Human Rights & Peace', '#5F913F', '#5F913F', 'assets/sc-SCORP.png', 4, 'Hassan Qureshi', 'president.kmclc.ifmsapakistan@gmail.com'),
+('score', 'SCORE', 'Research Exchange', '#2F4A9B', '#2F4A9B', 'assets/sc-SCORE.png', 5, 'Iqra Yousaf', 'president.kmclc.ifmsapakistan@gmail.com')
+on conflict (slug) do update set
+  officer_name = excluded.officer_name,
+  officer_email = excluded.officer_email;
 
 insert into public.projects (id, committee, title, type, status, timeframe, theme, summary, about, goals, sort_order) values
 ('scope-2026-summer-exchange', 'scope', 'Summer Exchange 2026', 'Exchange', 'Applications open', 'May – Aug 2026', 'Outbound · IFMSA Exchanges', 'Four-week clinical rotations in teaching hospitals across twelve exchange partner countries.', '["Every summer SCOPE wakes the council up and sends it abroad. Selected students match to a host committee, then live, learn and clerk beside peers in hospitals they would otherwise never step into — from operating theatres in Türkiye to rural clinics in Colombia.","Outbound preparation runs through the spring: visa clinics, insurance and immunisation checks, safety briefings and a buddy-pairing system so no one crosses a border alone. Every returning student debriefs with the exchange committee, so the next cohort starts a step ahead.","![Rotations at partner hospitals](https://picsum.photos/seed/scope-hospital-1/1200/900)","![Wards and ward rounds](https://picsum.photos/seed/scope-hospital-2/1200/900)"]'::jsonb, '["Place 25 KMC students in host hospitals across full rounds.","Run four pre-departure preparation sessions in the spring term.","Reach 100% returning-student debrief completion."]'::jsonb, 0),

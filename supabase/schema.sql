@@ -49,7 +49,9 @@ create table if not exists public.committees (
   logo         text,
   group_photo  text,
   members      text,
-  sort_order   int  not null default 0
+  sort_order   int  not null default 0,
+  officer_name  text,                      -- Local Officer display name
+  officer_email text                       -- Local Officer contact email
 );
 
 -- ---------- projects ----------

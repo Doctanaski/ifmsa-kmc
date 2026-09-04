@@ -44,7 +44,21 @@
   /* ─── Load members from Supabase ────────────────────────── */
   if (typeof window.loadSiteData === 'function') {
     window.loadSiteData().then(function (data) {
-      if (!data || !data.committeeMembers) return;
+      if (!data) return;
+
+      /* Populate Local Officer contact card from committee record */
+      if (data.committees && data.committees.scope) {
+        var c = data.committees.scope;
+        var nameEl = document.getElementById('scp-officer-name');
+        var emailEl = document.getElementById('scp-officer-email');
+        if (nameEl && c.officer_name) nameEl.textContent = c.officer_name;
+        if (emailEl && c.officer_email) {
+          emailEl.textContent = c.officer_email;
+          emailEl.setAttribute('href', 'mailto:' + c.officer_email);
+        }
+      }
+
+      if (!data.committeeMembers) return;
       var track = document.getElementById('scp-members-track');
       if (!track) return;
       var members = data.committeeMembers.filter(function (m) { return m.committee === 'scope'; });

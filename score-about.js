@@ -85,6 +85,15 @@
               avatar.alt = (score.name || 'SCORE') + ' logo';
             }
           }
+
+          /* Populate Local Officer contact card */
+          var offNameEl = document.getElementById('sre-officer-name');
+          var offEmailEl = document.getElementById('sre-officer-email');
+          if (offNameEl && score.officer_name) offNameEl.textContent = score.officer_name;
+          if (offEmailEl && score.officer_email) {
+            offEmailEl.textContent = score.officer_email;
+            offEmailEl.setAttribute('href', 'mailto:' + score.officer_email);
+          }
         }
       }
 

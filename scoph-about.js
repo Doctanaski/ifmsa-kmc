@@ -50,6 +50,15 @@
       /* SCOPH committee-specific data (if available) */
       var scoph = data.committees && data.committees.scoph;
       if (scoph) {
+        /* Populate Local Officer contact card */
+        var nameEl = document.getElementById('sph-officer-name');
+        var emailEl = document.getElementById('sph-officer-email');
+        if (nameEl && scoph.officer_name) nameEl.textContent = scoph.officer_name;
+        if (emailEl && scoph.officer_email) {
+          emailEl.textContent = scoph.officer_email;
+          emailEl.setAttribute('href', 'mailto:' + scoph.officer_email);
+        }
+
         /* Could populate dynamic content from the scoph committee record */
         var titleEl = document.querySelector('.sph-hero-title');
         if (titleEl && scoph.title) {

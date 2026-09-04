@@ -46,8 +46,15 @@
       // dynamic fields here in the future
       if (data.committees && data.committees.scora) {
         var scora = data.committees.scora;
-        // Example: update hero text from Supabase if stored
-        // setText('sra-hero-title', scora.title);
+
+        /* Populate Local Officer contact card */
+        var nameEl = document.getElementById('sra-officer-name');
+        var emailEl = document.getElementById('sra-officer-email');
+        if (nameEl && scora.officer_name) nameEl.textContent = scora.officer_name;
+        if (emailEl && scora.officer_email) {
+          emailEl.textContent = scora.officer_email;
+          emailEl.setAttribute('href', 'mailto:' + scora.officer_email);
+        }
       }
 
       // Apply site-wide settings (footer, etc.)

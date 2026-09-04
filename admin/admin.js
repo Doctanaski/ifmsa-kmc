@@ -1344,7 +1344,7 @@
   }
 
   function committeeModal(c) {
-    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', group_photo: '', members: '', sort_order: state.committees.length };
+    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', group_photo: '', members: '', sort_order: state.committees.length, officer_name: '', officer_email: '' };
     openModal(
       '<h2>' + (c.slug ? 'Edit committee' : 'New committee') + '</h2>' +
       '<div class="form-grid">' +
@@ -1357,6 +1357,8 @@
         '<label class="full">Logo — upload or paste a URL<input type="text" id="c-logo" value="' + esc(c.logo) + '" placeholder="Leave blank to hide the logo" /></label>' +
         '<label class="full">Group photo — upload or paste a URL<input type="text" id="c-group-photo" value="' + esc(c.group_photo || '') + '" placeholder="Photo of the committee members" /></label>' +
         '<label class="full">Members — one name per line (displayed under the group photo)<textarea id="c-members" placeholder="John Doe\nJane Smith\n...">' + esc(c.members || '') + '</textarea></label>' +
+        '<label class="full">Local Officer — name shown on the about page contact card<input type="text" id="c-officer-name" value="' + esc(c.officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
+        '<label class="full">Local Officer — email shown on the about page contact card<input type="text" id="c-officer-email" value="' + esc(c.officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
       '</div>' +
       '<div class="form-actions">' +
         '<button class="btn" id="m-cancel">Cancel</button>' +
@@ -1377,7 +1379,9 @@
         logo: val('c-logo').trim() || null,
         group_photo: val('c-group-photo').trim() || null,
         members: val('c-members').trim() || null,
-        sort_order: parseInt(val('c-sort'), 10) || 0
+        sort_order: parseInt(val('c-sort'), 10) || 0,
+        officer_name: val('c-officer-name').trim() || null,
+        officer_email: val('c-officer-email').trim() || null
       };
       if (!row.slug || !row.acronym || !row.name) { alert('Slug, acronym and name are required.'); return; }
       sb.from('committees').upsert(row).then(function (r) {
