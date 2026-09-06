@@ -1076,6 +1076,7 @@
         '<button data-tab="comm-members">Committee Members</button>' +
         '<button data-tab="alumni">Alumni</button>' +
         '<button data-tab="awards">Awards</button>' +
+        '<button data-tab="pubsd">Support Division</button>' +
         '<button data-tab="settings">Settings</button>' +
         '<button data-tab="cards">Feature Cards</button>' +
       '</nav>' +
@@ -1084,6 +1085,7 @@
       '<main id="tab-highlights" class="tab-pane" hidden></main>' +
       '<main id="tab-executive" class="tab-pane" hidden></main>' +
       '<main id="tab-comm-members" class="tab-pane" hidden></main>' +
+      '<main id="tab-pubsd" class="tab-pane" hidden></main>' +
       '<main id="tab-alumni" class="tab-pane" hidden></main>' +
       '<main id="tab-awards" class="tab-pane" hidden></main>' +
       '<main id="tab-settings" class="tab-pane" hidden></main>' +
@@ -1097,7 +1099,7 @@
         document.querySelectorAll('#tabs button').forEach(function (x) {
           x.classList.toggle('active', x === b);
         });
-        ['projects', 'committees', 'highlights', 'executive', 'comm-members', 'alumni', 'awards', 'settings', 'cards'].forEach(function (t) {
+        ['projects', 'committees', 'highlights', 'executive', 'comm-members', 'pubsd', 'alumni', 'awards', 'settings', 'cards'].forEach(function (t) {
           el('tab-' + t).hidden = t !== state.tab;
         });
         renderTab();
@@ -1145,6 +1147,7 @@
     else if (state.tab === 'highlights') renderHighlights();
     else if (state.tab === 'executive') renderExecutive();
     else if (state.tab === 'comm-members') renderCommitteeMembers();
+    else if (state.tab === 'pubsd') renderPubsd();
     else if (state.tab === 'alumni') renderAlumni();
     else if (state.tab === 'awards') renderAwards();
     else if (state.tab === 'cards') renderCards();
@@ -1774,6 +1777,162 @@
     sb.from('committee_members').delete().eq('id', id).then(function (r) {
       if (r.error) { alert(r.error.message); return; }
       loadData().then(renderCommitteeMembers);
+    });
+  }
+
+  /* ============ Support Division (PubSD) ============ */
+  function renderPubsd() {
+    var pane = el('tab-pubsd');
+    var support = state.committees.find(function (c) { return c.slug === 'support'; }) || {};
+    var members = state.committeeMembers.filter(function (m) { return m.committee === 'support'; })
+      .sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
+
+    pane.innerHTML =
+      '<div class="card settings-section"><h3>PubSD Head</h3>' +
+        '<div class="form-grid">' +
+          '<label class="full">Head name<input type="text" id="psd-head-name" value="' + esc(support.officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
+          '<label class="full">Head email<input type="text" id="psd-head-email" value="' + esc(support.officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
+        '</div>' +
+        '<div class="form-actions"><button class="btn btn-primary" id="psd-head-save">Save details</button></div>' +
+      '</div>' +
+
+      '<div class="card settings-section"><h3>Support Division Members</h3>' +
+        '<div class="toolbar">' +
+          '<div></div>' +
+          '<button class="btn btn-primary" id="psd-member-new">+ Add member</button>' +
+        '</div>' +
+        '<div class="count">' + members.length + ' member' + (members.length === 1 ? '' : 's') + '</div>' +
+        '<table class="table">' +
+          '<thead><tr><th>Name</th><th>Role</th><th>Photo</th><th class="actions-cell">Actions</th></tr></thead>' +
+          '<tbody>' + members.map(function (m) {
+            return '<tr>' +
+              '<td><strong>' + esc(m.name) + '</strong></td>' +
+              '<td>' + esc(m.role) + '</td>' +
+              '<td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(m.photo || '\u2014') + '</td>' +
+              '<td class="actions-cell">' +
+                '<button class="btn btn-small" data-psd-edit="' + esc(m.id) + '">Edit</button> ' +
+                '<button class="btn btn-small btn-danger" data-psd-del="' + esc(m.id) + '">Delete</button>' +
+              '</td></tr>';
+          }).join('') +
+          (members.length ? '' : '<tr><td colspan="4" class="empty">No support division members yet.</td></tr>') +
+          '</tbody>' +
+        '</table>' +
+      '</div>';
+
+    el('psd-head-save').addEventListener('click', savePubsdHead);
+    el('psd-member-new').addEventListener('click', function () { pubsdMemberModal(null); });
+    pane.querySelectorAll('[data-psd-edit]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        pubsdMemberModal(state.committeeMembers.find(function (m) { return m.id === b.getAttribute('data-psd-edit'); }));
+      });
+    });
+    pane.querySelectorAll('[data-psd-del]').forEach(function (b) {
+      b.addEventListener('click', function () { delPubsdMember(b.getAttribute('data-psd-del')); });
+    });
+  }
+
+  function savePubsdHead() {
+    var support = state.committees.find(function (c) { return c.slug === 'support'; });
+    if (!support) { alert('Support Division committee not found in database.'); return; }
+    var row = {
+      slug: 'support',
+      acronym: support.acronym,
+      name: support.name,
+      color: support.color,
+      accent: support.accent,
+      logo: support.logo,
+      group_photo: support.group_photo,
+      members: support.members,
+      sort_order: support.sort_order || 0,
+      officer_name: val('psd-head-name').trim(),
+      officer_email: val('psd-head-email').trim()
+    };
+    sb.from('committees').upsert(row).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderPubsd);
+    });
+  }
+
+  function pubsdMemberModal(m) {
+    m = m || { id: '', committee: 'support', name: '', role: '', photo: '', quote: '', sort_order: state.committeeMembers.length };
+
+    openModal(
+      '<h2>' + (m.id ? 'Edit member' : 'Add member') + '</h2>' +
+      '<div class="modal-body">' +
+        '<div class="modal-form">' +
+          '<div class="form-grid">' +
+            '<label class="full">Name<input type="text" id="psm-name" value="' + esc(m.name) + '" required /></label>' +
+            '<label class="full">Role<input type="text" id="psm-role" value="' + esc(m.role) + '" required placeholder="e.g. Member" /></label>' +
+            '<label class="full">Photo \u2014 upload or paste a URL<input type="text" id="psm-photo" value="' + esc(m.photo) + '" placeholder="Leave blank to show initials" /></label>' +
+            '<label class="full">Quote<textarea id="psm-quote">' + esc(m.quote) + '</textarea></label>' +
+            '<label>Sort order<input type="number" id="psm-sort" value="' + (m.sort_order || 0) + '" /></label>' +
+          '</div>' +
+          '<div class="form-actions">' +
+            '<button class="btn" id="m-cancel">Cancel</button>' +
+            '<button class="btn btn-primary" id="m-save">Save member</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="preview-pane">' +
+          '<div class="preview-label">Live preview</div>' +
+          '<div class="cm-preview" id="psm-preview"></div>' +
+        '</div>' +
+      '</div>',
+      'modal--wide'
+    );
+
+    ['psm-name', 'psm-role', 'psm-photo', 'psm-quote'].forEach(function (id) {
+      var input = el(id);
+      if (!input) return;
+      input.addEventListener('input', renderPubsdMemberPreview);
+      input.addEventListener('change', renderPubsdMemberPreview);
+    });
+    attachImageUpload('psm-photo');
+    renderPubsdMemberPreview();
+
+    el('m-save').addEventListener('click', function () {
+      var row = {
+        committee: 'support',
+        name: val('psm-name').trim(),
+        role: val('psm-role').trim(),
+        photo: val('psm-photo').trim() || null,
+        quote: val('psm-quote').trim() || null,
+        sort_order: parseInt(val('psm-sort'), 10) || 0
+      };
+      if (!row.name || !row.role) { alert('Name and role are required.'); return; }
+      if (m.id) row.id = m.id;
+      sb.from('committee_members').upsert(row).then(function (r) {
+        if (r.error) { alert(r.error.message); return; }
+        closeModal();
+        loadData().then(renderPubsd);
+      });
+    });
+  }
+
+  function renderPubsdMemberPreview() {
+    var pre = el('psm-preview');
+    if (!pre) return;
+    var name = val('psm-name');
+    var role = val('psm-role');
+    var quote = val('psm-quote');
+    var photo = val('psm-photo');
+    var initials = (name || '').split(/\s+/).filter(Boolean).map(function (w) { return w.charAt(0).toUpperCase(); }).slice(0, 2).join('');
+    var photoHtml = photo
+      ? '<img src="' + esc(photo) + '" alt="Portrait" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />'
+      : '<span style="font-size:1.6rem;font-weight:800;color:#fff;">' + esc(initials) + '</span>';
+    pre.innerHTML =
+      '<div style="flex:0 0 220px;background:#fff;border:1px solid rgba(30,27,82,0.1);border-radius:20px;padding:1.5rem;text-align:center;">' +
+        '<div style="width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;overflow:hidden;background:linear-gradient(135deg,#0d9488,#0a7a70);display:flex;align-items:center;justify-content:center;">' + photoHtml + '</div>' +
+        '<div style="font-size:0.95rem;font-weight:800;color:#1e1b52;margin-bottom:0.2rem;">' + esc(name || 'Name') + '</div>' +
+        '<div style="font-family:JetBrains Mono,monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:#0d9488;margin-bottom:0.5rem;">' + esc(role || 'Role') + '</div>' +
+        (quote ? '<div style="color:#4b5563;font-size:0.82rem;line-height:1.6;font-style:italic;">&ldquo;' + esc(quote) + '&rdquo;</div>' : '') +
+      '</div>';
+  }
+
+  function delPubsdMember(id) {
+    if (!confirm('Remove this support division member?')) return;
+    sb.from('committee_members').delete().eq('id', id).then(function (r) {
+      if (r.error) { alert(r.error.message); return; }
+      loadData().then(renderPubsd);
     });
   }
 
