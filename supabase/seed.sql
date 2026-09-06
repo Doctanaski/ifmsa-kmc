@@ -59,7 +59,7 @@ insert into public.site_settings (key, value) values
 ('alumni', '{"title":"Alumni","body":"Where they are now — graduates who started at KMC and carried the council into careers across the world.","btnText":"Meet Alumni","btnHref":"alumni.html","img1":"","img2":""}'::jsonb),
 ('awards', '{"title":"Achievements & Awards","body":"From Officer of the Year to Best Project — the trophies, medals and recognition the council earned this year.","btnText":"View Awards","btnHref":"awards.html","img1":"","img2":""}'::jsonb),
 ('electives', '{"title":"Elective Diaries","body":"Stories from students who spent their clinical electives abroad — the wards, the people and the lessons that changed how they practise medicine.","btnText":"Read Diaries","btnHref":"#","img1":"","img2":""}'::jsonb),
-('projecthope', '{"title":"Project Hope","body":"A student-led initiative bringing healthcare access to underserved communities through screening camps, health education and referral pathways.","btnText":"Learn More","btnHref":"#","img1":"","img2":""}'::jsonb),
+('projecthope', '{"title":"Project Hope","body":"A student-led initiative bringing healthcare access to underserved communities through screening camps, health education and referral pathways.","btnText":"Learn More","btnHref":"hope-about.html","img1":"","img2":""}'::jsonb),
 ('pubsd', '{"title":"PubSD","body":"Public Health in Practice — our student-driven publication platform for research abstracts, case reports and public health commentary.","btnText":"Visit PubSD","btnHref":"support-about.html","img1":"","img2":""}'::jsonb)
 on conflict (key) do nothing;
 
