@@ -1318,6 +1318,9 @@
     state.committeeMembers.forEach(function (m) {
       memberCount[m.committee] = (memberCount[m.committee] || 0) + 1;
     });
+    var support = state.committees.find(function (c) { return c.slug === 'support'; });
+    var supportMembers = state.committeeMembers.filter(function (m) { return m.committee === 'support'; })
+      .sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
 
     pane.innerHTML =
       '<div class="toolbar"><div></div><button class="btn btn-primary" id="com-new">+ New committee</button></div>' +
@@ -1338,16 +1341,9 @@
         }).join('') + '</tbody>' +
       '</table>' +
 
-      state.committees.map(function (c) {
+      state.committees.filter(function (c) { return c.slug !== 'support'; }).map(function (c) {
         var members = state.committeeMembers.filter(function (m) { return m.committee === c.slug; })
           .sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
-        var isSupport = c.slug === 'support';
-        var headFields = isSupport ?
-          '<div class="form-grid" style="margin-bottom:1rem">' +
-            '<label class="full">Head name<input type="text" id="psd-head-name" value="' + esc(c.officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
-            '<label class="full">Head email<input type="text" id="psd-head-email" value="' + esc(c.officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
-          '</div>' +
-          '<div class="form-actions"><button class="btn btn-small" id="psd-head-save">Save head details</button></div>' : '';
 
         return '<div class="card settings-section" style="margin-top:1.5rem">' +
           '<h3 style="display:flex;align-items:center;gap:.5rem">' +
@@ -1355,7 +1351,6 @@
             esc(c.acronym) + ' &mdash; ' + esc(c.name) +
             ' <span style="font-weight:400;font-size:.85em;opacity:.6">(' + members.length + ' member' + (members.length === 1 ? '' : 's') + ')</span>' +
           '</h3>' +
-          headFields +
           '<div class="toolbar">' +
             '<div></div>' +
             '<button class="btn btn-primary btn-small" data-com-add="' + esc(c.slug) + '">+ Add member</button>' +
@@ -1376,7 +1371,39 @@
             '</tbody>' +
           '</table>' +
         '</div>';
-      }).join('');
+      }).join('') +
+
+      '<div class="card settings-section" style="margin-top:2rem;border:2px solid #0d9488;border-radius:12px;padding:1.5rem">' +
+        '<h3 style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">' +
+          '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#0d9488"></span>' +
+          'Support Division (PubSD)' +
+          ' <span style="font-weight:400;font-size:.85em;opacity:.6">(' + supportMembers.length + ' member' + (supportMembers.length === 1 ? '' : 's') + ')</span>' +
+        '</h3>' +
+        '<div class="form-grid" style="margin-bottom:1rem">' +
+          '<label class="full">Head name<input type="text" id="psd-head-name" value="' + esc((support || {}).officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
+          '<label class="full">Head email<input type="text" id="psd-head-email" value="' + esc((support || {}).officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
+        '</div>' +
+        '<div class="form-actions" style="margin-bottom:1.5rem"><button class="btn btn-small" id="psd-head-save">Save head details</button></div>' +
+        '<div class="toolbar">' +
+          '<div></div>' +
+          '<button class="btn btn-primary btn-small" id="psd-add-member">+ Add member</button>' +
+        '</div>' +
+        '<table class="table">' +
+          '<thead><tr><th>Name</th><th>Role</th><th>Photo</th><th class="actions-cell">Actions</th></tr></thead>' +
+          '<tbody>' + supportMembers.map(function (m) {
+            return '<tr>' +
+              '<td><strong>' + esc(m.name) + '</strong></td>' +
+              '<td>' + esc(m.role) + '</td>' +
+              '<td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(m.photo || '\u2014') + '</td>' +
+              '<td class="actions-cell">' +
+                '<button class="btn btn-small" data-m-edit="' + esc(m.id) + '">Edit</button> ' +
+                '<button class="btn btn-small btn-danger" data-m-del="' + esc(m.id) + '">Delete</button>' +
+              '</td></tr>';
+          }).join('') +
+          (supportMembers.length ? '' : '<tr><td colspan="4" class="empty">No support division members yet.</td></tr>') +
+          '</tbody>' +
+        '</table>' +
+      '</div>';
 
     el('com-new').addEventListener('click', function () { committeeModal(null); });
     pane.querySelectorAll('[data-edit]').forEach(function (b) {
@@ -1391,30 +1418,33 @@
       b.addEventListener('click', function () { committeeMemberModal(null, b.getAttribute('data-com-add')); });
     });
 
-    var support = state.committees.find(function (c) { return c.slug === 'support'; });
-    if (support) {
-      var saveBtn = el('psd-head-save');
-      if (saveBtn) {
-        saveBtn.addEventListener('click', function () {
-          var row = {
-            slug: support.slug,
-            acronym: support.acronym,
-            name: support.name,
-            color: support.color,
-            accent: support.accent,
-            logo: support.logo,
-            group_photo: support.group_photo,
-            members: support.members,
-            sort_order: support.sort_order || 0,
-            officer_name: val('psd-head-name').trim(),
-            officer_email: val('psd-head-email').trim()
-          };
-          sb.from('committees').upsert(row).then(function (r) {
-            if (r.error) { alert(r.error.message); return; }
-            loadData().then(renderCommittees);
-          });
+    var psdAddBtn = el('psd-add-member');
+    if (psdAddBtn) {
+      psdAddBtn.addEventListener('click', function () { committeeMemberModal(null, 'support'); });
+    }
+
+    var saveBtn = el('psd-head-save');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function () {
+        if (!support) { alert('Support Division committee not found in database.'); return; }
+        var row = {
+          slug: support.slug,
+          acronym: support.acronym,
+          name: support.name,
+          color: support.color,
+          accent: support.accent,
+          logo: support.logo,
+          group_photo: support.group_photo,
+          members: support.members,
+          sort_order: support.sort_order || 0,
+          officer_name: val('psd-head-name').trim(),
+          officer_email: val('psd-head-email').trim()
+        };
+        sb.from('committees').upsert(row).then(function (r) {
+          if (r.error) { alert(r.error.message); return; }
+          loadData().then(renderCommittees);
         });
-      }
+      });
     }
 
     pane.querySelectorAll('[data-m-edit]').forEach(function (b) {
