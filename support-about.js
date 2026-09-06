@@ -1,7 +1,6 @@
 /* ============================================================
    IFMSA KMC — Support Division About page JavaScript
    • IntersectionObserver scroll reveals
-   • Smooth scroll for hero CTA
    ============================================================ */
 
 (function () {
@@ -28,18 +27,6 @@
   document.querySelectorAll('.spd-reveal').forEach(function (el) {
     revealObserver.observe(el);
   });
-
-  /* ─── Smooth scroll for hero CTA ───────────────────────── */
-  var heroCta = document.getElementById('spd-scroll-cta');
-  if (heroCta) {
-    heroCta.addEventListener('click', function (e) {
-      e.preventDefault();
-      var target = document.getElementById('what-we-do');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
 
   /* ─── Load members from Supabase ────────────────────────── */
   if (typeof window.loadSiteData === 'function') {
