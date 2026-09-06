@@ -9,7 +9,8 @@ insert into public.committees (slug, acronym, name, color, accent, logo, sort_or
 ('scora', 'SCORA', 'Sexual & Reproductive Health', '#B2222A', '#B2222A', 'assets/sc-SCORA.png', 2, 'Usman Tariq', 'president.kmclc.ifmsapakistan@gmail.com'),
 ('scoph', 'SCOPH', 'Public Health', '#F47D3C', '#F47D3C', 'assets/sc-SCOPH.png', 3, 'Mahnoor Khan', 'president.kmclc.ifmsapakistan@gmail.com'),
 ('scorp', 'SCORP', 'Human Rights & Peace', '#5F913F', '#5F913F', 'assets/sc-SCORP.png', 4, 'Hassan Qureshi', 'president.kmclc.ifmsapakistan@gmail.com'),
-('score', 'SCORE', 'Research Exchange', '#2F4A9B', '#2F4A9B', 'assets/sc-SCORE.png', 5, 'Iqra Yousaf', 'president.kmclc.ifmsapakistan@gmail.com')
+('score', 'SCORE', 'Research Exchange', '#2F4A9B', '#2F4A9B', 'assets/sc-SCORE.png', 5, 'Iqra Yousaf', 'president.kmclc.ifmsapakistan@gmail.com'),
+('support', 'PubSD', 'Support Division', '#0d9488', '#0d9488', 'assets/ifmsa-kmc-logo.png', 6, 'PubSD Head', 'president.kmclc.ifmsapakistan@gmail.com')
 on conflict (slug) do update set
   officer_name = excluded.officer_name,
   officer_email = excluded.officer_email;
@@ -59,7 +60,7 @@ insert into public.site_settings (key, value) values
 ('awards', '{"title":"Achievements & Awards","body":"From Officer of the Year to Best Project — the trophies, medals and recognition the council earned this year.","btnText":"View Awards","btnHref":"awards.html","img1":"","img2":""}'::jsonb),
 ('electives', '{"title":"Elective Diaries","body":"Stories from students who spent their clinical electives abroad — the wards, the people and the lessons that changed how they practise medicine.","btnText":"Read Diaries","btnHref":"#","img1":"","img2":""}'::jsonb),
 ('projecthope', '{"title":"Project Hope","body":"A student-led initiative bringing healthcare access to underserved communities through screening camps, health education and referral pathways.","btnText":"Learn More","btnHref":"#","img1":"","img2":""}'::jsonb),
-('pubsd', '{"title":"PubSD","body":"Public Health in Practice — our student-driven publication platform for research abstracts, case reports and public health commentary.","btnText":"Visit PubSD","btnHref":"#","img1":"","img2":""}'::jsonb)
+('pubsd', '{"title":"PubSD","body":"Public Health in Practice — our student-driven publication platform for research abstracts, case reports and public health commentary.","btnText":"Visit PubSD","btnHref":"support-about.html","img1":"","img2":""}'::jsonb)
 on conflict (key) do nothing;
 
 insert into public.highlights (id, category, tag, title, date, location, committee, summary, about, featured, sort_order) values
