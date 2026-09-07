@@ -1426,17 +1426,16 @@
     var saveBtn = el('psd-head-save');
     if (saveBtn) {
       saveBtn.addEventListener('click', function () {
-        if (!support) { alert('Support Division committee not found in database.'); return; }
         var row = {
-          slug: support.slug,
-          acronym: support.acronym,
-          name: support.name,
-          color: support.color,
-          accent: support.accent,
-          logo: support.logo,
-          group_photo: support.group_photo,
-          members: support.members,
-          sort_order: support.sort_order || 0,
+          slug: (support || {}).slug || 'support',
+          acronym: (support || {}).acronym || 'PubSD',
+          name: (support || {}).name || 'Support Division',
+          color: (support || {}).color || '#0d9488',
+          accent: (support || {}).accent || '#0d9488',
+          logo: (support || {}).logo || null,
+          group_photo: (support || {}).group_photo || null,
+          members: (support || {}).members || null,
+          sort_order: (support || {}).sort_order || 6,
           officer_name: val('psd-head-name').trim(),
           officer_email: val('psd-head-email').trim()
         };
