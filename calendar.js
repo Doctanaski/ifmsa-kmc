@@ -76,6 +76,15 @@
       return out;
     }
 
+    /* same-month range "September 1 – 15, 2026" */
+    m = t.match(/^([A-Za-z]{3,9})\s+(\d{1,2})\s*(?:\u2013|\u2014|-)\s*(\d{1,2}),?\s*(\d{4})$/);
+    if (m) {
+      y = +m[4];
+      out.push(new Date(y, monthIndex(m[1]), +m[2]));
+      out.push(new Date(y, monthIndex(m[1]), +m[3]));
+      return out;
+    }
+
     /* ampersand range "Apr & Nov 2026" */
     m = t.match(/^([A-Za-z]{3,9})\s*&\s*([A-Za-z]{3,9})\s+(\d{4})$/);
     if (m) {
@@ -85,10 +94,25 @@
       return out;
     }
 
+    /* cross-year range "Sep 2025 – Jan 2026" */
+    m = t.match(/^([A-Za-z]{3,9})\s+(\d{4})\s*(?:\u2013|\u2014|-)\s*([A-Za-z]{3,9})\s+(\d{4})$/);
+    if (m) {
+      out.push(new Date(+m[2], monthIndex(m[1]), 1));
+      out.push(new Date(+m[4], monthIndex(m[3]), 1));
+      return out;
+    }
+
     /* single day "21 Oct 2026" */
     m = t.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
     if (m) {
       out.push(new Date(+m[3], monthIndex(m[2]), +m[1]));
+      return out;
+    }
+
+    /* full date "September 15, 2026" */
+    m = t.match(/^([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})$/);
+    if (m) {
+      out.push(new Date(+m[3], monthIndex(m[1]), +m[2]));
       return out;
     }
 
