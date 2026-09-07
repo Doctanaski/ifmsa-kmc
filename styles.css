@@ -517,11 +517,17 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .hero-title-local {
+  width: fit-content;
   margin-top: 0.35rem;
+  padding: 0.3em 0.82em 0.36em;
   font-size: clamp(1.35rem, 2.55vw, 2.1rem);
   font-weight: 500;
   letter-spacing: 0.15em;
   line-height: 1.15;
+  color: #fff;
+  background: #810102;
+  border-radius: 999px;
+  box-shadow: 0 7px 20px rgba(36, 0, 1, 0.34);
 }
 
 .hero-title-primary.anim-ready {
@@ -544,9 +550,15 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-size: clamp(0.85rem, 1.35vw, 1.12rem);
   font-weight: 400;
   letter-spacing: 0.02em;
-  max-width: 44ch;
+  width: fit-content;
+  max-width: calc(100% - 1rem);
+  padding: 0.6em 1.1em;
   margin: 0 auto;
   text-align: center;
+  color: #fff;
+  background: var(--pak-blue);
+  border-radius: 999px;
+  box-shadow: 0 7px 20px rgba(10, 8, 24, 0.34);
   text-indent: 0;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.3);
 }
@@ -1388,7 +1400,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .hero-title-primary { font-size: clamp(2.15rem, 10vw, 3.2rem); }
   .hero-title-pakistan { font-size: clamp(2.15rem, 10vw, 3.2rem); }
   .hero-title-local { font-size: 1.1rem; }
-  .hero-sub { font-size: 0.85rem; letter-spacing: 0.02em; }
+  .hero-sub { font-size: 0.85rem; padding: 0.58em 0.9em; letter-spacing: 0.02em; }
   .hero-stat-cards { grid-template-columns: 1fr; gap: 0.9rem; margin-top: 1.8rem; }
   .hero-stat-card { padding: 1.4rem 1rem; border-radius: 16px; }
   .stat-value { font-size: 1.45rem; }
