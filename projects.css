@@ -209,10 +209,10 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--car-accent, var(--accent));
-  border: 1px solid color-mix(in srgb, var(--car-accent, var(--accent)) 55%, transparent);
+  color: #04070d;
+  border: 1px solid var(--car-accent, var(--accent));
   border-radius: 2px;
-  background: transparent;
+  background: var(--car-accent, var(--accent));
   text-decoration: none;
   transition: background 0.25s var(--ease), color 0.25s var(--ease),
               box-shadow 0.25s var(--ease), transform 0.15s var(--ease);
@@ -224,7 +224,7 @@
   transition: transform 0.25s var(--ease);
 }
 .car-link:hover {
-  background: var(--car-accent, var(--accent));
+  background: color-mix(in srgb, var(--car-accent, var(--accent)) 80%, #000);
   color: #04070d;
   text-decoration: none;
   box-shadow:
