@@ -451,11 +451,11 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .hero-banner-copy {
   position: absolute;
-  left: 5%;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   width: min(780px, 88%);
-  text-align: left;
+  text-align: center;
 }
 
 /* ── animation base: hidden until .is-pending removed ── */
@@ -497,6 +497,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   letter-spacing: -0.01em;
   line-height: 1.1;
   margin-bottom: 0.7rem;
+  margin-inline: auto;
   color: #f5f0e8;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
@@ -544,7 +545,8 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   font-weight: 400;
   letter-spacing: 0.02em;
   max-width: 44ch;
-  margin: 0;
+  margin: 0 auto;
+  text-align: center;
   text-indent: 0;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.3);
 }
@@ -1381,7 +1383,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
   /* hero */
   .hero-banner { height: auto; min-height: 420px; border-radius: 20px; }
-  .hero-banner-copy { width: 88%; left: 5%; transform: translateY(-50%); }
+  .hero-banner-copy { width: 88%; left: 50%; transform: translate(-50%, -50%); }
   .hero-title { margin-bottom: 0.7rem; }
   .hero-title-primary { font-size: clamp(2.15rem, 10vw, 3.2rem); }
   .hero-title-pakistan { font-size: clamp(2.15rem, 10vw, 3.2rem); }
