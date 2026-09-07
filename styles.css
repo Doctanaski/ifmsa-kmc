@@ -306,7 +306,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .panel[data-slide="pak"] .pres-placeholder { color: var(--pak-green); font-weight: 600; }
 .panel[data-slide="pak"] .pres-quote { color: #eef2f8; }
 .panel[data-slide="pak"] .pres-message {
-  border-color: var(--pak-green);
+  border-left: none;
   background: transparent;
   box-shadow: none;
 }
@@ -736,7 +736,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   height: clamp(240px, 40vh, 340px);
   aspect-ratio: 4 / 5;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: none;
   background:
     radial-gradient(120% 90% at 72% 0%, rgba(40, 36, 103, 0.28), transparent 62%),
     linear-gradient(160deg, #262263, #0e0c2e);
@@ -768,7 +768,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .pres-message {
-  border-left: 3px solid var(--pak-green);
+  border-left: none;
   padding: 0.2rem 0 0.2rem clamp(1.2rem, 2.5vw, 1.8rem);
 }
 
@@ -783,10 +783,11 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 .pres-quote {
   margin: 0.85rem 0 0.9rem;
   color: #eef2f8;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(1.7rem, 2.85vw, 2.15rem);
-  line-height: 1.5;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 .pres-name {
@@ -1291,7 +1292,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .rail { display: none; }
   .president { grid-template-columns: 1fr; align-items: stretch; gap: 1.4rem; }
   .pres-photo { width: 100%; height: clamp(240px, 40vh, 320px); aspect-ratio: auto; }
-  .pres-message { border-left: none; border-top: 3px solid var(--pak-green); padding: 1.1rem 0 0; }
+  .pres-message { border-left: none; border-top: none; padding: 1.1rem 0 0; }
   .col-meta { flex-direction: row; align-items: baseline; gap: 0.85rem; }
   .group-photo { display: none; }
   .slide-no { margin-right: auto; }
@@ -1354,7 +1355,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .president { margin-top: 2.5rem; padding: 1.3rem; border-radius: 20px; }
   .pres-photo { height: clamp(200px, 34vh, 280px); }
   .pres-message { padding: 0.2rem 0 0; }
-  .pres-quote { font-size: 1.5rem; }
+  .pres-quote { font-size: 1rem; }
 
   /* feature tab cards */
   .feature-tabs-section { margin-top: 2.8rem; }
