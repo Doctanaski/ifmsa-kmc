@@ -175,12 +175,13 @@
 
     if (siteData.hero) {
       var h = siteData.hero;
-      setText('hero-eyebrow', (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : ''));
+      var eyebrowText = (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : '');
+      if (eyebrowText.trim()) setText('hero-eyebrow', eyebrowText);
       var ht = byId('hero-title');
-      if (ht && h.title1 != null && h.title2 != null) {
+      if (ht && h.title1 != null && h.title2 != null && (String(h.title1).trim() || String(h.title2).trim())) {
         ht.innerHTML = '<span>' + parseColorTags(h.title1) + '</span> <span class="hero-title-accent">' + parseColorTags(h.title2) + '</span>';
       }
-      setText('hero-sub', h.sub);
+      if (h.sub != null && String(h.sub).trim()) setText('hero-sub', h.sub);
       setText('hero-btn1', h.btn1Text);
       setText('hero-btn2', h.btn2Text);
       var hb1 = byId('hero-btn1-link'); if (hb1 && h.btn1Href != null) hb1.setAttribute('href', h.btn1Href);
