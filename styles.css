@@ -556,7 +556,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   margin: 0 auto;
   text-align: center;
   color: #fff;
-  background: var(--pak-blue);
+  background: #14123b;
   border-radius: 999px;
   box-shadow: 0 7px 20px rgba(10, 8, 24, 0.34);
   text-indent: 0;
