@@ -398,7 +398,9 @@ const activate = (i) => {
   /* ---------- load live data from Supabase ---------- */
   window.loadSiteData().then((siteData) => {
     window.applySiteSettings(siteData);
-    document.getElementById('hero-banner').classList.remove('is-pending');
+    var hero = document.getElementById('hero-banner');
+    hero.classList.remove('is-pending');
+    hero.querySelectorAll('.anim-item').forEach(function (el) { el.classList.add('anim-ready'); });
     buildCarousels(siteData);
     applyCommitteeMeta(siteData);
     measurePanelTops();

@@ -179,7 +179,13 @@
       if (eyebrowText.trim()) setText('hero-eyebrow', eyebrowText);
       var ht = byId('hero-title');
       if (ht && h.title1 != null && h.title2 != null && (String(h.title1).trim() || String(h.title2).trim())) {
-        ht.innerHTML = '<span>' + parseColorTags(h.title1) + '</span> <span class="hero-title-accent">' + parseColorTags(h.title2) + '</span>';
+        var t1 = parseColorTags(h.title1);
+        var t2 = parseColorTags(h.title2);
+        var c1 = (t1 || '').length;
+        var c2 = (t2 || '').length;
+        ht.innerHTML =
+          '<span class="hero-title-line anim-item tw" data-chars="' + c1 + '">' + t1 + '</span>' +
+          '<span class="hero-title-line anim-item tw" data-chars="' + c2 + '">' + t2 + '</span>';
       }
       if (h.sub != null && String(h.sub).trim()) setText('hero-sub', h.sub);
       setText('hero-btn1', h.btn1Text);
