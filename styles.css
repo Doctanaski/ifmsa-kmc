@@ -987,23 +987,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   background: linear-gradient(180deg, rgba(12, 10, 35, 0.22) 0%, rgba(12, 10, 35, 0.62) 38%, rgba(10, 8, 28, 0.95) 100%);
 }
 
-/* shimmer glow on hover */
-.feature-tab-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 28px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.04) 100%);
-  opacity: 0;
-  z-index: 3;
-  pointer-events: none;
-  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.feature-tab-card:hover::after {
-  opacity: 1;
-}
-
 /* circular icon badge on top left */
 .card-badge-plus {
   position: absolute;

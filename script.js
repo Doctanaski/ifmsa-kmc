@@ -288,8 +288,9 @@ const activate = (i) => {
   const cardBgEls = Array.from(document.querySelectorAll('.card-img-bg'));
   const updateCardParallax = () => {
     const y = stage.scrollTop;
+    const offset = Math.min(y * 0.05, 30);
     for (let i = 0; i < cardBgEls.length; i++) {
-      cardBgEls[i].style.backgroundPosition = 'center ' + (y * 0.12) + 'px';
+      cardBgEls[i].style.backgroundPosition = 'center calc(50% + ' + offset + 'px)';
     }
   };
 
