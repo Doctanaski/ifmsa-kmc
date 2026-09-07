@@ -489,6 +489,9 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -506,8 +509,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 
 .hero-title-primary {
   font-size: clamp(3rem, 7.5vw, 6.5rem);
-  /* Compensates for Playfair's left-side W overhang to align all lines visually. */
-  padding-left: 0.04em;
+}
+
+.hero-title-pakistan {
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
 }
 
 .hero-title-local {
@@ -522,8 +527,12 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   animation: hero-title-reveal 0.95s 0.45s var(--ease) both;
 }
 
-.hero-title-local.anim-ready {
+.hero-title-pakistan.anim-ready {
   animation: hero-pop-in 0.72s 1.1s var(--ease) both;
+}
+
+.hero-title-local.anim-ready {
+  animation: hero-pop-in 0.72s 1.45s var(--ease) both;
 }
 
 /* ── subtitle ── */
@@ -541,7 +550,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 .hero-sub.anim-ready {
-  animation: hero-slide-up 0.7s 1.5s var(--ease) both;
+  animation: hero-slide-up 0.7s 1.8s var(--ease) both;
 }
 
 /* ── shared keyframes ── */
@@ -1375,6 +1384,7 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .hero-banner-copy { width: 88%; left: 5%; transform: translateY(-50%); }
   .hero-title { margin-bottom: 0.7rem; }
   .hero-title-primary { font-size: clamp(2.15rem, 10vw, 3.2rem); }
+  .hero-title-pakistan { font-size: clamp(2.15rem, 10vw, 3.2rem); }
   .hero-title-local { font-size: 1.1rem; }
   .hero-sub { font-size: 0.85rem; letter-spacing: 0.02em; }
   .hero-stat-cards { grid-template-columns: 1fr; gap: 0.9rem; margin-top: 1.8rem; }
