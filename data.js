@@ -175,23 +175,6 @@
 
     if (siteData.hero) {
       var h = siteData.hero;
-      var eyebrowText = (h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : '');
-      if (eyebrowText.trim()) setText('hero-eyebrow', eyebrowText);
-      var ht = byId('hero-title');
-      if (ht && h.title1 != null && h.title2 != null && (String(h.title1).trim() || String(h.title2).trim())) {
-        var t1 = parseColorTags(h.title1);
-        var t2 = parseColorTags(h.title2);
-        var c1 = (t1 || '').length;
-        var c2 = (t2 || '').length;
-        ht.innerHTML =
-          '<span class="hero-title-line anim-item tw" data-chars="' + c1 + '">' + t1 + '</span>' +
-          '<span class="hero-title-line anim-item tw" data-chars="' + c2 + '">' + t2 + '</span>';
-      }
-      if (h.sub != null && String(h.sub).trim()) setText('hero-sub', h.sub);
-      setText('hero-btn1', h.btn1Text);
-      setText('hero-btn2', h.btn2Text);
-      var hb1 = byId('hero-btn1-link'); if (hb1 && h.btn1Href != null) hb1.setAttribute('href', h.btn1Href);
-      var hb2 = byId('hero-btn2-link'); if (hb2 && h.btn2Href != null) hb2.setAttribute('href', h.btn2Href);
       var hbg = byId('hero-banner-media');
       if (hbg && h.img) {
         hbg.style.backgroundImage = 'url("' + String(h.img).replace(/"/g, '&quot;') + '")';

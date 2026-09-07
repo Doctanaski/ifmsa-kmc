@@ -2183,20 +2183,6 @@
       '<div class="card settings-section"><h3>Hero (homepage)</h3>' +
         '<div class="form-grid">' +
           '<label class="full">Hero image — upload or paste a URL (leave empty for default)<input type="text" id="h-img" value="' + esc(h.img || '') + '" placeholder="assets/ifmsa-pakistan-logo-light.png" /></label>' +
-          '<label>Eyebrow pill<input type="text" id="h-pill" value="' + esc(h.eyebrowPill || '') + '" /></label>' +
-          '<label>Eyebrow rest<input type="text" id="h-rest" value="' + esc(h.eyebrowRest || '') + '" /></label>' +
-          '<label class="full">Title line 1 <span style="font-weight:normal;font-size:.8em;opacity:.6;">Use {red}word{/} or {#ff0000}word{/} to colour words</span><input type="text" id="h-t1" value="' + esc(h.title1 || '') + '" /></label>' +
-          '<label class="full">Title line 2 <span style="font-weight:normal;font-size:.8em;opacity:.6;">Use {red}word{/} or {#ff0000}word{/} to colour words</span><input type="text" id="h-t2" value="' + esc(h.title2 || '') + '" /></label>' +
-          '<label class="full">Sub text<textarea id="h-sub">' + esc(h.sub || '') + '</textarea></label>' +
-          '<div class="full hero-preview" id="hero-preview" style="background:#1a1a2e;border-radius:12px;padding:2rem 1.5rem;text-align:center;margin-top:.5rem;">' +
-            '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' + esc((h.eyebrowPill || '') + (h.eyebrowRest ? ' · ' + h.eyebrowRest : '')) + '</div>' +
-            '<div style="display:inline-block;position:relative;font-family:Montserrat,Arial Narrow,Arial,sans-serif;font-size:3.2rem;font-weight:800;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
-              '<span style="position:absolute;inset:-.15em -.4em;border-radius:8px;background:rgba(13,17,23,.45);backdrop-filter:blur(8px) saturate(120%);z-index:-1;"></span>' +
-              '<span>' + parseColorTags(h.title1 || 'IFMSA') + '</span> ' +
-              '<span class="hero-title-accent">' + parseColorTags(h.title2 || 'KMC') + '</span>' +
-            '</div>' +
-            '<div style="font-family:Cormorant Garamond,Georgia,serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.92);margin-top:.5rem;">' + esc(h.sub || '') + '</div>' +
-          '</div>' +
           '<label>Button 1 text<input type="text" id="h-btn1t" value="' + esc(h.btn1Text || '') + '" /></label>' +
           '<label>Button 1 href<input type="text" id="h-btn1h" value="' + esc(h.btn1Href || '') + '" /></label>' +
           '<label>Button 2 text<input type="text" id="h-btn2t" value="' + esc(h.btn2Text || '') + '" /></label>' +
@@ -2223,33 +2209,6 @@
     attachImageUpload('h-img');
     attachImageUpload('p-img');
     el('settings-save').addEventListener('click', saveSettings);
-
-    var previewIds = ['h-pill', 'h-rest', 'h-t1', 'h-t2', 'h-sub'];
-    var updatePreview = function () {
-      var pill = val('h-pill');
-      var rest = val('h-rest');
-      var t1 = val('h-t1') || 'IFMSA';
-      var t2 = val('h-t2') || 'KMC';
-      var sub = val('h-sub');
-      var pv = el('hero-preview');
-      if (!pv) return;
-      pv.innerHTML =
-        '<div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.5rem;">' +
-          esc(pill) + (rest ? ' · ' + esc(rest) : '') +
-        '</div>' +
-        '<div style="display:inline-block;position:relative;font-family:Montserrat,Arial Narrow,Arial,sans-serif;font-size:3.2rem;font-weight:800;letter-spacing:.04em;line-height:.92;color:#fff;text-shadow:0 8px 34px rgba(6,5,22,.55);">' +
-          '<span style="position:absolute;inset:-.15em -.4em;border-radius:8px;background:rgba(13,17,23,.45);backdrop-filter:blur(8px) saturate(120%);z-index:-1;"></span>' +
-          '<span>' + parseColorTags(t1) + '</span> ' +
-          '<span class="hero-title-accent">' + parseColorTags(t2) + '</span>' +
-        '</div>' +
-        '<div style="font-family:Cormorant Garamond,Georgia,serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.92);margin-top:.5rem;">' +
-          esc(sub) +
-        '</div>';
-    };
-    previewIds.forEach(function (id) {
-      var node = el(id);
-      if (node) node.addEventListener('input', updatePreview);
-    });
   }
 
   /* ============ feature cards (About / Join / Exec / Highlights / Alumni / Awards) ============ */
@@ -2435,10 +2394,6 @@
         key: 'hero',
         value: {
           img: val('h-img').trim(),
-          eyebrowPill: val('h-pill').trim(), eyebrowRest: val('h-rest').trim(),
-          title1: val('h-t1').trim(),
-          title2: val('h-t2').trim(),
-          sub: val('h-sub').trim(),
           btn1Text: val('h-btn1t').trim(), btn1Href: val('h-btn1h').trim(),
           btn2Text: val('h-btn2t').trim(), btn2Href: val('h-btn2h').trim(),
           mini1Num: val('h-m1n').trim(), mini1Label: val('h-m1l').trim(),

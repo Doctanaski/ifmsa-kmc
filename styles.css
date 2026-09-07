@@ -481,19 +481,8 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   color: rgba(255, 255, 255, 0.7);
 }
 
-.hero-eyebrow--sub {
-  margin-top: 0.2rem;
-  margin-bottom: 0.6rem;
-  font-size: clamp(0.55rem, 0.8vw, 0.68rem);
-  color: rgba(255, 255, 255, 0.55);
-}
-
 .hero-eyebrow.anim-ready {
   animation: hero-slide-up 0.6s 0.3s var(--ease) both;
-}
-
-.hero-eyebrow--sub.anim-ready {
-  animation: hero-slide-up 0.6s 3.0s var(--ease) both;
 }
 
 /* ── title ── */
@@ -1410,7 +1399,6 @@ body { -ms-overflow-style: none; scrollbar-width: none; }
   .tw { width: auto !important; opacity: 1; border-right: none; animation: hero-slide-up 0.5s var(--ease) both !important; }
   .tw:nth-child(1) { animation-delay: 0.4s !important; }
   .tw:nth-child(2) { animation-delay: 0.8s !important; }
-  .hero-eyebrow--sub { font-size: 0.5rem; margin-top: 0.1rem; }
   .hero-sub { font-size: 0.85rem; }
   .hero-stat-cards { grid-template-columns: 1fr; gap: 0.9rem; margin-top: 1.8rem; }
   .hero-stat-card { padding: 1.4rem 1rem; border-radius: 16px; }
