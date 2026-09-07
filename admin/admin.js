@@ -1009,7 +1009,6 @@
           '<p class="error" id="login-error"></p>' +
         '</form>' +
         '<p style="margin-top:1rem">' +
-          '<button id="show-signup" class="link">Create an account</button> &middot; ' +
           '<button id="forgot" class="link">Forgot password</button>' +
         '</p>' +
         '<p class="hint">After your first sign-in, grant yourself admin once by running this in the Supabase SQL editor:<br />' +
@@ -1023,17 +1022,6 @@
         password: val('login-password')
       }).then(function (r) {
         if (r.error) { el('login-error').textContent = r.error.message; return; }
-        boot();
-      });
-    });
-
-    el('show-signup').addEventListener('click', function () {
-      var email = val('login-email');
-      var pass = val('login-password');
-      if (!email || !pass) { alert('Fill in an email and password first.'); return; }
-      sb.auth.signUp({ email: email, password: pass }).then(function (r) {
-        if (r.error) { alert(r.error.message); return; }
-        alert('Account created. Confirm your email, then sign in.');
         boot();
       });
     });
