@@ -221,7 +221,6 @@
       setText('about-btn1', a.btnText);
       var ab = byId('about-btn1-link'); if (ab && a.btnHref != null) ab.setAttribute('href', a.btnHref);
       setCardBg('bg-about-1', a.img1);
-      setCardBg('bg-about-2', a.img2);
     }
 
     if (siteData.join) {
@@ -234,11 +233,10 @@
       var jb1 = byId('join-btn1-link'); if (jb1 && j.btn1Href != null) jb1.setAttribute('href', j.btn1Href);
       var jb2 = byId('join-btn2-link'); if (jb2 && j.btn2Href != null) jb2.setAttribute('href', j.btn2Href);
       setCardBg('bg-join-1', j.img1);
-      setCardBg('bg-join-2', j.img2);
     }
 
     /* generic feature-card (tab) block: title + body + one button + two bg images */
-    var applyCard = function (slug, titleId, bodyId, btnId, btnLinkId, bg1, bg2) {
+    var applyCard = function (slug, titleId, bodyId, btnId, btnLinkId, bg1) {
       var c = siteData[slug];
       if (!c) return;
       setText(titleId, c.title);
@@ -247,15 +245,14 @@
       var link = byId(btnLinkId);
       if (link && c.btnHref != null) link.setAttribute('href', c.btnHref);
       setCardBg(bg1, c.img1);
-      setCardBg(bg2, c.img2);
     };
-    applyCard('exec', 'exec-title', 'exec-body', 'exec-btn1', 'exec-btn1-link', 'bg-exec-1', 'bg-exec-2');
-    applyCard('highlights', 'highlights-title', 'highlights-body', 'highlights-btn1', 'highlights-btn1-link', 'bg-highlights-1', 'bg-highlights-2');
-    applyCard('alumni', 'alumni-title', 'alumni-body', 'alumni-btn1', 'alumni-btn1-link', 'bg-alumni-1', 'bg-alumni-2');
-    applyCard('awards', 'awards-title', 'awards-body', 'awards-btn1', 'awards-btn1-link', 'bg-awards-1', 'bg-awards-2');
-    applyCard('electives', 'electives-title', 'electives-body', 'electives-btn1', 'electives-btn1-link', 'bg-electives-1', 'bg-electives-2');
-    applyCard('projecthope', 'projecthope-title', 'projecthope-body', 'projecthope-btn1', 'projecthope-btn1-link', 'bg-projecthope-1', 'bg-projecthope-2');
-    applyCard('pubsd', 'pubsd-title', 'pubsd-body', 'pubsd-btn1', 'pubsd-btn1-link', 'bg-pubsd-1', 'bg-pubsd-2');
+    applyCard('exec', 'exec-title', 'exec-body', 'exec-btn1', 'exec-btn1-link', 'bg-exec-1');
+    applyCard('highlights', 'highlights-title', 'highlights-body', 'highlights-btn1', 'highlights-btn1-link', 'bg-highlights-1');
+    applyCard('alumni', 'alumni-title', 'alumni-body', 'alumni-btn1', 'alumni-btn1-link', 'bg-alumni-1');
+    applyCard('awards', 'awards-title', 'awards-body', 'awards-btn1', 'awards-btn1-link', 'bg-awards-1');
+    applyCard('electives', 'electives-title', 'electives-body', 'electives-btn1', 'electives-btn1-link', 'bg-electives-1');
+    applyCard('projecthope', 'projecthope-title', 'projecthope-body', 'projecthope-btn1', 'projecthope-btn1-link', 'bg-projecthope-1');
+    applyCard('pubsd', 'pubsd-title', 'pubsd-body', 'pubsd-btn1', 'pubsd-btn1-link', 'bg-pubsd-1');
 
     if (siteData.site) {
       var s = siteData.site;
