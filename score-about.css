@@ -574,28 +574,17 @@ strong { font-weight: 700; }
 .sre-members-carousel {
   max-width: 1100px;
   margin: 0 auto;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(47,74,155,0.3) transparent;
   padding-bottom: 1rem;
 }
 
-.sre-members-carousel::-webkit-scrollbar { height: 6px; }
-.sre-members-carousel::-webkit-scrollbar-track { background: transparent; }
-.sre-members-carousel::-webkit-scrollbar-thumb { background: rgba(47,74,155,0.3); border-radius: 3px; }
-
 .sre-members-track {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
   padding: 0.5rem 0;
 }
 
 .sre-member-card {
-  flex: 0 0 260px;
-  scroll-snap-align: start;
   background: var(--sre-bg);
   border: 1px solid var(--sre-border);
   border-radius: 20px;
