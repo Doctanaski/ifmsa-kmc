@@ -491,6 +491,7 @@ strong { font-weight: 700; }
   flex-shrink: 0;
 }
 .sph-contact-avatar svg { width: 34px; height: 34px; }
+.sph-contact-avatar-img { display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
 .sph-contact-name {
   font-size: 1.15rem;

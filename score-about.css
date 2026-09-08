@@ -502,6 +502,8 @@ strong { font-weight: 700; }
   height: 100%;
   object-fit: cover;
 }
+.sre-contact-avatar-img { display: none; }
+.sre-contact-logo { display: block; }
 
 .sre-contact-info {
   display: flex;

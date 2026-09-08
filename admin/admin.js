@@ -1370,6 +1370,7 @@
         '<div class="form-grid" style="margin-bottom:1rem">' +
           '<label class="full">Head name<input type="text" id="psd-head-name" value="' + esc((support || {}).officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
           '<label class="full">Head email<input type="text" id="psd-head-email" value="' + esc((support || {}).officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
+          '<label class="full">Head photo — upload or paste a URL<input type="text" id="psd-head-photo" value="' + esc((support || {}).officer_photo || '') + '" placeholder="Photo of the head" /></label>' +
         '</div>' +
         '<div class="form-actions" style="margin-bottom:1.5rem"><button class="btn btn-small" id="psd-head-save">Save head details</button></div>' +
         '<div class="toolbar">' +
@@ -1425,7 +1426,8 @@
           members: (support || {}).members || null,
           sort_order: (support || {}).sort_order || 6,
           officer_name: val('psd-head-name').trim(),
-          officer_email: val('psd-head-email').trim()
+          officer_email: val('psd-head-email').trim(),
+          officer_photo: val('psd-head-photo').trim() || null
         };
         sb.from('committees').upsert(row).then(function (r) {
           if (r.error) { alert(r.error.message); return; }
@@ -1433,6 +1435,8 @@
         });
       });
     }
+
+    attachImageUpload('psd-head-photo');
 
     pane.querySelectorAll('[data-m-edit]').forEach(function (b) {
       b.addEventListener('click', function () { committeeMemberModal(state.committeeMembers.find(function (m) { return m.id === b.getAttribute('data-m-edit'); })); });
@@ -1443,7 +1447,7 @@
   }
 
   function committeeModal(c) {
-    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', group_photo: '', members: '', sort_order: state.committees.length, officer_name: '', officer_email: '' };
+    c = c || { slug: '', acronym: '', name: '', color: '', accent: '', logo: '', group_photo: '', members: '', sort_order: state.committees.length, officer_name: '', officer_email: '', officer_photo: '' };
     openModal(
       '<h2>' + (c.slug ? 'Edit committee' : 'New committee') + '</h2>' +
       '<div class="form-grid">' +
@@ -1458,6 +1462,7 @@
         '<label class="full">Members — one name per line (displayed under the group photo)<textarea id="c-members" placeholder="John Doe\nJane Smith\n...">' + esc(c.members || '') + '</textarea></label>' +
         '<label class="full">Local Officer — name shown on the about page contact card<input type="text" id="c-officer-name" value="' + esc(c.officer_name || '') + '" placeholder="e.g. Bilal Shah" /></label>' +
         '<label class="full">Local Officer — email shown on the about page contact card<input type="text" id="c-officer-email" value="' + esc(c.officer_email || '') + '" placeholder="e.g. officer.kmclc@ifmsapakistan@gmail.com" /></label>' +
+        '<label class="full">Local Officer — photo shown on the about page contact card (upload or paste a URL)<input type="text" id="c-officer-photo" value="' + esc(c.officer_photo || '') + '" placeholder="Photo of the local officer" /></label>' +
       '</div>' +
       '<div class="form-actions">' +
         '<button class="btn" id="m-cancel">Cancel</button>' +
@@ -1467,6 +1472,7 @@
 
     attachImageUpload('c-logo');
     attachImageUpload('c-group-photo');
+    attachImageUpload('c-officer-photo');
 
     el('m-save').addEventListener('click', function () {
       var row = {
@@ -1480,7 +1486,8 @@
         members: val('c-members').trim() || null,
         sort_order: parseInt(val('c-sort'), 10) || 0,
         officer_name: val('c-officer-name').trim() || null,
-        officer_email: val('c-officer-email').trim() || null
+        officer_email: val('c-officer-email').trim() || null,
+        officer_photo: val('c-officer-photo').trim() || null
       };
       if (!row.slug || !row.acronym || !row.name) { alert('Slug, acronym and name are required.'); return; }
       sb.from('committees').upsert(row).then(function (r) {

@@ -526,6 +526,7 @@ strong { font-weight: 700; }
   flex-shrink: 0;
 }
 .hp-contact-avatar svg { width: 30px; height: 30px; }
+.hp-contact-avatar-img { display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
 .hp-contact-name {
   font-size: 1.2rem;

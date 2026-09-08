@@ -444,6 +444,25 @@ strong { font-weight: 700; }
   transform: translateY(-4px);
 }
 
+.sme-contact-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sme-blue) 0%, var(--sme-blue-2) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: clamp(1.8rem, 4vw, 2.5rem) 0 0 clamp(1.8rem, 4vw, 2.5rem);
+}
+.sme-contact-avatar svg { width: 30px; height: 30px; }
+.sme-contact-avatar-img { display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.sme-contact-card--avatar { display: flex; align-items: center; gap: 1.2rem; }
+.sme-contact-card--avatar .sme-contact-accent { display: none; }
+.sme-contact-card--avatar .sme-contact-avatar { margin: 0 0 0 clamp(1.8rem, 4vw, 2.5rem); }
+.sme-contact-card--avatar .sme-contact-inner { padding: clamp(1.8rem, 4vw, 2.5rem) clamp(1.8rem, 4vw, 2.5rem) clamp(1.8rem, 4vw, 2.5rem) 0; }
+
 .sme-contact-accent {
   height: 4px;
   background: linear-gradient(90deg, var(--sme-blue), var(--sme-blue-soft));

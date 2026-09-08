@@ -53,6 +53,14 @@
           emailEl.textContent = sc.officer_email;
           emailEl.setAttribute('href', 'mailto:' + sc.officer_email);
         }
+        var avatarImg = document.querySelector('.srp-contact-avatar-img');
+        if (avatarImg && sc.officer_photo) {
+          avatarImg.src = sc.officer_photo;
+          avatarImg.alt = (sc.officer_name || 'Local Officer') + ' photo';
+          avatarImg.style.display = 'block';
+          var svg = avatarImg.parentElement.querySelector('svg');
+          if (svg) svg.style.display = 'none';
+        }
       }
 
       /* Load committee members */

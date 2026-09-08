@@ -94,6 +94,14 @@
             offEmailEl.textContent = score.officer_email;
             offEmailEl.setAttribute('href', 'mailto:' + score.officer_email);
           }
+          var avatarImg = document.querySelector('.sre-contact-avatar-img');
+          var logoImg = document.querySelector('.sre-contact-logo');
+          if (avatarImg && score.officer_photo) {
+            avatarImg.src = score.officer_photo;
+            avatarImg.alt = (score.officer_name || 'Local Officer') + ' photo';
+            avatarImg.style.display = 'block';
+            if (logoImg) logoImg.style.display = 'none';
+          }
         }
       }
 

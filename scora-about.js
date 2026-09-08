@@ -55,6 +55,14 @@
           emailEl.textContent = scora.officer_email;
           emailEl.setAttribute('href', 'mailto:' + scora.officer_email);
         }
+        var avatarImg = document.querySelector('.sra-contact-avatar-img');
+        if (avatarImg && scora.officer_photo) {
+          avatarImg.src = scora.officer_photo;
+          avatarImg.alt = (scora.officer_name || 'Local Officer') + ' photo';
+          avatarImg.style.display = 'block';
+          var svg = avatarImg.parentElement.querySelector('svg');
+          if (svg) svg.style.display = 'none';
+        }
       }
 
       // Apply site-wide settings (footer, etc.)

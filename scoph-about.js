@@ -58,6 +58,14 @@
           emailEl.textContent = scoph.officer_email;
           emailEl.setAttribute('href', 'mailto:' + scoph.officer_email);
         }
+        var avatarImg = document.querySelector('.sph-contact-avatar-img');
+        if (avatarImg && scoph.officer_photo) {
+          avatarImg.src = scoph.officer_photo;
+          avatarImg.alt = (scoph.officer_name || 'Local Officer') + ' photo';
+          avatarImg.style.display = 'block';
+          var svg = avatarImg.parentElement.querySelector('svg');
+          if (svg) svg.style.display = 'none';
+        }
 
         /* Could populate dynamic content from the scoph committee record */
         var titleEl = document.querySelector('.sph-hero-title');

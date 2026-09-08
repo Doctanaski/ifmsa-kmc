@@ -51,7 +51,8 @@ create table if not exists public.committees (
   members      text,
   sort_order   int  not null default 0,
   officer_name  text,                      -- Local Officer display name
-  officer_email text                       -- Local Officer contact email
+  officer_email text,                      -- Local Officer contact email
+  officer_photo text                       -- Local Officer photo URL
 );
 
 -- ---------- projects ----------
@@ -272,3 +273,8 @@ create policy "admin read admin_users"    on public.admin_users   for select to 
 -- ALTER TABLE public.committee_members ENABLE ROW LEVEL SECURITY;
 -- CREATE POLICY "public read committee_members" ON public.committee_members FOR SELECT USING (true);
 -- CREATE POLICY "admin write committee_members" ON public.committee_members FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+-- ============================================================
+-- MIGRATION: Add officer_photo column to committees (run if table already exists)
+-- ============================================================
+-- ALTER TABLE public.committees ADD COLUMN IF NOT EXISTS officer_photo text;

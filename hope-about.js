@@ -55,6 +55,14 @@
           emailEl.textContent = c.officer_email;
           emailEl.setAttribute('href', 'mailto:' + c.officer_email);
         }
+        var avatarImg = document.querySelector('.hp-contact-avatar-img');
+        if (avatarImg && c.officer_photo) {
+          avatarImg.src = c.officer_photo;
+          avatarImg.alt = (c.officer_name || 'Project Hope Lead') + ' photo';
+          avatarImg.style.display = 'block';
+          var svg = avatarImg.parentElement.querySelector('svg');
+          if (svg) svg.style.display = 'none';
+        }
       }
     }).catch(function () {});
   }
