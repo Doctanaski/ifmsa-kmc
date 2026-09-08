@@ -549,7 +549,6 @@ body.projects-body.proj-light {
 .proj-g-img img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
