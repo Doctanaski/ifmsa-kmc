@@ -170,6 +170,23 @@
     });
   };
 
+  var uploadFile = function (file) {
+    var ext = (file.name.split('.').pop() || 'bin').toLowerCase();
+    if (['pdf'].indexOf(ext) === -1) {
+      return Promise.reject(new Error('Only PDF files are supported.'));
+    }
+    var stamp = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    var path = 'uploads/' + stamp + '-' + slugify(file.name.replace(/\.[^.]+$/, '')) + '.' + ext;
+    return sb.storage.from(IMG_BUCKET).upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || 'application/pdf'
+    }).then(function (r) {
+      if (r.error) throw r.error;
+      return publicUrlFor(path);
+    });
+  };
+
   var fireInput = function (input) {
     if (!input) return;
     ['input', 'change'].forEach(function (t) {
@@ -516,6 +533,8 @@
     }).join('');
   };
 
+  var currentDocs = [];
+
   var renderProjectPreview = function () {
     var pre = el('proj-preview');
     if (!pre) return;
@@ -537,6 +556,13 @@
     pre.style.setProperty('--proj-accent', com.accent || com.color || '');
     var goals = row.goals.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('');
     var blocks = splitBlocks(row.about);
+    var docsHtml = '';
+    if (currentDocs.length) {
+      var docItems = currentDocs.map(function (d) {
+        return '<li class="proj-doc"><a class="proj-doc-link" href="' + esc(d.url) + '" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>' + esc(d.name || 'PDF') + '</span></a></li>';
+      }).join('');
+      docsHtml = '<section class="proj-docs"><span class="proj-label">Documents</span><ul class="proj-doc-list">' + docItems + '</ul></section>';
+    }
     pre.innerHTML =
       '<main class="proj-page"><article class="proj-post">' +
         '<header class="proj-head">' +
@@ -549,6 +575,7 @@
             (row.theme ? '<span class="pill">' + esc(row.theme) + '</span>' : '') +
           '</div>' +
           (goals ? '<section class="proj-goals"><span class="proj-label">Goals</span><ul>' + goals + '</ul></section>' : '') +
+          docsHtml +
         '</header>' +
         '<div class="proj-body' + (blocks.images.length ? '' : ' proj-body--full') + '">' +
           '<div class="proj-main">' + blocks.paras + '</div>' +
@@ -1218,6 +1245,14 @@
             '<label class="full">Thumbnail image (for project cards in the slider)<input type="text" id="f-thumbnail" value="' + esc(p.thumbnail || '') + '" placeholder="Upload or paste image URL" /></label>' +
             '<label class="full">About — one paragraph per line; insert a picture on its own line as <code>![caption](image-url)</code><textarea id="f-about">' + esc((p.about || []).join('\n')) + '</textarea></label>' +
             '<label class="full">Goals — one per line<textarea id="f-goals">' + esc((p.goals || []).join('\n')) + '</textarea></label>' +
+            '<label class="full">Attached documents (PDFs)<div class="docs-wrap" id="docs-wrap">' +
+              '<div class="docs-list" id="docs-list"></div>' +
+              '<div class="docs-add">' +
+                '<input type="file" id="f-add-doc" accept=".pdf,application/pdf" style="display:none" />' +
+                '<button type="button" class="btn btn-sm" id="f-add-doc-btn">+ Upload PDF</button>' +
+                '<span class="docs-status" id="docs-status"></span>' +
+              '</div>' +
+            '</div></label>' +
             '<label class="full">ID (leave blank to auto-generate)<input type="text" id="f-id" value="' + esc(p.id) + '" placeholder="e.g. scope-2026-summer-exchange" /></label>' +
           '</div>' +
           '<div class="form-actions">' +
@@ -1308,6 +1343,62 @@
 
     updateAutoTimeframe();
 
+    /* --- documents (PDF) manager --- */
+    var docs = Array.isArray(p.documents) ? p.documents.slice() : [];
+    currentDocs = docs;
+
+    function renderDocsList() {
+      var list = el('docs-list');
+      if (!list) return;
+      if (!docs.length) {
+        list.innerHTML = '<span class="docs-empty">No documents attached</span>';
+        return;
+      }
+      list.innerHTML = docs.map(function (d, i) {
+        var name = esc(d.name || 'Document');
+        var shortUrl = esc((d.url || '').split('/').pop());
+        return '<span class="doc-tag">' +
+          '<a href="' + esc(d.url) + '" target="_blank" rel="noopener" class="doc-link" title="' + shortUrl + '">' + name + '</a>' +
+          '<button type="button" class="doc-remove" data-idx="' + i + '">&times;</button>' +
+        '</span>';
+      }).join('');
+      list.querySelectorAll('.doc-remove').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          docs.splice(+btn.dataset.idx, 1);
+          renderDocsList();
+        });
+      });
+    }
+
+    renderDocsList();
+
+    var docBtn = el('f-add-doc-btn');
+    var docInput = el('f-add-doc');
+    var docStatus = el('docs-status');
+    if (docBtn && docInput) {
+      docBtn.addEventListener('click', function () { docInput.click(); });
+      docInput.addEventListener('change', function () {
+        var file = docInput.files && docInput.files[0];
+        if (!file) return;
+        if (docStatus) docStatus.textContent = 'Uploading…';
+        docBtn.disabled = true;
+        uploadFile(file).then(function (url) {
+          var name = file.name.replace(/\.pdf$/i, '');
+          docs.push({ name: name, url: url });
+          renderDocsList();
+          if (docStatus) docStatus.textContent = 'Uploaded';
+          docBtn.disabled = false;
+          docInput.value = '';
+          setTimeout(function () { if (docStatus) docStatus.textContent = ''; }, 2000);
+        }).catch(function (err) {
+          if (docStatus) docStatus.textContent = '';
+          docBtn.disabled = false;
+          alert(err.message || 'Upload failed');
+          docInput.value = '';
+        });
+      });
+    }
+
     attachMarkdownUpload('f-about');
     attachImageUpload('f-thumbnail');
     renderProjectPreview();
@@ -1328,6 +1419,7 @@
         thumbnail: val('f-thumbnail').trim() || null,
         about: splitLines(val('f-about')),
         goals: splitLines(val('f-goals')),
+        documents: docs,
         sort_order: parseInt(val('f-sort'), 10) || 0
       };
       if (!row.title || !row.committee) { alert('Title and committee are required.'); return; }
@@ -2480,6 +2572,7 @@
   }
 
   function closeModal() {
+    currentDocs = [];
     el('modal-root').innerHTML = '';
   }
 

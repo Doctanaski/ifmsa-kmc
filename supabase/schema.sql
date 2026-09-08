@@ -9,7 +9,7 @@ create extension if not exists "pgcrypto";
 
 -- ---------- storage bucket for uploaded images ----------
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('images', 'images', true, 10485760, array['image/png','image/jpeg','image/gif','image/webp','image/svg+xml','image/avif'])
+values ('images', 'images', true, 10485760, array['image/png','image/jpeg','image/gif','image/webp','image/svg+xml','image/avif','application/pdf'])
 on conflict (id) do update
   set public = true,
       file_size_limit = excluded.file_size_limit,
@@ -71,6 +71,7 @@ create table if not exists public.projects (
   thumbnail  text,                        -- URL to thumbnail image for carousel cards
   about      jsonb not null default '[]'::jsonb,
   goals      jsonb not null default '[]'::jsonb,
+  documents  jsonb not null default '[]'::jsonb,  -- [{name, url}] attached PDFs / files
   sort_order int  not null default 0
 );
 
