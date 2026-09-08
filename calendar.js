@@ -145,7 +145,19 @@
     projects.forEach(function (p) {
       var com = committees[p.committee] || {};
       var tag = STATUS_TAG[p.status] || 'planned';
-      var anchors = anchorsFor(p.timeframe, siteYear);
+
+      /* Use explicit calendar_dates if available, otherwise fall back to timeframe parsing */
+      var anchors = [];
+      if (Array.isArray(p.calendar_dates) && p.calendar_dates.length) {
+        p.calendar_dates.forEach(function (iso) {
+          var parts = String(iso).split('-');
+          if (parts.length === 3) {
+            anchors.push(new Date(+parts[0], +parts[1] - 1, +parts[2]));
+          }
+        });
+      } else {
+        anchors = anchorsFor(p.timeframe, siteYear);
+      }
       if (!anchors.length) return;
 
       var earliest = anchors.reduce(function (a, b) { return b < a ? b : a; });

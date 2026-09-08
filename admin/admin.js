@@ -521,9 +521,7 @@
     if (!pre) return;
     var com = {};
     state.committees.forEach(function (c) { if (c.slug === val('f-committee')) com = c; });
-    var sd = parseDate(val('f-start-date'));
-    var ed = parseDate(val('f-end-date'));
-    var dateDisplay = sd || ed ? (sd ? formatDateShort(sd) : '') + (sd && ed ? ' – ' : '') + (ed ? formatDateShort(ed) : '') : '';
+    var dateDisplay = val('f-timeframe').trim() || '';
     var row = {
       title: val('f-title').trim(),
       type: val('f-type').trim(),
@@ -1207,12 +1205,14 @@
             '<label>Sort order<input type="number" id="f-sort" value="' + (p.sort_order || 0) + '" /></label>' +
             '<label>Type<input type="text" id="f-type" value="' + esc(p.type) + '" /></label>' +
             '<label>Status<select id="f-status">' + statusOptions(p.status || '') + '</select></label>' +
-            '<label class="full">Date range<div class="date-range">' +
-              '<label style="margin:0">Start date<input type="date" id="f-start-date" value="' + esc(p.start_date || '') + '" /></label>' +
-              '<span class="date-range-sep">to</span>' +
-              '<label style="margin:0">End date<input type="date" id="f-end-date" value="' + esc(p.end_date || '') + '" /></label>' +
+            '<label class="full">Calendar dates (projects appear on these dates in the calendar)<div class="cal-dates-wrap" id="cal-dates-wrap">' +
+              '<div class="cal-dates-list" id="cal-dates-list"></div>' +
+              '<div class="cal-dates-add">' +
+                '<input type="date" id="f-add-date" />' +
+                '<button type="button" class="btn btn-sm" id="f-add-date-btn">+ Add date</button>' +
+              '</div>' +
             '</div></label>' +
-            '<label class="full">Timeframe (auto-generated)<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" readonly style="opacity:0.7;cursor:not-allowed" /></label>' +
+            '<label class="full">Timeframe (auto-generated for display)<input type="text" id="f-timeframe" value="' + esc(p.timeframe) + '" readonly style="opacity:0.7;cursor:not-allowed" /></label>' +
             '<label class="full">Theme<input type="text" id="f-theme" value="' + esc(p.theme) + '" /></label>' +
             '<label class="full">Summary<textarea id="f-summary">' + esc(p.summary) + '</textarea></label>' +
             '<label class="full">Thumbnail image (for project cards in the slider)<input type="text" id="f-thumbnail" value="' + esc(p.thumbnail || '') + '" placeholder="Upload or paste image URL" /></label>' +
@@ -1233,7 +1233,7 @@
       'modal--wide'
     );
 
-    ['f-title', 'f-committee', 'f-type', 'f-status', 'f-start-date', 'f-end-date', 'f-theme',
+    ['f-title', 'f-committee', 'f-type', 'f-status', 'f-theme',
      'f-summary', 'f-thumbnail', 'f-about', 'f-goals'].forEach(function (id) {
       var input = el(id);
       if (!input) return;
@@ -1241,18 +1241,71 @@
       input.addEventListener('change', renderProjectPreview);
     });
 
-    var updateAutoTimeframe = function () {
-      var sd = val('f-start-date');
-      var ed = val('f-end-date');
-      var tf = generateTimeframe(sd, ed);
+    /* --- calendar dates list --- */
+    var calDates = Array.isArray(p.calendar_dates) ? p.calendar_dates.slice() : [];
+
+    function renderCalDatesList() {
+      var list = el('cal-dates-list');
+      if (!list) return;
+      if (!calDates.length) {
+        list.innerHTML = '<span class="cal-dates-empty">No dates added yet</span>';
+        return;
+      }
+      list.innerHTML = calDates.map(function (d, i) {
+        return '<span class="cal-date-tag">' + esc(d) +
+          '<button type="button" class="cal-date-remove" data-idx="' + i + '">&times;</button></span>';
+      }).join('');
+      list.querySelectorAll('.cal-date-remove').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          calDates.splice(+btn.dataset.idx, 1);
+          renderCalDatesList();
+          updateAutoTimeframe();
+        });
+      });
+    }
+
+    function updateAutoTimeframe() {
       var tfInput = el('f-timeframe');
-      if (tfInput) tfInput.value = tf;
+      if (!tfInput) return;
+      if (!calDates.length) { tfInput.value = ''; renderProjectPreview(); return; }
+      var sorted = calDates.slice().sort();
+      var first = sorted[0];
+      var last = sorted[sorted.length - 1];
+      if (sorted.length === 1) {
+        tfInput.value = formatISODate(first);
+      } else if (first === last) {
+        tfInput.value = formatISODate(first);
+      } else {
+        tfInput.value = formatISODate(first) + ' – ' + formatISODate(last);
+      }
       renderProjectPreview();
-    };
-    var startDate = el('f-start-date');
-    var endDate = el('f-end-date');
-    if (startDate) startDate.addEventListener('change', updateAutoTimeframe);
-    if (endDate) endDate.addEventListener('change', updateAutoTimeframe);
+    }
+
+    function formatISODate(iso) {
+      var parts = String(iso).split('-');
+      if (parts.length !== 3) return iso;
+      var m = MONTH_NAMES_FULL[+parts[1] - 1];
+      return m + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
+    }
+
+    renderCalDatesList();
+
+    var addDateBtn = el('f-add-date-btn');
+    var addDateInput = el('f-add-date');
+    if (addDateBtn && addDateInput) {
+      addDateBtn.addEventListener('click', function () {
+        var d = addDateInput.value;
+        if (!d) return;
+        if (calDates.indexOf(d) === -1) {
+          calDates.push(d);
+          calDates.sort();
+          renderCalDatesList();
+          updateAutoTimeframe();
+        }
+        addDateInput.value = '';
+      });
+    }
+
     updateAutoTimeframe();
 
     attachMarkdownUpload('f-about');
@@ -1260,17 +1313,16 @@
     renderProjectPreview();
 
     el('m-save').addEventListener('click', function () {
-      var startDate = val('f-start-date').trim() || null;
-      var endDate = val('f-end-date').trim() || null;
       var row = {
         id: val('f-id').trim(),
         committee: val('f-committee'),
         title: val('f-title').trim(),
         type: val('f-type').trim() || null,
         status: val('f-status').trim() || null,
-        start_date: startDate,
-        end_date: endDate,
-        timeframe: generateTimeframe(startDate, endDate) || null,
+        start_date: calDates.length ? calDates[0] : null,
+        end_date: calDates.length ? calDates[calDates.length - 1] : null,
+        timeframe: val('f-timeframe').trim() || null,
+        calendar_dates: calDates,
         theme: val('f-theme').trim() || null,
         summary: val('f-summary').trim() || null,
         thumbnail: val('f-thumbnail').trim() || null,

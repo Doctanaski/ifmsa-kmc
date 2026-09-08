@@ -65,6 +65,7 @@ create table if not exists public.projects (
   start_date text,                        -- ISO date: YYYY-MM-DD
   end_date   text,                        -- ISO date: YYYY-MM-DD
   timeframe  text,                        -- auto-generated from dates, kept for backward compat
+  calendar_dates jsonb not null default '[]'::jsonb, -- explicit dates for calendar display: ["2026-05-01","2026-08-01"]
   theme      text,
   summary    text,
   thumbnail  text,                        -- URL to thumbnail image for carousel cards

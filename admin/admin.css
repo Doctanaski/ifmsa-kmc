@@ -88,16 +88,56 @@ input[type="date"]::-moz-calendar-picker-indicator {
 input[type="date"]::-moz-calendar-picker-indicator:hover {
   opacity: 1;
 }
-.date-range {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 0.5rem;
+.cal-dates-wrap {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem;
+  background: var(--bg);
 }
-.date-range-sep {
+.cal-dates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.cal-dates-empty {
   color: var(--fg-faint);
-  font-size: 0.85rem;
-  padding-top: 0.3rem;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+.cal-date-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  font-family: var(--mono);
+}
+.cal-date-remove {
+  background: none;
+  border: none;
+  color: var(--fg-faint);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.15rem;
+}
+.cal-date-remove:hover { color: var(--red); }
+.cal-dates-add {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.cal-dates-add input[type="date"] {
+  flex: 1;
+  max-width: 200px;
+}
+.btn-sm {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
 }
 
 .btn {
