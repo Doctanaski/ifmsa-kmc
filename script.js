@@ -178,7 +178,7 @@ const activate = (i) => {
     panel.querySelector('.car-btn[data-dir="1"]').addEventListener('click', () => step(1));
 
     render();
-    carousels.set(panel, { items, available, step });
+    carousels.set(panel, { items, available, step, setIndex: (i) => { index = i; render(); } });
   });
   };
 
@@ -375,6 +375,21 @@ const activate = (i) => {
     });
   };
 
+  /* save panel + carousel card so the back-button can restore position */
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.car-link');
+    if (!link) return;
+    const panelEl = link.closest('.panel-carousel');
+    if (!panelEl) return;
+    const panelIdx = panels.indexOf(panelEl);
+    const car = carousels.get(panelEl);
+    if (panelIdx >= 0 && car) {
+      const cards = Array.from(panelEl.querySelector('.car-track').children);
+      const cardIdx = cards.findIndex(c => c.classList.contains('is-active'));
+      sessionStorage.setItem('kmc_nav', JSON.stringify({ panel: panelIdx, card: cardIdx >= 0 ? cardIdx : 0 }));
+    }
+  });
+
   /* ---------- "View the committees" jumps to the first committee slide ---------- */
   const committeesBtn = document.getElementById('btn-committees');
   if (committeesBtn) {
@@ -405,6 +420,53 @@ const activate = (i) => {
     applyCommitteeMeta(siteData);
     measurePanelTops();
     animateStats();
+    restoreNavState();
+  });
+
+  /* ---------- restore scroll + carousel position after back navigation ---------- */
+  function restoreNavState() {
+    const raw = sessionStorage.getItem('kmc_nav');
+    if (!raw) return;
+    let saved;
+    try { saved = JSON.parse(raw); } catch { sessionStorage.removeItem('kmc_nav'); return; }
+    if (typeof saved.panel !== 'number' || typeof saved.card !== 'number') { sessionStorage.removeItem('kmc_nav'); return; }
+
+    /* restore carousel card index (runs after buildCarousels) */
+    if (saved.panel > 0 && saved.panel < panels.length) {
+      const panelEl = panels[saved.panel];
+      const car = carousels.get(panelEl);
+      if (car && saved.card > 0 && saved.card < car.items.length) {
+        car.setIndex(saved.card);
+      }
+    }
+
+    /* restore scroll position (on window.load so images have settled) */
+    if (document.readyState === 'complete') {
+      doRestoreScroll(saved.panel);
+      sessionStorage.removeItem('kmc_nav');
+    }
+  }
+
+  function doRestoreScroll(panelIdx) {
+    measurePanelTops();
+    const top = panelTop(panelIdx);
+    if (top == null) return;
+    const sc = isMobile.matches ? document.scrollingElement : stage;
+    sc.scrollTop = top;
+    activate(panelIdx);
+  }
+
+  window.addEventListener('load', () => {
+    measurePanelTops();
+    const raw = sessionStorage.getItem('kmc_nav');
+    if (raw) {
+      let saved;
+      try { saved = JSON.parse(raw); } catch { saved = null; }
+      if (saved && typeof saved.panel === 'number') {
+        doRestoreScroll(saved.panel);
+      }
+      sessionStorage.removeItem('kmc_nav');
+    }
   });
 
   /* ---------- apply group photos & members from committees data ---------- */
