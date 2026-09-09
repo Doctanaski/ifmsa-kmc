@@ -59,7 +59,7 @@
         }
         if (s.footer2) {
           var f2 = document.querySelector('.sre-footer p:last-child');
-          if (f2) f2.textContent = s.footer2;
+          if (f2) f2.textContent = 'Built by Haziq · For queries and feedback, reach out at genuinename@outlook.com';
         }
       }
 
