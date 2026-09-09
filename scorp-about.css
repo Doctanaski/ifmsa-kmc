@@ -606,8 +606,8 @@ strong { font-weight: 700; }
 }
 
 .srp-member-photo {
-  width: 96px;
-  height: 96px;
+  width: 144px;
+  height: 144px;
   border-radius: 50%;
   margin: 0 auto 1.2rem;
   overflow: hidden;
@@ -624,14 +624,14 @@ strong { font-weight: 700; }
 }
 
 .srp-member-initials {
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.02em;
 }
 
 .srp-member-name {
-  font-size: 1.05rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: var(--srp-fg);
   letter-spacing: -0.02em;
@@ -640,7 +640,7 @@ strong { font-weight: 700; }
 
 .srp-member-role {
   font-family: var(--srp-mono);
-  font-size: 0.68rem;
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -650,7 +650,7 @@ strong { font-weight: 700; }
 
 .srp-member-quote {
   color: var(--srp-fg-muted);
-  font-size: 0.88rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   font-style: italic;
 }
