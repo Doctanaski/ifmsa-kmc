@@ -247,7 +247,7 @@
     if (siteData.site) {
       var s = siteData.site;
       setText('site-foot-1', s.footer1);
-      setText('site-foot-2', s.footer2);
+      setText('site-foot-2', s.footer2 || 'Built by Haziq · For queries and feedback, reach out at genuinename@outlook.com');
     }
 
     if (siteData.president) {
